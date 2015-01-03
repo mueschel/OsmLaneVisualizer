@@ -1,0 +1,239 @@
+body {
+  background:#eceef4;
+  font-size:12px;
+  font-family:sans-serif;
+}
+
+div.way {
+  position:relative;
+  }
+
+div.sep {
+  clear:both;
+  height:2px;
+  width:100%;
+  background:#ddd;
+  font-size:12px;
+  }  
+  
+div.sep .name {
+  position:absolute;
+  top:105px;
+  left:100px;
+  }  
+
+  
+div.waylayout {
+  position:absolute;
+  top:-51px;
+  left:1000px;
+  height:100px;
+  width:100px;
+  background:white;
+  border-radius:50px;
+  box-shadow:5px 5px 5px #aaa;
+  border:1px solid #aaa;
+  }  
+  
+div.connects {
+  position:absolute;
+  top:45px;
+  left:0px;
+  width:0px;
+  height:10px;
+  border-right:50px solid #40ff30;
+  border-left:50px solid transparent;
+  z-index:5;
+  opacity: 0.9;
+  }  
+
+div.connects.main {
+  border-right-color:#888;
+  z-index:2;
+  opacity: 1;
+  }  
+
+div.connects.main.from {
+  border-right-color:black;
+  z-index:2;
+  opacity: 1;
+  }  
+  
+div.label {
+  width:100px;
+  height:120px;
+  position:relative;
+  float:left;
+  top:-15px;
+}  
+  
+div.signs {
+  float:left;
+  position:relative;
+  width:150px;
+  height:120px;
+  }  
+  
+div.max {
+  width:30px;
+  height:30px;
+  float:left;
+  text-align:center;
+  border:5px solid red;
+  border-radius:30px;
+  font-size:12px;
+  background:white;
+  font-weight:bold;
+  line-height:30px;
+  overflow:hidden;
+  box-shadow:3px 3px 3px #aaa;
+ }
+
+div.max.none {
+  border-color:#aaa;
+  }
+
+div.lane .max {
+  font-size:10px;
+  border:3px solid red;
+  height:25px;
+  width:25px;
+  border-radius:25px;
+  float:none;
+  }  
+  
+div.lane {
+  background:#cdc;
+  height:120px;
+  border-left:5px dotted white;
+  border-right:5px dotted white;
+  width:90px;
+  float:left;
+  overflow:hidden;
+  }
+  
+div.nolane {
+  background:#eef;
+  height:120px;
+  width:90px;
+  float:left;
+  }
+  
+div.lane.backward {
+  background:#dcc;
+  }
+
+div.lane.no {
+  border-left:5px solid white;
+  border-right:5px solid white;
+  }  
+  
+div.lane.not_left.forward, div.lane.not_right.backward {
+  border-left: 5px solid white;
+  }  
+  
+div.lane.not_right.forward, div.lane.not_left.backward {
+  border-right:5px solid white;
+  }  
+
+div.placeholder {
+  float:left;
+  }
+  
+img.forward {
+  transform: rotate(-90deg);
+  margin-top:15px;
+  margin-left:14px;
+  margin-bottom:-35px;
+  }
+  
+img.backward {
+  transform: rotate(90deg);
+  position:relative;
+  top:55px;
+  margin-top:15px;
+  margin-left:14px;
+  margin-bottom:-35px;
+  }  
+  
+div.middle {
+  position:relative;
+  height:120px;
+  left:650px;
+  width:1px;
+  background:#888;
+  float:left;
+  }  
+  
+div.destination {
+  font-size:10px;
+  position:relative;
+  width:90px;
+  text-align:center;
+  top:10px;
+  }  
+
+.backward div.destination {
+  font-size:10px;
+  position:relative;
+  width:90px;
+  text-align:center;
+  top:-15px;
+  }    
+  
+div.bridge  {
+  box-shadow:5px 0px 5px #aaa;
+  }
+
+.label a {
+  font-size:12px;
+  text-decoration:none;
+  }  
+  
+.signs .A, .signs .B, .signs .refA, .signs .refB {
+  float:left;
+  height:16px;
+  font-size:13px;
+  padding:1px;
+  }  
+  
+div.refA {
+  margin:0;
+  background:#5078D0;
+  border:2px solid white;
+  border-radius: 4px;
+  height:11px;
+  color:white;
+  overflow:hidden;
+  }  
+div.refB {
+  background:#F0E060;
+  border:2px solid black;
+  border-radius: 4px;
+  height:11px;
+  overflow:hidden;
+  }  
+div.refK {
+  background:white;
+  border:2px solid black;
+  border-radius: 4px;
+  height:11px;
+  overflow:hidden;
+  }  
+
+div.A {
+  background:#5078D0;
+  border:2px solid white;
+  color:white;
+  border-radius: 4px;
+  }  
+div.B {
+  background:#F0E060;
+  border:2px solid black;
+  border-radius: 4px;
+  }    
+div.K {
+  background:white;
+  border:2px solid black;
+  border-radius:4px;
+  }  
