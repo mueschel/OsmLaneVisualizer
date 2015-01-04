@@ -109,7 +109,8 @@ div.lane {
   border-right:5px dotted white;
   width:90px;
   float:left;
-  overflow:hidden;
+  cursor:default;
+/*   overflow:hidden; */
   }
   
 div.nolane {
@@ -140,20 +141,20 @@ div.placeholder {
   float:left;
   }
   
-img.forward {
-  transform: rotate(-90deg);
-  margin-top:15px;
-  margin-left:14px;
-  margin-bottom:-35px;
-  }
+/* div.turns.forward { */
+/*   transform: rotate(-90deg); */
+/*   margin-top:15px; */
+/*   margin-left:14px; */
+/*   margin-bottom:-35px; */
+/*   } */
   
-img.backward {
-  transform: rotate(90deg);
-  position:relative;
-  top:55px;
-  margin-top:15px;
-  margin-left:14px;
-  margin-bottom:-35px;
+div.turns.backward {
+  transform: rotate(180deg);
+/*   position:relative; */
+/*   top:55px; */
+/*   margin-top:15px; */
+/*   margin-left:14px; */
+/*   margin-bottom:-35px; */
   }  
   
 div.middle {
@@ -221,10 +222,16 @@ div.refK {
   overflow:hidden;
   }  
 
+div.refcont {
+  position:relative;
+  }  
+  
 div.A {
   background:#5078D0;
   border:2px solid white;
   color:white;
+  max-height:90px;
+  overflow:hidden;
   border-radius: 4px;
   }  
 div.B {
@@ -236,4 +243,36 @@ div.K {
   background:white;
   border:2px solid black;
   border-radius:4px;
+  }  
+
+div.refcont:hover .tooltip {
+  opacity:1;
+  margin:0px;
+  }
+  
+div.refcont .tooltip {
+  z-index:5;
+  position: absolute;
+  top:20px;
+  left:20px;
+  width: 150px;
+  background-color: #ffffdd;
+  color: black;
+  border:2px solid white;
+  border-radius: 4px;
+  box-shadow:3px 3px 3px #aaa;
+  opacity:0;
+  margin-left: -999em;
+  margin-top: -999em;
+  transition: opacity 0.1s linear 0.3s;
+  }  
+
+div.turns {
+  color:white;
+  text-align:center;
+  font-size:30px;
+  font-weight:bold;
+  margin-top:-5px;
+  margin-bottom:-15px;
+  height:30px;
   }  

@@ -145,6 +145,7 @@ print <<HDOC;
 <br>26.12.14:Added support for destination, length and distance of ways
 <br>26.12.14:Added forms for simple requests
 <br>30.12.14:Option to analyze adjacent ways and intersection geometries. If enabled, the geometry of ways at each connection between two road pieces is shown. Additional roads are shown in green (Note the mouse-over text with all tags and the link to the way in OSM)
+<br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>.
 
 <form action="render.pl" method="get" style="display:block;float:left;">
 <textarea name="url" cols="50" rows="10">$url</textarea><br>

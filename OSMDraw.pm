@@ -48,21 +48,25 @@ sub makeDestination {
   my ($ref,$dest,$roadref) = @_;
   my $o = "";
   my $cr = "K";
+  my $titledest = $dest;
+
   $ref =~ s/;/ \/ /g;
+  $dest =~ s/;/<br>/g;
+  $titledest =~ s/;/\n/g;  
+  $o .= '<div class="refcont"><div class="tooltip">';
+  $o .= $ref.'<br>'.$dest.'</div>';
   if($ref) {
     $cr = "A" if $ref =~ /^A/;
     $cr = "B" if $ref =~ /^B/;
     $o .='<div class="ref'.$cr.'">'.$ref.'</div>';
     }
-#   if($cr eq 'K' && $fallbackref) {
-#     }
   if($dest) {
     $cr = 'K';
-    $cr = "A" if $roadref =~ /^A/;
     $cr = "B" if $roadref =~ /^B/;
-    $dest =~ s/;/<br>/g;
-    $o .='<div class="'.$cr.'">'.$dest.'</div>';
+    $cr = "A" if $roadref =~ /^A/ || $ref =~ /^A/;
+    $o .='<div class="'.$cr.'" >'.$dest.'</div>';
     }
+  $o .= "</div>";  
   return $o;  
   }
   
@@ -87,7 +91,28 @@ sub getAngleBetween {
 #   print $angle."<br>\n";
   return $angle;
   }
-  
+
+sub makeTurns {
+  my $t = ';'.shift @_;
+  my $dir = shift @_;
+  my $o = "";
+#   $t =~ s/;//g;
+#   $o .= "<img class='".$dir."' width='60' src='../lanes/img/turn%20forward%20$t.png'><br>";  
+
+  $o .= '<div class="turns '.$dir.'">';
+  if ($t =~ /reverse/)        {$o .="&#x21b6;";}
+  if ($t =~ /merge_to_left/)  {$o .="<div style=\"display:inline-block;transform: rotate(45deg)\">&#x293A;</div>";}
+  if ($t =~ /sharp_left/)     {$o .="&#x2198;";}
+  if ($t =~ /;left/)          {$o .="&#x21B0;";}
+  if ($t =~ /slight_left/)    {$o .="&#x2196;";}
+  if ($t =~ /through/)        {$o .="&#x2191;";}
+  if ($t =~ /slight_right/)   {$o .="&#x2197;";}
+  if ($t =~ /;right/)         {$o .="&#x21B1;";}
+  if ($t =~ /sharp_right/)    {$o .="&#x2199;";}
+  if ($t =~ /merge_to_right/) {$o .="<div style=\"display:inline-block;transform: rotate(225deg)\">&#x2938;</div>";}
+  $o .= "</div>";
+  return $o;
+  }
   
   
 #################################################
@@ -119,9 +144,7 @@ sub drawWay {
   $out .= "<div style=\"clear:both;\">".($t->{'name'}||'&nbsp;')."</div>";
   $out .= OSMDraw::makeMaxspeed($id);
 
-#   my $angle = OSMDraw::getAngleToNext($id);
-#   $out .= '<div class="angle">'.sprintf('%.1f&deg;',$angle).'</div>'."\n"."\n";
-  
+
   $out .= "</div>\n";
   
   $out .= '<div class="placeholder" style="width:'.($lanes->{offset}*100).'px">&nbsp;</div>';
@@ -135,10 +158,9 @@ sub drawWay {
     my $change= ($lanes->{change}[$i]||"")." ";
     my $bridge= (defined $t->{'bridge'})?'bridge':'';
     $out .= '<div class="lane '.$dir." ".$change.$bridge.'">';
-    if($turns ne "" && $turns ne "none") {
-      $turns =~ s/;//g;
-      $out .= "<img class='".$dir."' width='60' src='../lanes/img/turn%20forward%20$turns.png'><br>";
-      }
+#     if($turns ne "" && $turns ne "none") {
+      $out .= OSMDraw::makeTurns($turns,$dir);
+#       }
     if($dest) {  
       $out .= "<div class=\"destination\">$dest</div>";  
       }
