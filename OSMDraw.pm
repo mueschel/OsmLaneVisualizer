@@ -136,7 +136,7 @@ sub drawWay {
   $out .= '<div class="middle">&nbsp;</div>' if $placement;
   $out .= '<div class="label">';
   $out .= sprintf("km %.1f",$totallength/1000);
-  $out .= '<br><a href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'">Way '.$id.'</a>';
+  $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'">Way '.$id.'</a>';
   $out .= sprintf("<br>%im",$length);
   $out .= "</div>\n";
   $out .= '<div class="signs">';

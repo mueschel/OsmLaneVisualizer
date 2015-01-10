@@ -3,12 +3,14 @@ use warnings;
 use strict;
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use utf8;
+binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");
 use JSON;
 use Math::Trig;
 use LWP::UserAgent;
 use Data::Dumper;
 use Exporter;
+use Encode qw(encode);
 our @ISA = 'Exporter';
 our @EXPORT = qw($waydata $nodedata $reladata $store);
 
@@ -28,7 +30,7 @@ sub readData {
   my $st = shift @_ || 0;
 
   my $ua      = LWP::UserAgent->new();
-  my $request = $ua->post( $url, ['data' => $query] ); 
+  my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
   my $json = $request->content(); 
   my $data = decode_json($json);
   
