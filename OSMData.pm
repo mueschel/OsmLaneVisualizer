@@ -12,13 +12,15 @@ use Data::Dumper;
 use Exporter;
 use Encode qw(encode);
 our @ISA = 'Exporter';
-our @EXPORT = qw($waydata $nodedata $reladata $store);
+our @EXPORT = qw($waydata $nodedata $reladata $store $endnodes);
 
+#a hash of way, node and rel. Each is an array to hold different sets of data, each containing an hash of ids.
+our $store; 
 
-our $store;
 our $waydata = $store->{way}[0];
 our $nodedata = $store->{node}[0];
 our $reladata = $store->{rel}[0];
+our $endnodes;
 
 #################################################
 ## Read and organize data
@@ -48,6 +50,13 @@ sub readData {
       $store->{rel}[$st]{$w->{'id'}} = $w;
       }
     }
+
+  foreach my $w (keys $store->{way}[$st]) {
+    next unless defined $store->{way}[$st]{$w}{tags}{'highway'};
+    push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[0]}},$w);
+    push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[-1]}},$w);
+    }    
+    
   $waydata = $store->{way}[0];
   $nodedata = $store->{node}[0];
   $reladata = $store->{rel}[0];
@@ -62,8 +71,7 @@ sub organizeWays {
   foreach my $id (@tmpw) {
     $waydata->{$id}->{begin} = $waydata->{$id}{'nodes'}[0];
     $waydata->{$id}->{end}   = $waydata->{$id}{'nodes'}[-1];
-    
-    foreach my $x (@tmpw) {
+    foreach my $x (@{$endnodes->[0]{$waydata->{$id}->{begin}}}) {
       next if $x == $id;
       if ($waydata->{$id}->{begin} == $waydata->{$x}->{'nodes'}[0]) {
         push(@{$waydata->{$id}->{before}},$x);
@@ -71,6 +79,9 @@ sub organizeWays {
       if ($waydata->{$id}->{begin} == $waydata->{$x}->{'nodes'}[-1]) {
         push(@{$waydata->{$id}->{before}},$x);
         }
+      }  
+    foreach my $x (@{$endnodes->[0]{$waydata->{$id}->{end}}}) {
+      next if $x == $id;
       if ($waydata->{$id}->{end} == $waydata->{$x}->{'nodes'}[0]) {
         push(@{$waydata->{$id}->{after}},$x);
         }

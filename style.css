@@ -14,19 +14,21 @@ div.sep {
   width:100%;
   background:#ddd;
   font-size:12px;
+  position:relative;
   }  
   
 div.sep .name {
   position:absolute;
   top:105px;
   left:100px;
+  z-index:10;
   }  
 
   
 div.waylayout {
   position:absolute;
-  top:-51px;
-  left:1000px;
+  top:-171px;
+  left:200px;
   height:100px;
   width:100px;
   background:white;
@@ -59,6 +61,10 @@ div.connects.main.from {
   z-index:2;
   opacity: 1;
   }  
+
+div.waylayout a{
+  text-decoration:none !important;
+  }
   
 div.label {
   width:100px;
@@ -66,13 +72,21 @@ div.label {
   position:relative;
   float:left;
   top:-15px;
-}  
+  }  
   
 div.signs {
   float:left;
   position:relative;
   width:150px;
   height:120px;
+  }  
+
+div.width {
+  position:absolute;
+  bottom:2px;
+  width:90px;
+  font-size:10px;
+  text-align:center;
   }  
   
 div.max {
@@ -102,13 +116,25 @@ div.lane .max {
   border-radius:25px;
   float:none;
   }  
+
+.extrasize div.lane, .extrasize div.nolane {
+  width:165px;
+  height:240px;
+  }
+.extrasize div.middle {
+  height:240px;
+  left:965px;
+  }
+.extrasize div.destination, .extrasize .backward div.destination {
+  width:165px;
+  }  
   
 div.lane {
   background:#cdc;
   height:120px;
   border-left:5px dotted white;
   border-right:5px dotted white;
-  width:90px;
+  width:110px;
   float:left;
   cursor:default;
 /*   overflow:hidden; */
@@ -117,7 +143,7 @@ div.lane {
 div.nolane {
   background:#eef;
   height:120px;
-  width:90px;
+  width:110px;
   float:left;
   }
   
@@ -161,24 +187,24 @@ div.turns.backward {
 div.middle {
   position:relative;
   height:120px;
-  left:650px;
+  left:730px;
   width:1px;
   background:#888;
   float:left;
   }  
   
 div.destination {
-  font-size:10px;
+  font-size:9px;
   position:relative;
-  width:90px;
+  width:110px;
   text-align:center;
   top:10px;
   }  
 
 .backward div.destination {
-  font-size:10px;
+  font-size:9px;
   position:relative;
-  width:90px;
+  width:110px;
   text-align:center;
   top:-15px;
   }    
@@ -191,6 +217,25 @@ div.bridge  {
   font-size:12px;
   text-decoration:none;
   }  
+
+div.clear {
+  visibility:none;
+  clear:both;
+  height:0px;
+  }  
+  
+div.destCountry {
+  margin:2px 2px 2px 2px;
+  padding: 0px 5px 1px 5px;
+  background:white;
+  color:black;
+  border:1px solid black;
+  border-radius: 30px;
+  height:11px;
+  max-width:100px;
+  display:inline;
+  float:left;
+  }   
   
 .signs .A, .signs .B, .signs .refA, .signs .refB {
   float:left;
@@ -199,53 +244,121 @@ div.bridge  {
   padding:1px;
   }  
   
-div.refA {
-  margin:0;
-  background:#5078D0;
-  border:2px solid white;
+div.refA, div.refB, div.refK {
+  margin:2px 2px 2px 2px;
+  padding: 0px 2px 0 2px;
   border-radius: 4px;
   height:11px;
+  max-width:100px;
+  display:inline;
+  float:right;
+  }  
+  
+div.refA {
+  background:#5078D0;
+  border:1px solid white;
   color:white;
-  overflow:hidden;
   }  
 div.refB {
   background:#F0E060;
-  border:2px solid black;
-  border-radius: 4px;
-  height:11px;
-  overflow:hidden;
+  border:1px solid black;
+  color:black;
   }  
 div.refK {
   background:white;
-  border:2px solid black;
-  border-radius: 4px;
-  height:11px;
-  overflow:hidden;
+  border:1px solid black;
+  color:black;
   }  
 
 div.refcont {
   position:relative;
   }  
+
+div.A, div.B, div.K {  
+  max-height:90px;
+  overflow:hidden;
+  }
+.extrasize div.A, .extrasize div.B, .extrasize div.K {
+  max-height:210px;
+  }
   
 div.A {
   background:#5078D0;
-  border:2px solid white;
+  border:1px solid white;
   color:white;
-  max-height:90px;
-  overflow:hidden;
-  border-radius: 4px;
   }  
 div.B {
   background:#F0E060;
-  border:2px solid black;
-  border-radius: 4px;
+  color:black;
+  border:1px solid black;
   }    
 div.K {
   background:white;
-  border:2px solid black;
-  border-radius:4px;
+  color:black;
+  border:1px solid black;
   }  
 
+div.refcont div div.dest {
+  width:100px;
+  margin:1px 0 1px 2px;
+  min-height:12px;
+  }
+
+.extrasize div.refcont div div.dest {
+  width:160px;
+  }  
+  
+div.refcont div div.industrial {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg") no-repeat;
+  }
+div.refcont div div.park_and_ride {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg") no-repeat;
+  }  
+div.refcont div div.parking {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg") no-repeat;
+  }  
+div.refcont div div.fuel {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg") no-repeat;
+  }  
+div.refcont div div.stadium {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg") no-repeat;
+  } 
+div.refcont div div.airport {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg") no-repeat;
+  }   
+div.refcont div div.restaurant {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg") no-repeat;
+  }   
+div.refcont div div.toilets {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg") no-repeat;
+  } 
+div.refcont div div.motorway {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg") no-repeat;
+  } 
+div.refcont div div.hospital {  
+  background:url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg") no-repeat;
+  }   
+  
+div.refcont div div.symbol {
+  background-size:15px;
+  padding-left:15px;
+  width:85px;
+  }
+  
+div.refcont div div.symbolonly {
+  background-size:24px;
+  height:24px;
+  width:24px;
+  float:left;
+}
+
+.extrasize div.refA, .extrasize div.refB, .extrasize div.refK {  
+  max-width:155px;
+  }  
+.extrasize div.refcont div div.symbol {
+  width:145px;
+  }  
+  
 div.refcont:hover .tooltip {
   opacity:1;
   margin:0px;
@@ -255,8 +368,8 @@ div.refcont .tooltip {
   z-index:5;
   position: absolute;
   top:20px;
-  left:20px;
-  width: 150px;
+  left:-220px;
+  width: 200px;
   background-color: #ffffdd;
   color: black;
   border:2px solid white;

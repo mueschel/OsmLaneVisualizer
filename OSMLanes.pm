@@ -9,13 +9,19 @@ use OSMData;
 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($lanes $maxlanes $placement $adjacent $endnodes);
+our @EXPORT = qw($lanes $maxlanes $placement $adjacent $lanewidth $extrasize $LANEWIDTH);
 
+our $LANEWIDTH = 120;
 our $lanes;
 our $placement = 0;
 our $maxlanes = 4;
 our $adjacent = 0;
-our $endnodes;
+our $lanewidth = 0;
+our $extrasize = 0;
+
+sub resetLanes {
+  $lanes = undef;
+  }
 
 #################################################
 ## Read and interpret number of lanes
@@ -73,7 +79,8 @@ sub getLanes {
   $lanes->{both} = $bothlane;
   $lanes->{none} = $nolane;
   $lanes->{list} = \@lanedir;
-  
+  $lanes->{numlanes} = scalar (@{$lanes->{list}});
+
   }
 
 
@@ -135,12 +142,41 @@ sub getDestination {
   
 sub getDestinationRef {  
   $lanes->{destinationref} = getLaneTags($_[0],'destination:ref');
+  }  
+
+sub getDestinationColour {  
+  $lanes->{destinationcolour} = getLaneTags($_[0],'destination:colour');
+  }  
+  
+sub getDestinationSymbol {  
+  $lanes->{destinationsymbol} = getLaneTags($_[0],'destination:symbol');
+  } 
+  
+sub getDestinationCountry {  
+  $lanes->{destinationcountry} = getLaneTags($_[0],'destination:country');
   }
   
-
 sub getMaxspeed {
   $lanes->{maxspeed} = getLaneTags($_[0],'maxspeed','nonolanes');
   }  
+
+sub getWidth {
+  $lanes->{width} = getLaneTags($_[0],'width','nonolanes');
+  if(defined $waydata->{$_[0]}{tags}{'width'}) {
+    $lanes->{haswidth} = 1;
+    my $lw = $waydata->{$_[0]}{tags}{'width'}/$lanes->{numlanes};
+    for my $i (0..$lanes->{numlanes}-1) {
+      next if ($lanes->{width}[$i]);
+      $lanes->{width}[$i] = $lw;
+      }
+    }
+  for my $i (0..$lanes->{numlanes}-1) {
+    if ($lanes->{width}[$i]) {
+      $lanes->{haswidth} = 1;
+      $lanes->{totalwidth} += $lanes->{width}[$i];
+      }
+    }
+  }    
   
 #################################################
 ## Read change:lanes and overtaking for proper lane markings
@@ -175,39 +211,69 @@ sub getChange {
 sub getPlacement {
   my $id = shift @_;
   my $t = $waydata->{$id}{tags};
-  my $offset = $maxlanes - $lanes->{bck} - $lanes->{both}/2.;
-  if($waydata->{$id}{reversed}) {$offset = $maxlanes - $lanes->{fwd} - $lanes->{both}/2.;}
-  if($placement) {
-    $offset = $maxlanes - (scalar @{$lanes->{list}})/2;
-    my $d;
-    if(defined $t->{'placement'} && defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
-      my @p = split(':',$t->{'placement'});
-      $d = $p[1]-1;
-      if($p[0] eq "right_of")  {$d += 1;}
-      if($p[0] eq "middle_of") {$d += .5;}
-      if($p[0] eq "transition"){$d = undef;}
-      }
-    elsif(defined $t->{'placement:forward'}) {
-      my @p = split(':',$t->{'placement:forward'});
-      $d = $p[1]-1 + $lanes->{bck};
-      if($p[0] eq "right_of")  {$d += 1;}
-      if($p[0] eq "middle_of") {$d += .5;}
-      }
-    elsif(defined $t->{'placement:backward'}) {
-      my @p = split(':',$t->{'placement:backward'});
-      $d = $p[1]-1;
-      if($p[0] eq "right_of")  {$d += 1;}
-      if($p[0] eq "middle_of") {$d += .5;}
-      $d = $lanes->{bck} - $d;
-      }
-    if(defined $d) {  
-      if($waydata->{$id}{reversed} == 0) {
-        $offset = $maxlanes - $d;
+  my $offset;
+
+  if($lanewidth && $lanes->{haswidth}) {
+    $offset = 0;
+    if(defined $t->{'placement'}) {
+      if(defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
+        my @p = split(':',$t->{'placement'});
+        for(my $i = 0; $i < $p[1];$i++) {
+          if($i == $p[1]-1) {
+            if($p[0] eq "right_of")  {$offset += $lanes->{width}[$i];}
+            if($p[0] eq "middle_of") {$offset += $lanes->{width}[$i]/2;}
+            }
+          else {
+            $offset += $lanes->{width}[$i];
+            }
+          }
         }
-      else {
-        $offset = $maxlanes  - (scalar @{$lanes->{list}}) + $d;
+      }
+    else {
+      $offset = $lanes->{totalwidth}/2;
+      }
+    $offset  = $maxlanes*4 - $offset;  
+    $offset *= $LANEWIDTH/4;  
+    }
+  else {
+    if($placement) {
+      $offset = $maxlanes - (scalar @{$lanes->{list}})/2;
+      my $d;
+      if(defined $t->{'placement'} && defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
+        my @p = split(':',$t->{'placement'});
+        $d = $p[1]-1;
+        if($p[0] eq "right_of")  {$d += 1;}
+        if($p[0] eq "middle_of") {$d += .5;}
+        if($p[0] eq "transition"){$d = undef;}
         }
-      }  
+      elsif(defined $t->{'placement:forward'}) {
+        my @p = split(':',$t->{'placement:forward'});
+        $d = $p[1]-1 + $lanes->{bck};
+        if($p[0] eq "right_of")  {$d += 1;}
+        if($p[0] eq "middle_of") {$d += .5;}
+        }
+      elsif(defined $t->{'placement:backward'}) {
+        my @p = split(':',$t->{'placement:backward'});
+        $d = $p[1]-1;
+        if($p[0] eq "right_of")  {$d += 1;}
+        if($p[0] eq "middle_of") {$d += .5;}
+        $d = $lanes->{bck} - $d;
+        }
+      if(defined $d) {  
+        if($waydata->{$id}{reversed} == 0) {
+          $offset = $maxlanes - $d;
+          }
+        else {
+          $offset = $maxlanes  - (scalar @{$lanes->{list}}) + $d;
+          }
+        }  
+      $offset *= $LANEWIDTH;  
+      }
+    else {
+      $offset = $maxlanes - $lanes->{bck} - $lanes->{both}/2.;
+      if($waydata->{$id}{reversed}) {$offset = $maxlanes - $lanes->{fwd} - $lanes->{both}/2.;}    
+      $offset *= $LANEWIDTH;
+      }
     }
   $lanes->{offset} = $offset;  
   }

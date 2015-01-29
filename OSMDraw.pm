@@ -5,8 +5,10 @@ use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use lib '/www/htdocs/w00fe1e3/lanes/';
 use OSMData;
 use OSMLanes;
+use List::Util qw(min max);
 
 my $totallength = 0;
+
 
 #################################################
 ## Returns one or two symbols for maxspeed, 
@@ -45,52 +47,130 @@ sub makeMaxspeed {
   
   
 sub makeDestination {
-  my ($ref,$dest,$roadref) = @_;
+  my ($lane,$way) = @_;
+#   my ($ref,$dest,$roadref,$destcol,$destsym) = @_;
   my $o = "";
   my $cr = "K";
+  my $dest    = $lanes->{destination}[$lane];
+  my $roadref = $way->{'ref'};
+  my $ref     = $lanes->{destinationref}[$lane];
+  my $destcol = $lanes->{destinationcolour}[$lane];
+  my $destsym = $lanes->{destinationsymbol}[$lane];
+  my $destcountry = $lanes->{destinationcountry}[$lane];
   my $titledest = $dest;
+  my $signdest  = $dest;
 
   $ref =~ s/;/ \/ /g;
-  $dest =~ s/;/<br>/g;
+  $signdest =~ s/;/<br>/g;
   $titledest =~ s/;/\n/g;  
   $o .= '<div class="refcont"><div class="tooltip">';
-  $o .= $ref.'<br>'.$dest.'</div>';
-  if($ref) {
-    $cr = "A" if $ref =~ /^A/;
-    $cr = "B" if $ref =~ /^B/;
-    $o .='<div class="ref'.$cr.'">'.$ref.'</div>';
-    }
-  if($dest) {
+  $o .= $ref.'<br>'.$signdest.'</div>';
+  if($ref || $dest || ($destsym && $destsym ne "none")) {
     $cr = 'K';
     $cr = "B" if $roadref =~ /^B/;
     $cr = "A" if $roadref =~ /^A/ || $ref =~ /^A/;
-    $o .='<div class="'.$cr.'" >'.$dest.'</div>';
+    $destsym =~ s/none//g;
+    $o .='<div class="'.$cr.'" >';
+    if($destcol || $destsym) {
+      my @dests = split(";",$dest);
+      my @cols  = split(";",$destcol);
+      my @syms  = split(";",$destsym);
+      for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
+        my $tc = '';
+        if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
+        if($cols[$i] eq 'blue') {$tc = 'color:white';}
+        if($syms[$i]) {
+          if(!$dests[$i]) {$syms[$i] .= " symbolonly";}
+          else {$syms[$i] .= " symbol";}
+          }
+        $syms[$i] = "dest ".$syms[$i];
+        $o .= '<div class="'.$syms[$i].'" style="background-color:'.$cols[$i].';'.$tc.'">'.($dests[$i]||"&nbsp;").'</div>';
+        }
+      }
+    else {
+      $o .= $signdest;
+      }
     }
-  $o .= "</div>";  
+  $o .= '<div class="clear">&nbsp;</div>';  
+  if($destcountry) {
+    my @ctr = split(';',$destcountry);
+    foreach my $c (@ctr) {
+      next if $c eq 'none';
+      $o .= '<div class="destCountry">'.$c.'</div>';
+      }
+    }
+  if($ref) {
+    my @refs = split('/',$ref);
+    foreach my $r (reverse @refs) {
+      $cr = "A" if $r =~ /^A/;
+      $cr = "B" if $r =~ /^B/;
+      $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+      }
+    }  
+  $o .= "</div></div>";  
   return $o;  
   }
   
-  
-sub getAngleToNext {
-  my $id = shift @_;
-  my $angle;
-  return unless defined $waydata->{$id}{after};
-  $angle = OSMData::calcAngle($waydata->{$id}{nodes}[-1],$waydata->{$id}{nodes}[-2],$waydata->{$waydata->{$id}{after}[0]}{nodes}[1]);
-  return $angle;
-  }
 
-sub getAngleBetween {
-  my($from,$to) = @_;
-  my $node = 0;
-  
-  $node = $store->{way}[1]{$to}{nodes}[1]  if $store->{way}[1]{$to}{nodes}[0]  == $waydata->{$from}{nodes}[-1];
-  $node = $store->{way}[1]{$to}{nodes}[-2] if $store->{way}[1]{$to}{nodes}[-1] == $waydata->{$from}{nodes}[-1];
-  
-#   print $waydata->{$from}{nodes}[-1]."/".$waydata->{$from}{nodes}[-2]."/".$node."+";
-  my $angle = OSMData::calcAngle($waydata->{$from}{nodes}[-1],$waydata->{$from}{nodes}[-2],$node);
-#   print $angle."<br>\n";
-  return $angle;
+sub makeRef {
+  my ($ref) = @_;
+  my $o ='';# = '<div class="refcont">';
+  if($ref) {
+    my $cr = 'K';
+    my @refs = split(';',$ref);
+    foreach my $r (reverse @refs) {
+      $cr = "A" if $r =~ /^A/;
+      $cr = "B" if $r =~ /^B/;
+      $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+      }
+    #my $o .= "</div>";
+    }
+  return $o;
   }
+  
+# sub getAngleToNext {
+#   my $id = shift @_;
+#   my $cnt = shift @_;
+#   my $angle;
+#   return unless defined $waydata->{$id}{after};
+#   $angle = OSMData::calcAngle($waydata->{$id}{nodes}[-1],$waydata->{$id}{nodes}[-2],$waydata->{$waydata->{$id}{after}[$cnt]}{nodes}[1]);
+#   return $angle;
+#   }
+
+sub getBestNext {  
+  my $id = shift @_;
+  my $angle = 0;
+  my $minangle = 180;
+  my $realnext;
+  my $fromdirection = OSMData::calcDirection($nodedata->{$waydata->{$id}{nodes}[-1]},$nodedata->{$waydata->{$id}{nodes}[-2]});
+  
+  return unless defined $waydata->{$id}{after};
+  foreach my $nx (@{$waydata->{$id}{after}}) {
+    $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[1]},$nodedata->{$waydata->{$nx}{nodes}[0]});
+    $angle = $fromdirection-$angle;
+    $angle += 360 if $angle < -180;
+    $angle -= 360 if $angle >  180;
+    $angle = abs($angle);
+    if($angle < $minangle) {
+      $minangle = $angle;
+      $realnext = $nx;
+      }
+    }
+  return $realnext;  
+  }
+  
+# sub getAngleBetween {
+#   my($from,$to) = @_;
+#   my $node = 0;
+#   
+#   $node = $store->{way}[1]{$to}{nodes}[1]  if $store->{way}[1]{$to}{nodes}[0]  == $waydata->{$from}{nodes}[-1];
+#   $node = $store->{way}[1]{$to}{nodes}[-2] if $store->{way}[1]{$to}{nodes}[-1] == $waydata->{$from}{nodes}[-1];
+#   
+# #   print $waydata->{$from}{nodes}[-1]."/".$waydata->{$from}{nodes}[-2]."/".$node."+";
+#   my $angle = OSMData::calcAngle($waydata->{$from}{nodes}[-1],$waydata->{$from}{nodes}[-2],$node);
+# #   print $angle."<br>\n";
+#   return $angle;
+#   }
 
 sub makeTurns {
   my $t = ';'.shift @_;
@@ -125,13 +205,19 @@ sub drawWay {
   my $length;
   $totallength += $length = OSMData::calcLength($id);
 
+  OSMLanes::resetLanes();
   OSMLanes::getLanes($id);
   OSMLanes::getTurn($id);
+  OSMLanes::getWidth($id);
   OSMLanes::getPlacement($id);
   OSMLanes::getChange($id);
   OSMLanes::getDestinationRef($id);
   OSMLanes::getDestination($id);
   OSMLanes::getMaxspeed($id);
+  OSMLanes::getDestinationColour($id);
+  OSMLanes::getDestinationSymbol($id);
+  OSMLanes::getDestinationCountry($id);
+  
   $out .= '<div class="way">';
   $out .= '<div class="middle">&nbsp;</div>' if $placement;
   $out .= '<div class="label">';
@@ -140,35 +226,42 @@ sub drawWay {
   $out .= sprintf("<br>%im",$length);
   $out .= "</div>\n";
   $out .= '<div class="signs">';
-  $out .= OSMDraw::makeDestination(($t->{'ref'}||''),'');
+  $out .= OSMDraw::makeRef(($t->{'ref'}||''),'');
   $out .= "<div style=\"clear:both;\">".($t->{'name'}||'&nbsp;')."</div>";
   $out .= OSMDraw::makeMaxspeed($id);
 
 
   $out .= "</div>\n";
   
-  $out .= '<div class="placeholder" style="width:'.($lanes->{offset}*100).'px">&nbsp;</div>';
+  $out .= '<div class="placeholder" style="width:'.($lanes->{offset}).'px">&nbsp;</div>';
   for(my $i=0; $i < scalar (@{$lanes->{list}});$i++) {
     my $dir   = $lanes->{list}[$i];
     my $turns = $lanes->{turn}[$i];
     my $max   = $lanes->{maxspeed}[$i];
+    my $width = $lanes->{width}[$i];
     my $fallbackref;
     $fallbackref = $t->{'ref'}; #if $t->{'destination'} && !$t->{'destination:lanes'};
-    my $dest  = OSMDraw::makeDestination($lanes->{destinationref}[$i],$lanes->{destination}[$i],$fallbackref);
+    my $dest  = OSMDraw::makeDestination($i,$t);
     my $change= ($lanes->{change}[$i]||"")." ";
     my $bridge= (defined $t->{'bridge'})?'bridge':'';
-    $out .= '<div class="lane '.$dir." ".$change.$bridge.'">';
-#     if($turns ne "" && $turns ne "none") {
-      $out .= OSMDraw::makeTurns($turns,$dir);
-#       }
+    $out .= '<div class="lane '.$dir." ".$change.$bridge.'" ';
+    $out .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
+    $out .= '>';
+    $out .= OSMDraw::makeTurns($turns,$dir);
     if($dest) {  
       $out .= "<div class=\"destination\">$dest</div>";  
       }
     if($max) {
       $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
       }
+    if($width) {
+      $out .= "<div class=\"width\">&lt;-".(sprintf('%.1f',$width))."-&gt;</div>";
+      }
+      
     $out .= '</div>'."\n";
     }
+    
+    
   my $beginnodetags = $nodedata->{$waydata->{$id}{begin}}{'tags'};  
   if(defined $beginnodetags->{highway} && $beginnodetags->{highway} eq "motorway_junction") {
     $out .= '<div class="sep"><div class="name">'.$beginnodetags->{ref}." ".$beginnodetags->{name}.'</div>';
@@ -177,13 +270,14 @@ sub drawWay {
     $out .= '<div class="sep">&nbsp;';
     }
   
+  
   if($adjacent) {
-    if(defined $endnodes->{$waydata->{$id}{end}} ) { 
+    if(defined $endnodes->[1]{$waydata->{$id}{end}} ) { 
       $out .= '<div class="waylayout">';
       my $stangle = OSMData::calcDirection($store->{node}[0]{$waydata->{$id}{nodes}[-1]},
                                            $store->{node}[0]{$waydata->{$id}{nodes}[-2]})
                                            -90;
-      foreach my $i (@{$endnodes->{$waydata->{$id}{end}}}) {
+      foreach my $i (@{$endnodes->[1]{$waydata->{$id}{end}}}) {
         my $nd = 0;
         $nd = $store->{way}[1]{$i}{nodes}[1]     if ($store->{way}[1]{$i}{nodes}[0] == $waydata->{$id}{end});
         $nd = $store->{way}[1]{$i}{nodes}[-2]    if ($store->{way}[1]{$i}{nodes}[-1] == $waydata->{$id}{end});

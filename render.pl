@@ -10,7 +10,7 @@ binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");
 use JSON;
 use LWP::Simple;
-use URI::Escape qw(uri_unescape);
+use URI::Escape qw(uri_unescape uri_escape);
 use Encode qw(from_to);
 
 use lib '.';
@@ -26,15 +26,19 @@ my $url = '<osm-script output="json" timeout="25"> <union> <query type="relation
 my $start = 1;
 my $placementactive = "";
 my $adjacentactive = "";
+my $lanewidthactive = "";
+my $extrasizeactive = "";
 
 if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
   foreach my $a (@args) {
     my @v = split('=',$a,2);
-    if($v[0] eq 'url')      {$url   = uri_unescape($v[1]); from_to ($url,"utf-8","iso-8859-1"); $url =~ s/\+/ /g; print $url;} #
+    if($v[0] eq 'url')      {$url   = uri_unescape($v[1]); from_to ($url,"utf-8","iso-8859-1"); $url =~ s/\+/ /g;} #
     if($v[0] eq 'start')    {$start = uri_unescape($v[1]);}
     if($v[0] eq 'placement'){$placement = "checked"; $placementactive = "placement"}
     if($v[0] eq 'adjacent') {$adjacent = "checked"; $adjacentactive = "adjacent"}
+    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "adjacent"}
+    if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "extrasize"; $LANEWIDTH *= 1.5 if $extrasize;}
     }
   }
 
@@ -85,7 +89,8 @@ while(1) {
     }
     
   last unless defined $waydata->{$id}{after};
-  my $nextid = $waydata->{$id}{after}[0];
+#   my $nextid = $waydata->{$id}{after}[0];
+  my $nextid = OSMDraw::getBestNext($id);
   if($waydata->{$id}{end} == $waydata->{$nextid}{end}) {
     $waydata->{$nextid}->{reversed} = 1;
     }
@@ -106,13 +111,10 @@ if($adjacent) {
 
   OSMData::readData($str,1); 
 
-  foreach my $w (keys $store->{way}[1]) {
-    next unless defined $store->{way}[1]{$w}{tags}{'highway'};
-    push(@{$endnodes->{$store->{way}[1]{$w}{nodes}[0]}},$w);
-    push(@{$endnodes->{$store->{way}[1]{$w}{nodes}[-1]}},$w);
-    }
+
   }
 
+my $urlescaped = uri_escape($url);
 
 print <<HDOC;
 <!DOCTYPE html>
@@ -135,12 +137,15 @@ print <<HDOC;
     if( x == 'relid' ) {
       url += '<osm-script output="json" timeout="25"><union><query type="relation"><id-query ref="'+enteredtext+'" type="relation"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
       }
+    if( x == 'wayid' ) {
+      url += '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'+enteredtext+'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
+      }      
     url = encodeURI(url);
-    window.location.href="?url="+url+"&start=$start&$placementactive";
+    window.location.href="?url="+url+"&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive";
     }
 </script>
 </head>
-<body>
+<body class="$extrasizeactive">
 <h1>Lane Visualizer</h1>
 <p>Enter a valid overpass query that delivers a list of continuous ways, e.g. as shown here: <a href="http://overpass-turbo.eu/s/6vr">Overpass Turbo</a>. Just put the Overpass query to the text box.
 <br>As there are several "last ways" (at least two...) in each data set, select one by putting a number in the box below. All tags of a way are shown as mouse-over on the text "way" on the left side.
@@ -150,13 +155,17 @@ print <<HDOC;
 <br>26.12.14: Added forms for simple requests
 <br>30.12.14: Option to analyze adjacent ways and intersection geometries. If enabled, the geometry of ways at each connection between two road pieces is shown. Additional roads are shown in green (Note the mouse-over text with all tags and the link to the way in OSM)
 <br>10.01.15: Direct jump to a given segment of the road - just add "#WAYID" to the very end of the URL. Fixed utf-8 issue in queries (Thanks to MKnight for reporting!)
+<br>23.01.15: Added a bit of support for destination:symbol and destination:colour
+<br>29.01.15: Support for destination:country
 <br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>.
 
 <form action="render.pl" method="get" style="display:block;float:left;">
-<textarea name="url" cols="50" rows="10">$url</textarea><br>
+<textarea name="url" cols="50" rows="5">$url</textarea><br>
 <input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)<br>
-<input type="checkbox" name="placement" $placement>Use placement<br>
-<input type="checkbox" name="adjacent" $adjacent>Use adjacent ways<br>
+<input type="checkbox" name="placement" $placement>Use placement
+<input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent>Use adjacent ways
+<input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth>Use lane width
+<input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize>Larger lanes<br>
 <input type="submit" value=" Get ">
 </form>
 
@@ -165,7 +174,9 @@ Search for: (Important: only short roads (<100km highway). Total execution time 
 <ul><li>A relation with ref = <input type="text" name="relref" value="A 661"><input type="submit" value=" Go " onClick="changeURL('relref');">
 <li>A relation with name = <input type="text" name="relname" value="Bundesstraße 521"><input type="submit" value=" Go " onClick="changeURL('relname');">
 <li>A relation with id = <input type="text" name="relid" value="11037"><input type="submit" value=" Go " onClick="changeURL('relid');">
+<li>A way with id = <input type="text" name="wayid" value="324294469"><input type="submit" value=" Go " onClick="changeURL('wayid');">
 </ul>
+<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a>
 </div>
 
 <hr style="margin-bottom:20px;margin-top:10px;clear:both;">
@@ -182,7 +193,8 @@ while(1) {
   push(@outarr,OSMDraw::drawWay($currid));
 
   last unless defined $waydata->{$currid}{after};
-  $currid = $waydata->{$currid}{after}[0];
+#   $currid = $waydata->{$currid}{after}[0];
+  $currid = OSMDraw::getBestNext($currid);
   }
 
   
