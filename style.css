@@ -272,7 +272,7 @@ div.destCountry {
   float:left;
   }   
   
-.signs .A, .signs .B, .signs .refA, .signs .refB {
+.signs .A, .signs .B, .signs .refA, .signs .refB, .signs .refK, .signs .refK {
   float:left;
   height:16px;
   font-size:13px;
