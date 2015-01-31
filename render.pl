@@ -161,12 +161,12 @@ print <<HDOC;
 
 <form action="render.pl" method="get" style="display:block;float:left;">
 <textarea name="url" cols="50" rows="5">$url</textarea><br>
-<input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)<br>
-<input type="checkbox" name="placement" $placement>Use placement
-<input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent>Use adjacent ways
-<input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth>Use lane width
-<input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize>Larger lanes<br>
-<input type="submit" value=" Get ">
+<label><input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)<br></label>
+<label><input type="checkbox" name="placement" $placement>Use placement</label>
+<label><input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent>Use adjacent ways</label>
+<label><input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth>Use lane width</label>
+<label><input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize>Larger lanes<br></label>
+<label><input type="submit" value=" Get ">
 </form>
 
 <div style="display:block;float:left;">
