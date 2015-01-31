@@ -157,7 +157,7 @@ print <<HDOC;
 <br>10.01.15: Direct jump to a given segment of the road - just add "#WAYID" to the very end of the URL. Fixed utf-8 issue in queries (Thanks to MKnight for reporting!)
 <br>23.01.15: Added a bit of support for destination:symbol and destination:colour
 <br>29.01.15: Support for destination:country
-<br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>.
+<br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>. Pictures are linked from wikimedia-commons.
 
 <form action="render.pl" method="get" style="display:block;float:left;">
 <textarea name="url" cols="50" rows="5">$url</textarea><br>
