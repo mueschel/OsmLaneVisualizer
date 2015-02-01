@@ -124,7 +124,7 @@ print <<HDOC;
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <title>Lanes</title>
+ <title>OSM Lane Visualizer</title>
  <link rel="stylesheet" type="text/css" href="../lanes/style.css">
  <meta  charset="UTF-8"/>
 
@@ -150,7 +150,7 @@ print <<HDOC;
 </script>
 </head>
 <body class="$extrasizeactive">
-<h1>Lane Visualizer</h1>
+<h1>OSM Lane Visualizer</h1>
 <p>Enter a valid overpass query that delivers a list of continuous ways, e.g. as shown here: <a href="http://overpass-turbo.eu/s/6vr">Overpass Turbo</a>. Just put the Overpass query to the text box.
 <br>As there are several "last ways" (at least two...) in each data set, select one by putting a number in the box below. All tags of a way are shown as mouse-over on the text "way" on the left side.
 <br>Currently supported: lanes, turn:lanes, change:lanes, maxspeed, overtaking, most destination* tags, some maxspeed:conditional.
@@ -174,7 +174,7 @@ Search for: (Important: only short roads (<100km highway). Total execution time 
 <li>A relation with id = <input type="text" name="relid" value="11037"><input type="submit" value=" Go " onClick="changeURL('relid');">
 <li>A way with id = <input type="text" name="wayid" value="324294469"><input type="submit" value=" Go " onClick="changeURL('wayid');">
 </ul>
-<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a>
+<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive">Link to this page</a>
 </div>
 
 <hr style="margin-bottom:50px;margin-top:10px;clear:both;">
