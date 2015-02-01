@@ -35,7 +35,10 @@ sub readData {
   my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
   my $json = $request->content(); 
   my $data = decode_json($json);
-  
+
+  if(!defined $data->{elements} || scalar @{$data->{elements}} == 0) {
+    return -1;
+    }
   foreach my $w (@{$data->{elements}}) {
     if ($w->{'type'} eq 'way') {  
       $store->{way}[$st]{$w->{'id'}}{tags} = $w->{'tags'};
@@ -50,7 +53,9 @@ sub readData {
       $store->{rel}[$st]{$w->{'id'}} = $w;
       }
     }
-
+  if(scalar $store->{way}[$st] < 2) {
+    return -2;
+    }
   foreach my $w (keys $store->{way}[$st]) {
     next unless defined $store->{way}[$st]{$w}{tags}{'highway'};
     push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[0]}},$w);
@@ -60,6 +65,7 @@ sub readData {
   $waydata = $store->{way}[0];
   $nodedata = $store->{node}[0];
   $reladata = $store->{rel}[0];
+  return 0;
   }
 
 #################################################

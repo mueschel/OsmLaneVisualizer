@@ -66,8 +66,7 @@ sub makeMaxspeed {
 #################################################   
 sub makeDestination {
   my ($lane,$way) = @_;
-#   my ($ref,$dest,$roadref,$destcol,$destsym) = @_;
-  my $o = "<div class=\"destination\">";
+  my $o = "";
   my $cr = "K";
   my $dest    = $lanes->{destination}[$lane];
   my $roadref = $way->{'ref'};
@@ -109,7 +108,7 @@ sub makeDestination {
           else {$syms[$i] .= " symbol";}
           }
         $syms[$i] = "dest ".$syms[$i];
-        $o .= '<div class="'.$syms[$i].'" '.$cols[$i].'>'.($dests[$i]||"&nbsp;").'</div>';
+        $o .= '<div class="'.$syms[$i].'"><span '.$cols[$i].'>'.($dests[$i]||"&nbsp;").'</span></div>';
         }
       }
     else {
@@ -133,7 +132,6 @@ sub makeDestination {
       }  
     $o .= "</div></div>";  
     }
-  $o .= "</div>";  
   return $o;  
   }
   
@@ -273,22 +271,43 @@ sub drawWay {
   
   $out .= '<div class="placeholder" style="width:'.($lanes->{offset}).'px">&nbsp;</div>'."\n";
   
+  my @destinations;
+  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
+    my $dest  = OSMDraw::makeDestination($i,$t);
+    push(@destinations,$dest);
+    }
+  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
+    if($destinations[$i]) {  
+      my $w = '';
+      if ($destinations[$i] eq $destinations[$i+1]) {
+        $w = 'double';
+        $destinations[$i+1] = '';
+        if ($destinations[$i] eq $destinations[$i+2]) {
+          $w = 'triple';
+          $destinations[$i+2] = '';
+          if ($destinations[$i] eq $destinations[$i+3]) {
+            $w = 'quadruple';
+            $destinations[$i+3] = '';
+            }
+          }
+        }
+      $destinations[$i] = '<div class="destination '.$w.'">'.$destinations[$i].'</div>';  
+      }
+    }  
+  
   for(my $i=0; $i < $lanes->{numlanes}; $i++) {
     my $dir   = $lanes->{list}[$i];
     my $turns = $lanes->{turn}[$i];
     my $max   = $lanes->{maxspeed}[$i];
     my $width = $lanes->{width}[$i];
-    my $fallbackref;
-    $fallbackref = $t->{'ref'}; #if $t->{'destination'} && !$t->{'destination:lanes'};
-    my $dest  = OSMDraw::makeDestination($i,$t);
     my $change= ($lanes->{change}[$i]||"")." ";
     my $bridge= (defined $t->{'bridge'})?'bridge':'';
     $out .= '<div class="lane '.$dir." ".$change.$bridge.'" ';
     $out .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
     $out .= '>';
     $out .= OSMDraw::makeTurns($turns,$dir);
-    if($dest) {  
-      $out .= $dest;  
+    if($destinations[$i]) {  
+      $out .= $destinations[$i];  
       }
     if($max) {
       $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
