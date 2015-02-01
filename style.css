@@ -1,427 +1,396 @@
+/*Width of  borders*/
 body {
-  background:#eceef4;
-  font-size:12px;
-  font-family:sans-serif;
-}
+  background: #f2f5f7;
+  font-size: 12px;
+  font-family: sans-serif; }
 
 div.way {
-  position:relative;
-  }
+  position: relative; }
 
 div.sep {
-  clear:both;
-  height:2px;
-  width:100%;
-  background:#ddd;
-  font-size:12px;
-  position:relative;
-  }  
-  
+  clear: both;
+  height: 2px;
+  width: 100%;
+  background: #ddd;
+  font-size: 12px;
+  position: relative; }
+
 div.sep .name {
-  position:absolute;
-  top:105px;
-  left:100px;
-  z-index:10;
-  }  
+  position: absolute;
+  top: 120px;
+  left: 100px;
+  z-index: 10; }
 
-  
+.extrasize div.sep .name {
+  top: 191.55px; }
+
 div.waylayout {
-  position:absolute;
-  top:-171px;
-  left:200px;
-  height:100px;
-  width:100px;
-  background:white;
-  border-radius:50px;
-  box-shadow:5px 5px 5px #aaa;
-  border:1px solid #aaa;
-  }  
+  position: absolute;
+  top: -187px;
+  left: 200px;
+  height: 100px;
+  width: 100px;
+  background: white;
+  border-radius: 50px;
+  box-shadow: 5px 5px 5px #aaa;
+  border: 1px solid #aaa; }
 
-  
+.extrasize div.waylayout {
+  top: -258.55px; }
+
 div.connects {
-  position:absolute;
-  top:45px;
-  left:0px;
-  width:0px;
-  height:10px;
-  border-right:50px solid #40ff30;
-  border-left:50px solid transparent;
-  z-index:5;
-  opacity: 0.9;
-  }  
+  position: absolute;
+  top: 45px;
+  left: 0px;
+  width: 0px;
+  height: 10px;
+  border-right: 50px solid #40ff30;
+  border-left: 50px solid transparent;
+  z-index: 5;
+  opacity: 0.9; }
 
 div.connects.main {
-  border-right-color:#888;
-  z-index:2;
-  opacity: 1;
-  }  
+  border-right-color: #888;
+  z-index: 2;
+  opacity: 1; }
 
 div.connects.main.from {
-  border-right-color:black;
-  z-index:2;
-  opacity: 1;
-  }  
+  border-right-color: black;
+  z-index: 2;
+  opacity: 1; }
 
-div.waylayout a{
-  text-decoration:none !important;
-  }
-  
+div.waylayout a {
+  text-decoration: none !important; }
+
 div.label {
-  width:100px;
-  height:120px;
-  position:relative;
-  float:left;
-  top:-15px;
-  }  
-  
+  width: 100px;
+  height: 135px;
+  position: relative;
+  float: left;
+  top: -15px; }
+
 div.signs {
-  float:left;
-  position:relative;
-  width:150px;
-  height:120px;
-  }  
+  float: left;
+  position: relative;
+  width: 150px;
+  height: 135px; }
 
 div.width {
-  position:absolute;
-  bottom:2px;
-  width:90px;
-  font-size:10px;
-  text-align:center;
-  }  
-  
+  position: absolute;
+  bottom: 2px;
+  width: 108px;
+  font-size: 10px;
+  text-align: center; }
+
 div.max {
-  width:25px;
-  height:25px;
-  float:left;
-  text-align:center;
-  border:4px solid red;
-  border-radius:25px;
-  font-size:10px;
-  background:white;
-  font-weight:bold;
-  line-height:25px;
-  overflow:hidden;
-  box-shadow:3px 3px 3px #aaa;
- }
+  width: 25px;
+  height: 25px;
+  float: left;
+  text-align: center;
+  border: 4px solid red;
+  border-radius: 25px;
+  font-size: 10px;
+  background: white;
+  font-weight: bold;
+  line-height: 25px;
+  overflow: hidden;
+  box-shadow: 3px 3px 3px #aaa; }
 
 div.max.none {
-  border-color:#aaa;
-  color:white;
-  }
+  border-color: #aaa;
+  color: white; }
 
 div.max.unkwn {
-  border-color:yellow;
-  color:#aaa;
-  }  
-  
+  border-color: yellow;
+  color: #aaa; }
+
 div.maxcont {
-  width:33px;
-  float:left;
-  }  
-  
+  width: 33px;
+  float: left; }
+
 div.maxcont .max {
-  float:none;
-  }
-  
+  float: none; }
+
 div.maxcont .condition {
-  border:1px solid black;
+  border: 1px solid black;
   border-radius: 2px;
-  text-align:center;
-  font-size:10px;
+  text-align: center;
+  font-size: 10px;
   background: no-repeat center center white;
-  background-size:30px;
-}
+  background-size: 30px; }
 
 div.condition.wet {
-  background-image:url(http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg);
-  border:none;
-  height:35px;
-  }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
+  border: none;
+  height: 35px; }
+
 div.condition.hgv {
-  background-image:url(http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg);
-  border:none;
-  height:35px;
-  }  
-  
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
+  border: none;
+  height: 35px; }
+
 div.lane .max {
-  font-size:10px;
-  border:3px solid red;
-  height:25px;
-  width:25px;
-  border-radius:25px;
-  float:none;
-  }  
+  float: none; }
 
 .extrasize div.lane, .extrasize div.nolane {
-  width:165px;
-  height:240px;
-  }
+  width: 177.6px;
+  height: 206.55px; }
 .extrasize div.middle {
-  height:240px;
-  left:965px;
-  }
-.extrasize div.destination, .extrasize .backward div.destination {
-  width:165px;
-  }  
-  
+  height: 206.55px;
+  left: 984.4px; }
+
 div.lane {
-  background:#cdc;
-  height:120px;
-  border-left:5px dotted white;
-  border-right:5px dotted white;
-  width:110px;
-  float:left;
-  cursor:default;
-/*   overflow:hidden; */
-  }
-  
+  background: #cdc;
+  height: 135px;
+  border-left: 3px dashed white;
+  border-right: 3px dashed white;
+  width: 114px;
+  float: left;
+  cursor: default; }
+
 div.nolane {
-  background:#eef;
-  height:120px;
-  width:110px;
-  float:left;
-  }
-  
+  background: #eef;
+  height: 135px;
+  width: 114px;
+  float: left; }
+
 div.lane.backward {
-  background:#dcc;
-  }
+  background: #dcc; }
 
 div.lane.no {
-  border-left:5px solid white;
-  border-right:5px solid white;
-  }  
-  
+  border-left: 3px solid white;
+  border-right: 3px solid white; }
+
 div.lane.not_left.forward, div.lane.not_right.backward {
-  border-left: 5px solid white;
-  }  
-  
+  border-left: 3px solid white; }
+
 div.lane.not_right.forward, div.lane.not_left.backward {
-  border-right:5px solid white;
-  }  
+  border-right: 3px solid white; }
 
 div.placeholder {
-  float:left;
-  }
-  
-/* div.turns.forward { */
-/*   transform: rotate(-90deg); */
-/*   margin-top:15px; */
-/*   margin-left:14px; */
-/*   margin-bottom:-35px; */
-/*   } */
-  
+  float: left; }
+
 div.turns.backward {
-  transform: rotate(180deg);
-/*   position:relative; */
-/*   top:55px; */
-/*   margin-top:15px; */
-/*   margin-left:14px; */
-/*   margin-bottom:-35px; */
-  }  
-  
+  position: relative;
+  top: 110px;
+  transform: rotate(180deg); }
+
+.extrasize div.turns.backward {
+  top: 181.55px; }
+
 div.middle {
-  position:relative;
-  height:120px;
-  left:730px;
-  width:1px;
-  background:#888;
-  float:left;
-  }  
-  
+  position: relative;
+  height: 135px;
+  left: 730px;
+  width: 1px;
+  background: #888;
+  float: left; }
+
 div.destination {
-  font-size:9px;
-  position:relative;
-  width:110px;
-  text-align:center;
-  top:10px;
-  }  
+  font-size: 9px;
+  position: relative;
+  width: 110px;
+  text-align: center;
+  top: 10px;
+  margin-left: 2px; }
 
 .backward div.destination {
-  font-size:9px;
-  position:relative;
-  width:110px;
-  text-align:center;
-  top:-15px;
-  }    
-  
-div.bridge  {
-  box-shadow:5px 0px 5px #aaa;
-  }
+  top: -15px; }
+
+div.destination.double {
+  width: 230px; }
+
+div.destination.triple {
+  width: 350px; }
+
+div.destination.quadruple {
+  width: 470px; }
+
+.extrasize div.destination {
+  width: 173.6px; }
+
+.extrasize div.destination.double {
+  width: 357.2px; }
+
+.extrasize div.destination.triple {
+  width: 540.8px; }
+
+.extrasize div.destination.quadruple {
+  width: 724.4px; }
+
+div.bridge {
+  box-shadow: 5px 0px 5px #aaa; }
 
 .label a {
-  font-size:12px;
-  text-decoration:none;
-  }  
+  font-size: 12px;
+  text-decoration: none; }
 
 div.clear {
-  visibility:none;
-  clear:both;
-  height:0px;
-  }  
-  
+  visibility: none;
+  clear: both;
+  height: 0px; }
+
 div.destCountry {
-  margin:2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
   padding: 0px 5px 1px 5px;
-  background:white;
-  color:black;
-  border:1px solid black;
+  background: white;
+  color: black;
+  border: 1px solid black;
   border-radius: 30px;
-  height:11px;
-  max-width:100px;
-  display:inline;
-  float:left;
-  }   
-  
+  height: 11px;
+  max-width: 100px;
+  display: inline;
+  float: left; }
+
 .signs .A, .signs .B, .signs .refA, .signs .refB, .signs .refK, .signs .refK {
-  float:left;
-  height:16px;
-  font-size:13px;
-  padding:1px;
-  }  
-  
+  float: left;
+  height: 16px;
+  font-size: 13px;
+  padding: 1px; }
+
 div.refA, div.refB, div.refK {
-  margin:2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
-  height:11px;
-  max-width:100px;
-  display:inline;
-  float:right;
-  }  
-  
+  height: 11px;
+  max-width: 100px;
+  display: inline;
+  float: right; }
+
 div.refA {
-  background:#5078D0;
-  border:1px solid white;
-  color:white;
-  }  
+  background: #5078D0;
+  border: 1px solid white;
+  color: white; }
+
 div.refB {
-  background:#F0E060;
-  border:1px solid black;
-  color:black;
-  }  
+  background: #F0E060;
+  border: 1px solid black;
+  color: black; }
+
 div.refK {
-  background:white;
-  border:1px solid black;
-  color:black;
-  }  
+  background: white;
+  border: 1px solid black;
+  color: black; }
 
 div.refcont {
-  position:relative;
-  }  
+  position: relative; }
 
-div.A, div.B, div.K {  
-  max-height:90px;
-  overflow:hidden;
-  }
+div.A, div.B, div.K {
+  max-height: 115px;
+  overflow: hidden; }
+
 .extrasize div.A, .extrasize div.B, .extrasize div.K {
-  max-height:210px;
-  }
-  
+  max-height: 186.55px; }
+
 div.A {
-  background:#5078D0;
-  border:1px solid white;
-  color:white;
-  }  
+  background: #5078D0;
+  border: 1px solid white;
+  color: white; }
+
 div.B {
-  background:#F0E060;
-  color:black;
-  border:1px solid black;
-  }    
+  background: #F0E060;
+  color: black;
+  border: 1px solid black; }
+
 div.K {
-  background:white;
-  color:black;
-  border:1px solid black;
-  }  
+  background: white;
+  color: black;
+  border: 1px solid black; }
 
 div.refcont div div.dest {
-  width:100px;
-  margin:1px 0 1px 2px;
-  min-height:12px;
-  }
+  width: 103px;
+  margin: 1px 0 1px 2px;
+  min-height: 12px; }
+
+.double div.refcont div div.dest {
+  width: 223px; }
+
+.triple div.refcont div div.dest {
+  width: 343px; }
+
+.quadruple div.refcont div div.dest {
+  width: 463px; }
 
 .extrasize div.refcont div div.dest {
-  width:160px;
-  }  
-  
-div.refcont div div.industrial {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg") no-repeat;
-  }
-div.refcont div div.park_and_ride {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg") no-repeat;
-  }  
-div.refcont div div.parking {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg") no-repeat;
-  }  
-div.refcont div div.fuel {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg") no-repeat;
-  }  
-div.refcont div div.stadium {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg") no-repeat;
-  } 
-div.refcont div div.airport {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg") no-repeat;
-  }   
-div.refcont div div.restaurant {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg") no-repeat;
-  }   
-div.refcont div div.toilets {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg") no-repeat;
-  } 
-div.refcont div div.motorway {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg") no-repeat;
-  } 
-div.refcont div div.hospital {  
-  background:url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg") no-repeat;
-  }   
-  
-div.refcont div div.symbol {
-  background-size:15px;
-  padding-left:15px;
-  width:85px;
-  }
-  
-div.refcont div div.symbolonly {
-  background-size:24px;
-  height:24px;
-  width:24px;
-  float:left;
-}
+  width: 166.6px; }
 
-.extrasize div.refA, .extrasize div.refB, .extrasize div.refK {  
-  max-width:155px;
-  }  
+.extrasize .double div.refcont div div.dest {
+  width: 350.2px; }
+
+.extrasize .triple div.refcont div div.dest {
+  width: 533.8px; }
+
+.extrasize .quadruple div.refcont div div.dest {
+  width: 717.4px; }
+
+div.refcont div div.industrial span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
+div.refcont div div.park_and_ride span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
+div.refcont div div.parking span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
+div.refcont div div.fuel span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
+div.refcont div div.stadium span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
+div.refcont div div.airport span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
+div.refcont div div.restaurant span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
+div.refcont div div.toilets span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
+div.refcont div div.motorway span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg"); }
+div.refcont div div.hospital span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
+div.refcont div div.symbol span {
+  padding-left: 15px;
+  background-size: 15px;
+  background-repeat: no-repeat; }
+div.refcont div div.symbolonly {
+  float: left;
+  height: 24px;
+  width: 24px; }
+div.refcont div div.symbolonly span {
+  background-size: 24px;
+  background-repeat: no-repeat;
+  display: block;
+  height: 24px;
+  width: 24px; }
+
+.extrasize div.refA, .extrasize div.refB, .extrasize div.refK {
+  max-width: 155px; }
+
 .extrasize div.refcont div div.symbol {
-  width:145px;
-  }  
-  
+  width: 145px; }
+
 div.refcont:hover .tooltip {
-  opacity:1;
-  margin:0px;
-  }
-  
+  opacity: 1;
+  margin: 0px; }
+
 div.refcont .tooltip {
-  z-index:5;
+  z-index: 5;
   position: absolute;
-  top:20px;
-  left:-220px;
+  top: 20px;
+  left: -220px;
   width: 200px;
   background-color: #ffffdd;
   color: black;
-  border:2px solid white;
+  border: 2px solid white;
   border-radius: 4px;
-  box-shadow:3px 3px 3px #aaa;
-  opacity:0;
+  box-shadow: 3px 3px 3px #aaa;
+  opacity: 0;
   margin-left: -999em;
   margin-top: -999em;
-  transition: opacity 0.1s linear 0.3s;
-  }  
+  transition: opacity 0.1s linear 0.3s; }
 
 div.turns {
-  color:white;
-  text-align:center;
-  font-size:30px;
-  font-weight:bold;
-  margin-top:-5px;
-  margin-bottom:-15px;
-  height:30px;
-  }  
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: -5px;
+  margin-bottom: -15px;
+  height: 30px; }
+
+/*# sourceMappingURL=style.css.map */
