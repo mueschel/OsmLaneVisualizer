@@ -83,7 +83,9 @@ unless($r) {
         --$startcnt;
         }
       }
-    elsif (!defined $waydata->{$w}->{after}) {
+    }
+  foreach my $w (sort keys %{$waydata}) {   
+    if (!defined $waydata->{$w}->{after}) {
       $totalstartpoints++;
       if($startcnt > 0) {
         $currid = $w;
