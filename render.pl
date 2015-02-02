@@ -29,6 +29,9 @@ my $adjacentactive = "";
 my $lanewidthactive = "";
 my $extrasizeactive = "";
 my $totalstartpoints = 0;
+my $extendway = 0;
+my $extendwayactive = "";
+
 
 if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
@@ -38,7 +41,8 @@ if(defined $ENV{'QUERY_STRING'}) {
     if($v[0] eq 'start')    {$start = uri_unescape($v[1]);}
     if($v[0] eq 'placement'){$placement = "checked"; $placementactive = "placement"}
     if($v[0] eq 'adjacent') {$adjacent = "checked"; $adjacentactive = "adjacent"}
-    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "adjacent"}
+    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "lanewidth"}
+    if($v[0] eq 'extendway') {$extendway = "checked"; $extendwayactive = "extendway"}
     if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "extrasize"; $LANEWIDTH *= 1.53 if $extrasize;}
     }
   }
@@ -47,6 +51,17 @@ if(defined $ENV{'QUERY_STRING'}) {
   my $currid;
 my $r = OSMData::readData($url); 
 unless($r) {
+  #if only one way found, try to extent it a bit
+  if($extendway && scalar keys %{$waydata} == 1) {
+    my $ref; my $id;
+    foreach my $x (keys %{$waydata}) {
+      $id  = $x;
+      $ref = $waydata->{$x}{tags}{'ref'};
+      }
+    OSMData::readData('[out:json][timeout:25];(  way('.$id.');  >;  way(bn);  >;  way(bn);)->.a;(  way.a[highway][ref="'.$ref.'"];  >;);out body qt;',0);
+    }
+  
+  
   OSMData::organizeWays();
 
 
@@ -145,7 +160,7 @@ print <<HDOC;
       url += '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'+enteredtext+'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
       }      
     url = encodeURI(url);
-    window.location.href="?url="+url+"&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive";
+    window.location.href="?url="+url+"&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive&$extendwayactive";
     }
 </script>
 </head>
@@ -164,6 +179,7 @@ print <<HDOC;
 <label><input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent>Use adjacent ways</label>
 <label><input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth>Use lane width</label>
 <label><input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize>Larger lanes</label><br>
+<label><input style="margin_left:30px;" type="checkbox" name="extendway" $extendway>Try to find ways before and after</label><br>
 <input type="submit" value=" Get ">
 </form>
 
@@ -174,7 +190,7 @@ Search for: (Important: only short roads (<100km highway). Total execution time 
 <li>A relation with id = <input type="text" name="relid" value="11037"><input type="submit" value=" Go " onClick="changeURL('relid');">
 <li>A way with id = <input type="text" name="wayid" value="324294469"><input type="submit" value=" Go " onClick="changeURL('wayid');">
 </ul>
-<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive">Link to this page</a>
+<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive&$extendwayactive">Link to this page</a>
 </div>
 
 <hr style="margin-bottom:50px;margin-top:10px;clear:both;">

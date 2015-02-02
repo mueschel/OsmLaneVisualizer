@@ -33,7 +33,7 @@ sub readData {
 
   my $ua      = LWP::UserAgent->new();
   my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
-  my $json = $request->content(); 
+  my $json = $request->content();
   my $data = decode_json($json);
 
   if(!defined $data->{elements} || scalar @{$data->{elements}} == 0) {
