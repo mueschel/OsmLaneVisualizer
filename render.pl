@@ -31,24 +31,29 @@ my $extrasizeactive = "";
 my $totalstartpoints = 0;
 my $extendway = 0;
 my $extendwayactive = "";
-
+my $currid;
 
 if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
   foreach my $a (@args) {
     my @v = split('=',$a,2);
-    if($v[0] eq 'url')      {$url   = uri_unescape($v[1]); from_to ($url,"utf-8","iso-8859-1"); $url =~ s/\+/ /g;} #
-    if($v[0] eq 'start')    {$start = uri_unescape($v[1]);}
-    if($v[0] eq 'placement'){$placement = "checked"; $placementactive = "placement"}
-    if($v[0] eq 'adjacent') {$adjacent = "checked"; $adjacentactive = "adjacent"}
-    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "lanewidth"}
-    if($v[0] eq 'extendway') {$extendway = "checked"; $extendwayactive = "extendway"}
-    if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "extrasize"; $LANEWIDTH *= 1.53 if $extrasize;}
+    $v[1] = uri_unescape($v[1]); from_to ($v[1],"utf-8","iso-8859-1"); $v[1] =~ s/\+/ /g;
+    if($v[0] eq 'url')      {$url   = $v[1];} #
+    if($v[0] eq 'start')    {$start = $v[1];}
+    if($v[0] eq 'placement'){$placement = "checked"; $placementactive = "&placement"}
+    if($v[0] eq 'adjacent') {$adjacent = "checked"; $adjacentactive = "&adjacent"}
+    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "&lanewidth"}
+    if($v[0] eq 'extendway') {$extendway = "checked"; $extendwayactive = "&extendway"}
+    if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "&extrasize"; $LANEWIDTH *= 1.53 if $extrasize;}
+    if($v[0] eq 'wayid') {$url = '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'.($v[1]).'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
+    if($v[0] eq 'relid') {$url = '<osm-script output="json" timeout="25"><union><query type="relation"><id-query ref="'.($v[1]).'" type="relation"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
+    if($v[0] eq 'relname') {$url = '<osm-script output="json" timeout="25"><union><query type="relation"><has-kv k="name" v="'.($v[1]).'"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
+    if($v[0] eq 'relref') {$url = '<osm-script output="json" timeout="25"><union><query type="relation"><has-kv k="ref" v="'.($v[1]).'"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
     }
   }
 
   
-  my $currid;
+  
 my $r = OSMData::readData($url); 
 unless($r) {
   #if only one way found, try to extent it a bit
@@ -147,20 +152,9 @@ print <<HDOC;
   function changeURL(x) {
     var url = "";
     var enteredtext = document.getElementsByName(x)[0].value;
-    if( x == 'relref' ) {
-      url += '<osm-script output="json" timeout="25"><union><query type="relation"><has-kv k="ref" v="'+enteredtext+'"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
-      }
-    if( x == 'relname' ) {
-      url += '<osm-script output="json" timeout="25"><union><query type="relation"><has-kv k="name" v="'+enteredtext+'"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
-      }
-    if( x == 'relid' ) {
-      url += '<osm-script output="json" timeout="25"><union><query type="relation"><id-query ref="'+enteredtext+'" type="relation"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
-      }
-    if( x == 'wayid' ) {
-      url += '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'+enteredtext+'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';
-      }      
+    url = x+'='+enteredtext;
     url = encodeURI(url);
-    window.location.href="?url="+url+"&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive&$extendwayactive";
+    window.location.href="?"+url+"&start=$start$placementactive$adjacentactive$lanewidthactive$extrasizeactive$extendwayactive";
     }
 </script>
 </head>
@@ -190,7 +184,7 @@ Search for: (Important: only short roads (<100km highway). Total execution time 
 <li>A relation with id = <input type="text" name="relid" value="11037"><input type="submit" value=" Go " onClick="changeURL('relid');">
 <li>A way with id = <input type="text" name="wayid" value="324294469"><input type="submit" value=" Go " onClick="changeURL('wayid');">
 </ul>
-<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start&$placementactive&$adjacentactive&$lanewidthactive&$extrasizeactive&$extendwayactive">Link to this page</a>
+<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start$placementactive$adjacentactive$lanewidthactive$extrasizeactive$extendwayactive">Link to this page</a>
 </div>
 
 <hr style="margin-bottom:50px;margin-top:10px;clear:both;">
