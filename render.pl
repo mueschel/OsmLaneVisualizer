@@ -170,12 +170,18 @@ print <<HDOC;
 
 <form action="render.pl" method="get" style="display:block;float:left;">
 <textarea name="url" cols="50" rows="5">$url</textarea><br>
-<label><input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)</label><br>
-<label><input type="checkbox" name="placement" $placement>Use placement</label>
-<label><input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent>Use adjacent ways</label>
-<label><input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth>Use lane width</label>
-<label><input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize>Larger lanes</label><br>
-<label><input style="margin_left:30px;" type="checkbox" name="extendway" $extendway>Try to find ways before and after</label><br>
+<label>
+  <input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)</label><br>
+<label title="Evaluate the placement tag to get a more natural arrangement of lanes">
+  <input type="checkbox" name="placement" $placement>Use placement</label>
+<label title="Show the geometry of all ways joining at the end nodes of each segment">
+  <input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent >Use adjacent ways</label>
+<label title="Determine width of lanes from width tag. Note that this does not work well in combination with destination signs">
+  <input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth >Use lane width</label>
+<label title="Increase the size of all lanes by 50% in each direction">
+  <input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize >Larger lanes</label><br>
+<label title="If the API call returns a single way, look for up to two ways in front and after the found one with the same ref-tag">
+  <input style="margin_left:30px;" type="checkbox" name="extendway" $extendway >Try to find ways before and after</label><br>
 <input type="submit" value=" Get ">
 </form>
 

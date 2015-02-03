@@ -253,6 +253,9 @@ sub drawWay {
   OSMLanes::getDestinationSymbol($id);
   OSMLanes::getDestinationCountry($id);
   
+  my $lat = $nodedata->{$waydata->{$id}{end}}{lat};
+  my $lon = $nodedata->{$waydata->{$id}{end}}{lon};  
+  
   $out .= '<div class="way">';
   
   $out .= '<div class="middle">&nbsp;</div>' if $placement;
@@ -261,6 +264,8 @@ sub drawWay {
   $out .= sprintf("km %.1f",$totallength/1000);
   $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'">Way '.$id.'</a>';
   $out .= sprintf("<br>%im",$length);
+  $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/map/im/bbox/%.5f/%.5f/%.5f/%.5f\">(M)</a>",$lat-0.005,$lat+0.005,$lon-0.005,$lon+0.005);
+  $out .= sprintf("<a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
   $out .= "</div>\n";
   
   $out .= '<div class="signs">';
