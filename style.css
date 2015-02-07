@@ -4,6 +4,32 @@ body {
   font-size: 12px;
   font-family: sans-serif; }
 
+div.config {
+  display: block;
+  width: 200px;
+  float: left;
+  background: #f7f5f2;
+  border: 1px solid #aaa;
+  margin: 2px; }
+
+div.selectquery {
+  display: block;
+  margin: 2px;
+  margin-left: 20px;
+  width: 300px;
+  float: left;
+  background: #f7f5f2;
+  padding-left: 3px;
+  border: 1px solid #aaa; }
+
+div.config h3, div.selectquery h3 {
+  margin: 2px;
+  font-size: 15px; }
+
+div.selectquery input[type=text] {
+  /*   margin-left:40px; */
+  width: 100px; }
+
 div.way {
   position: relative; }
 

@@ -24,26 +24,24 @@ use OSMDraw;
 my $url = '<osm-script output="json" timeout="25"> <union> <query type="relation"> <has-kv k="TMC:cid_58:tabcd_1:LocationCode" v="8725"/> <has-kv k="TMC:cid_58:tabcd_1:Direction" v="negative" /> </query> </union> <print mode="body" order="id"/> <recurse type="down"/> <print order="quadtile"/> </osm-script>';
 
 my $start = 1;
-my $placementactive = "";
-my $adjacentactive = "";
-my $lanewidthactive = "";
-my $extrasizeactive = "";
 my $totalstartpoints = 0;
 my $extendway = 0;
-my $extendwayactive = "";
+my $extrasizeactive = "";
 my $currid;
+my $opts;
 
 if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
   foreach my $a (@args) {
     my @v = split('=',$a,2);
     $v[1] = uri_unescape($v[1]); from_to ($v[1],"utf-8","iso-8859-1"); $v[1] =~ s/\+/ /g;
-    if($v[0] eq 'url')      {$url   = $v[1];} #
+    $opts->{$v[0]} = $v[1] || 1;
+    if($v[0] eq 'url')      {$url   = $v[1];}
     if($v[0] eq 'start')    {$start = $v[1];}
-    if($v[0] eq 'placement'){$placement = "checked"; $placementactive = "&placement"}
-    if($v[0] eq 'adjacent') {$adjacent = "checked"; $adjacentactive = "&adjacent"}
-    if($v[0] eq 'lanewidth') {$lanewidth = "checked"; $lanewidthactive = "&lanewidth"}
-    if($v[0] eq 'extendway') {$extendway = "checked"; $extendwayactive = "&extendway"}
+    if($v[0] eq 'placement'){$placement = "checked";}
+    if($v[0] eq 'adjacent') {$adjacent = "checked";}
+    if($v[0] eq 'lanewidth') {$lanewidth = "checked";}
+    if($v[0] eq 'extendway') {$extendway = "checked";}
     if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "&extrasize"; $LANEWIDTH *= 1.53 if $extrasize;}
     if($v[0] eq 'wayid') {$url = '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'.($v[1]).'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
     if($v[0] eq 'relid') {$url = '<osm-script output="json" timeout="25"><union><query type="relation"><id-query ref="'.($v[1]).'" type="relation"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
@@ -141,7 +139,7 @@ unless($r) {
     }
   }
 my $urlescaped = uri_escape($url);
-
+my $querystring = $ENV{'QUERY_STRING'};
 print <<HDOC;
 <!DOCTYPE html>
 <html lang="en">
@@ -152,11 +150,15 @@ print <<HDOC;
 
 <script type="text/javascript">
   function changeURL(x) {
-    var url = "";
-    var enteredtext = document.getElementsByName(x)[0].value;
-    url = x+'='+enteredtext;
-    url = encodeURI(url);
-    window.location.href="?"+url+"&start=$start$placementactive$adjacentactive$lanewidthactive$extrasizeactive$extendwayactive";
+    var url = "?";
+    url += x+'='+encodeURI(document.getElementsByName(x)[0].value);
+    url += "&start="+document.getElementsByName('start')[0].value;
+    url += document.getElementsByName('placement')[0].checked?"&placement":"";
+    url += document.getElementsByName('adjacent')[0].checked?"&adjacent":"";
+    url += document.getElementsByName('lanewidth')[0].checked?"&lanewidth":"";
+    url += document.getElementsByName('extrasize')[0].checked?"&extrasize":"";
+    url += document.getElementsByName('extendway')[0].checked?"&extendway":"";
+    window.location.href=url;
     }
 </script>
 </head>
@@ -168,31 +170,37 @@ print <<HDOC;
 <br>Adjacent ways, intersection geometries. If enabled, the geometry of ways at each connection between two road pieces is shown. Additional roads are shown in green (Note the mouse-over text with all tags and the link to the way in OSM)
 <br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>. Pictures are linked from wikimedia-commons.
 
-<form action="render.pl" method="get" style="display:block;float:left;">
-<textarea name="url" cols="50" rows="5">$url</textarea><br>
-<label>
-  <input type="text" name="start" value="$start">(Found a total of $totalstartpoints end nodes)</label><br>
+<div class="config">
+<h3>Configuration</h3>
 <label title="Evaluate the placement tag to get a more natural arrangement of lanes">
   <input type="checkbox" name="placement" $placement>Use placement</label>
-<label title="Show the geometry of all ways joining at the end nodes of each segment">
+<br><label title="Show the geometry of all ways joining at the end nodes of each segment">
   <input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent >Use adjacent ways</label>
-<label title="Determine width of lanes from width tag. Note that this does not work well in combination with destination signs">
+<br><label title="Determine width of lanes from width tag. Note that this does not work well in combination with destination signs">
   <input style="margin_left:30px;" type="checkbox" name="lanewidth" $lanewidth >Use lane width</label>
-<label title="Increase the size of all lanes by 50% in each direction">
-  <input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize >Larger lanes</label><br>
-<label title="If the API call returns a single way, look for up to two ways in front and after the found one with the same ref-tag">
-  <input style="margin_left:30px;" type="checkbox" name="extendway" $extendway >Try to find ways before and after</label><br>
-<input type="submit" value=" Get ">
-</form>
+<br><label title="Increase the size of all lanes by 50% in each direction">
+  <input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize >Larger lanes</label>
+<br><label title="If the API call returns a single way, look for up to two ways in front and after the found one with the same ref-tag">
+  <input style="margin_left:30px;" type="checkbox" name="extendway" $extendway >Include ways before &amp; after</label>
+<br><label>Start at end number <input type="text" name="start" value="$start" style="width:30px;">(Found a total of $totalstartpoints end nodes)</label>
+</div>
 
-<div style="display:block;margin-left:20px;float:left;">
-Search for: (Important: only short roads (<100km highway). Total execution time exceeds a limit quite easily)
-<ul><li>A relation with ref = <input type="text" name="relref" value="A 661"><input type="submit" value=" Go " onClick="changeURL('relref');">
-<li>A relation with name = <input type="text" name="relname" value="Bundesstraße 521"><input type="submit" value=" Go " onClick="changeURL('relname');">
-<li>A relation with id = <input type="text" name="relid" value="11037"><input type="submit" value=" Go " onClick="changeURL('relid');">
-<li>A way with id = <input type="text" name="wayid" value="324294469"><input type="submit" value=" Go " onClick="changeURL('wayid');">
-</ul>
-<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a><br><a href="http://osm.mueschelsoft.de/lanes/render.pl?url=$urlescaped&start=$start$placementactive$adjacentactive$lanewidthactive$extrasizeactive$extendwayactive">Link to this page</a>
+<div class="selectquery">
+<h3>Search for:</h3>
+<p><label>A relation with ref = <input type="text" name="relref" value="A 661"></label><input type="button" value=" Go " onClick="changeURL('relref');">
+<br><label>A relation with name = <input type="text" name="relname" value="Bundesstraße 521"></label><input type="button" value=" Go " onClick="changeURL('relname');">
+<br><label>A relation with id = <input type="text" name="relid" value="11037"></label><input type="button" value=" Go " onClick="changeURL('relid');">
+<br><label>A way with id = <input type="text" name="wayid" value="324294469"></label><input type="button" value=" Go " onClick="changeURL('wayid');">
+<br>Important: Please don't select relations with too many members (less than 200 seems ok)
+</div>
+
+<div class="selectquery" style="width:350px;">
+<h3 title="Enter any valid Overpass query that returns a more or less contiguous list of not too many highways">The query</h3>
+<textarea name="url" cols="45" rows="5">$url</textarea>
+<br><input type="button" value=" Go " onClick="changeURL('url');">
+<hr>
+<a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a>
+<br><a href="http://osm.mueschelsoft.de/lanes/render.pl?$querystring">Link to this page</a>
 </div>
 
 <hr style="margin-bottom:50px;margin-top:10px;clear:both;">
