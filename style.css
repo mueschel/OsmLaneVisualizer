@@ -33,6 +33,9 @@ div.selectquery input[type=text] {
 div.way {
   position: relative; }
 
+div.wayname {
+  z-index: 10; }
+
 div.sep {
   clear: both;
   height: 2px;
@@ -43,12 +46,12 @@ div.sep {
 
 div.sep .name {
   position: absolute;
-  top: 120px;
+  top: -15px;
   left: 100px;
   z-index: 10; }
 
 .extrasize div.sep .name {
-  top: 191.55px; }
+  top: -15px; }
 
 div.waylayout {
   position: absolute;
@@ -96,6 +99,7 @@ div.label {
   top: -15px; }
 
 div.signs {
+  z-index: 10;
   float: left;
   position: relative;
   width: 150px;
@@ -319,7 +323,7 @@ div.B {
   border: 1px solid black; }
 
 div.K {
-  background: white;
+  background: #F0E060;
   color: black;
   border: 1px solid black; }
 
@@ -365,7 +369,7 @@ div.refcont div div.restaurant span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
 div.refcont div div.toilets span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
-div.refcont div div.motorway span {
+div.refcont div div.motorway span, div.refcont div div.highway span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg"); }
 div.refcont div div.hospital span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
@@ -418,5 +422,17 @@ div.turns {
   margin-top: -5px;
   margin-bottom: -15px;
   height: 30px; }
+
+div.connectdestination .K, div.connectdestination .A, div.connectdestination .B {
+  box-shadow: 5px 5px 5px #aaa;
+  /*   float:left; */ }
+
+div.connectdestination {
+  position: absolute;
+  top: -175px;
+  left: 300px; }
+
+div.connectdestination div.destination {
+  float: left; }
 
 /*# sourceMappingURL=style.css.map */

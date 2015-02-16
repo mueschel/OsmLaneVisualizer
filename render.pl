@@ -52,10 +52,10 @@ if(defined $ENV{'QUERY_STRING'}) {
 
   
   
-my $r = OSMData::readData($url); 
+my $r = OSMData::readData($url,0); 
 unless($r) {
   #if only one way found, try to extent it a bit
-  if($extendway && scalar keys %{$waydata} == 1) {
+  if($extendway && scalar keys %{$waydata} <= 4) {
     my $ref; my $id;
     foreach my $x (keys %{$waydata}) {
       $id  = $x;
@@ -140,6 +140,11 @@ unless($r) {
   }
 my $urlescaped = uri_escape($url);
 my $querystring = $ENV{'QUERY_STRING'};
+my $wayid = $opts->{'wayid'} || 324294469;
+my $relid = $opts->{'relid'} || 11037;
+my $relname = $opts->{'relname'} || 'Bundesstraße 521';
+my $relref  = $opts->{'relref'} || 'A 661';
+
 print <<HDOC;
 <!DOCTYPE html>
 <html lang="en">
@@ -187,10 +192,10 @@ print <<HDOC;
 
 <div class="selectquery">
 <h3>Search for:</h3>
-<p><label>A relation with ref = <input type="text" name="relref" value="A 661"></label><input type="button" value=" Go " onClick="changeURL('relref');">
-<br><label>A relation with name = <input type="text" name="relname" value="Bundesstraße 521"></label><input type="button" value=" Go " onClick="changeURL('relname');">
-<br><label>A relation with id = <input type="text" name="relid" value="11037"></label><input type="button" value=" Go " onClick="changeURL('relid');">
-<br><label>A way with id = <input type="text" name="wayid" value="324294469"></label><input type="button" value=" Go " onClick="changeURL('wayid');">
+<p><label>A relation with ref = <input type="text" name="relref" value="$relref"></label><input type="button" value=" Go " onClick="changeURL('relref');">
+<br><label>A relation with name = <input type="text" name="relname" value="$relname"></label><input type="button" value=" Go " onClick="changeURL('relname');">
+<br><label>A relation with id = <input type="text" name="relid" value="$relid"></label><input type="button" value=" Go " onClick="changeURL('relid');">
+<br><label>A way with id = <input type="text" name="wayid" value="$wayid"></label><input type="button" value=" Go " onClick="changeURL('wayid');">
 <br>Important: Please don't select relations with too many members (less than 200 seems ok)
 </div>
 
@@ -217,13 +222,12 @@ unless($r) {
     push(@outarr,OSMDraw::drawWay($currid));
 
     last unless defined $waydata->{$currid}{after};
-  #   $currid = $waydata->{$currid}{after}[0];
     $currid = OSMDraw::getBestNext($currid);
     }
 
     
   print reverse @outarr;  
   }
-  
+ 
 print "</body></html>";
 1;

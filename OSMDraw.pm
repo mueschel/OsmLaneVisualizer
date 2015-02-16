@@ -65,7 +65,7 @@ sub makeMaxspeed {
 ## Make a full destination sign for one lane
 #################################################   
 sub makeDestination {
-  my ($lane,$way) = @_;
+  my ($lane,$way,$lanes,$option) = @_;
   my $o = "";
   my $cr = "K";
   my $dest    = $lanes->{destination}[$lane];
@@ -84,7 +84,9 @@ sub makeDestination {
   
   if($ref || $dest || $destsym || $destcountry) {
     $o .= '<div class="refcont">';
-    $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
+    unless($option =~ /notooltip/) {
+      $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
+      }
     
     $cr = 'K';
     $cr = "B" if $roadref =~ /^\s*B/;
@@ -127,7 +129,9 @@ sub makeDestination {
       foreach my $r (reverse @refs) {
         $cr = "A" if $r =~ /^\s*A/;
         $cr = "B" if $r =~ /^\s*B/;
-        $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+        unless($r =~ '^\s*$') {
+          $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+          }
         }
       }  
     $o .= "</div></div>";  
@@ -135,21 +139,60 @@ sub makeDestination {
   return $o;  
   }
   
+sub makeAllDestinations {
+  my $id = shift @_;
+  my $st = shift @_;
+  my $option = shift @_;
+  my $t;
+  my $lanes;
+  
+  $t = $store->{way}[$st]{$id}{tags};
+  $lanes = $store->{way}[$st]{$id}{lanes};
+
+  
+  my @destinations;
+  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
+    my $dest  = OSMDraw::makeDestination($i,$t,$lanes,$option);
+    push(@destinations,$dest);
+    }
+  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
+    if(@destinations[$i]) {  
+      my $w = '';
+      if (@destinations[$i] eq @destinations[$i+1]) {
+        $w = 'double';
+        @destinations[$i+1] = '';
+        if (@destinations[$i] eq @destinations[$i+2]) {
+          $w = 'triple';
+          @destinations[$i+2] = '';
+          if (@destinations[$i] eq @destinations[$i+3]) {
+            $w = 'quadruple';
+            @destinations[$i+3] = '';
+            }
+          }
+        }
+      @destinations[$i] = '<div class="destination '.$w.'">'.@destinations[$i].'</div>';  
+      }
+    } 
+  return \@destinations;
+  }
+  
+  
 #################################################
 ## Format the "ref" of a way
 ################################################# 
 sub makeRef {
   my ($ref) = @_;
-  my $o ='';# = '<div class="refcont">';
+  my $o ='';
   if($ref) {
     my $cr = 'K';
     my @refs = split(';',$ref);
     foreach my $r (reverse @refs) {
       $cr = "A" if $r =~ /^\s*A/;
       $cr = "B" if $r =~ /^\s*B/;
-      $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+      if($r ne '') {
+        $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+        }
       }
-    #my $o .= "</div>";
     }
   return $o;
   }
@@ -168,8 +211,7 @@ sub getBestNext {
   foreach my $nx (@{$waydata->{$id}{after}}) {
     $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[1]},$nodedata->{$waydata->{$nx}{nodes}[0]});
     $angle = $fromdirection-$angle;
-    $angle += 360 if $angle < -180;
-    $angle -= 360 if $angle >  180;
+    $angle = OSMData::NormalizeAngle($angle);
     $angle = abs($angle);
     if($angle < $minangle) {
       $minangle = $angle;
@@ -207,6 +249,9 @@ sub makeTurns {
 sub makeWaylayout {
   my $id = shift @_;
   my $out = "";
+  my $cntways = 0;
+  my $connectsangle = -400;
+  my $connectsid = 0;
   $out .= '<div class="waylayout">';
   my $stangle = OSMData::calcDirection($store->{node}[0]{$waydata->{$id}{nodes}[-1]},
                                         $store->{node}[0]{$waydata->{$id}{nodes}[-2]})
@@ -215,7 +260,7 @@ sub makeWaylayout {
     my $nd = 0;
     $nd = $store->{way}[1]{$i}{nodes}[1]     if ($store->{way}[1]{$i}{nodes}[0] == $waydata->{$id}{end});
     $nd = $store->{way}[1]{$i}{nodes}[-2]    if ($store->{way}[1]{$i}{nodes}[-1] == $waydata->{$id}{end});
-    my $angle = sprintf("%.1f",OSMData::calcDirection($store->{node}[1]{$waydata->{$id}{end}},$store->{node}[1]{$nd})-$stangle);
+    my $angle = sprintf("%.1f",OSMData::NormalizeAngle(OSMData::calcDirection($store->{node}[1]{$waydata->{$id}{end}},$store->{node}[1]{$nd})-$stangle));
     my $main =  (defined $waydata->{$i})?'main':'';
     if($main) {
       my $from = ($i == $id)?'from':'';
@@ -223,10 +268,25 @@ sub makeWaylayout {
       }
     else {
       my $title = OSMData::listtags($store->{way}[1]{$i});
+      $cntways++;
+      $connectsangle = $angle;
+      $connectsid = $i;
       $out .= '<a href="https://www.openstreetmap.org/way/'.$i.'" target="_blank"><div class="connects" style="transform:rotate('.$angle.'deg)" title="Way '.$i."\n".$title.'" >&nbsp;</div></a>';
       }
     }
   $out .= '</div>';
+  
+  if(scalar @{$endnodes->[1]{$waydata->{$id}{end}}} >= 3 && $cntways == 1 && (($connectsangle > -160 && $connectsangle < -20) || $connectsangle > 200)) { #if only one way and in forward direction
+    OSMLanes::InspectLanes($store->{way}[1]{$connectsid});
+    
+    $out .= '<div class="connectdestination">';
+    my $d = OSMDraw::makeAllDestinations($connectsid,1,'notooltip');
+    foreach my $l (@{$d}) {
+      $out .= $l;
+      }
+    $out .= '</div>';
+    }
+  return $out;  
   }
   
   
@@ -240,22 +300,15 @@ sub drawWay {
   my $length;
   $totallength += $length = OSMData::calcLength($id);
 
-  OSMLanes::resetLanes();
-  OSMLanes::getLanes($id);
-  OSMLanes::getTurn($id);
-  OSMLanes::getWidth($id);
-  OSMLanes::getPlacement($id);
-  OSMLanes::getChange($id);
-  OSMLanes::getDestinationRef($id);
-  OSMLanes::getDestination($id);
-  OSMLanes::getMaxspeed($id);
-  OSMLanes::getDestinationColour($id);
-  OSMLanes::getDestinationSymbol($id);
-  OSMLanes::getDestinationCountry($id);
+  OSMLanes::InspectLanes($waydata->{$id});
+  my $lanes = $waydata->{$id}{lanes};
   
   my $lat = $nodedata->{$waydata->{$id}{end}}{lat};
   my $lon = $nodedata->{$waydata->{$id}{end}}{lon};  
-  
+  my $name = $t->{'name'};
+     $name .= "<br>][".$t->{'bridge:name'} if $t->{'bridge:name'};
+     $name .= "<br>)(".$t->{'tunnel:name'} if $t->{'tunnel:name'};
+     $name .= "&nbsp;" unless $name;
   $out .= '<div class="way">';
   
   $out .= '<div class="middle">&nbsp;</div>' if $placement;
@@ -270,37 +323,15 @@ sub drawWay {
   
   $out .= '<div class="signs">';
   $out .= OSMDraw::makeRef(($t->{'ref'}||''),'');
-  $out .= "<div style=\"clear:both;\">".($t->{'name'}||'&nbsp;')."</div>";
-  $out .= "<div style=\"clear:both;\"><span class=\"bridge-name\">] [".($t->{'bridge:name'})."</span></div>" if $t->{'bridge:name'};
-  $out .= "<div style=\"clear:both;\"><span class=\"tunnel-name\">) (".($t->{'tunnel:name'})."</span></div>" if $t->{'tunnel:name'};
+  $out .= "<div style=\"clear:both;\">$name</div>";
+
   $out .= OSMDraw::makeMaxspeed($id);
   $out .= "</div>\n";
   
   $out .= '<div class="placeholder" style="width:'.($lanes->{offset}).'px">&nbsp;</div>'."\n";
   
-  my @destinations;
-  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
-    my $dest  = OSMDraw::makeDestination($i,$t);
-    push(@destinations,$dest);
-    }
-  for(my $i=0; $i < $lanes->{numlanes}; $i++) {
-    if($destinations[$i]) {  
-      my $w = '';
-      if ($destinations[$i] eq $destinations[$i+1]) {
-        $w = 'double';
-        $destinations[$i+1] = '';
-        if ($destinations[$i] eq $destinations[$i+2]) {
-          $w = 'triple';
-          $destinations[$i+2] = '';
-          if ($destinations[$i] eq $destinations[$i+3]) {
-            $w = 'quadruple';
-            $destinations[$i+3] = '';
-            }
-          }
-        }
-      $destinations[$i] = '<div class="destination '.$w.'">'.$destinations[$i].'</div>';  
-      }
-    }  
+
+  $waydata->{$id}{lanes}{destinations} = OSMDraw::makeAllDestinations($id,0);
   
   for(my $i=0; $i < $lanes->{numlanes}; $i++) {
     my $dir   = $lanes->{list}[$i];
@@ -313,8 +344,8 @@ sub drawWay {
     $out .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
     $out .= '>';
     $out .= OSMDraw::makeTurns($turns,$dir);
-    if($destinations[$i]) {  
-      $out .= $destinations[$i];  
+    if($lanes->{destinations}[$i]) {  
+      $out .= $lanes->{destinations}[$i];  
       }
     if($max) {
       $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";

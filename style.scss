@@ -53,6 +53,10 @@ div.way {
   position:relative;
   }
 
+div.wayname {
+  z-index:10;
+  }  
+  
 div.sep {
   clear:both;
   height:2px;
@@ -64,12 +68,12 @@ div.sep {
   
 div.sep .name {
   position:absolute;
-  top:($laneHeight - 15px);
+  top: -15px;
   left:$labelWidth;
   z-index:10;
   }  
 .extrasize div.sep .name {
-  top:($laneHeight*$extraMult - 15px);
+  top: -15px;
   }
   
 div.waylayout {
@@ -124,6 +128,7 @@ div.label {
   }  
   
 div.signs {
+  z-index:10;
   float:left;
   position:relative;
   width:$signsWidth;
@@ -386,7 +391,7 @@ div.B {
   border:1px solid black;
   }    
 div.K {
-  background:white;
+  background:$colorBundesstrasse;
   color:black;
   border:1px solid black;
   }  
@@ -445,7 +450,7 @@ div.refcont div {
   div.toilets span {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg") ;
     } 
-  div.motorway span {  
+  div.motorway span, div.highway span {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg") ;
     } 
   div.hospital span {  
@@ -510,3 +515,19 @@ div.turns {
   margin-bottom:-15px;
   height:30px;
   }  
+  
+  
+div.connectdestination .K, div.connectdestination .A, div.connectdestination .B{
+  box-shadow:5px 5px 5px #aaa;  
+/*   float:left; */
+  }  
+  
+div.connectdestination {
+  position:absolute;
+  top: -40px -$laneHeight;
+  left: 300px;  
+}
+
+div.connectdestination div.destination {
+  float:left;
+}

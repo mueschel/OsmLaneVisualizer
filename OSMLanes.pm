@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use lib '/www/htdocs/w00fe1e3/lanes/';
-
+use Data::Dumper;
 use OSMData;
 
 
@@ -19,16 +19,12 @@ our $adjacent = 0;
 our $lanewidth = 0;
 our $extrasize = 0;
 
-sub resetLanes {
-  $lanes = undef;
-  }
-
 #################################################
 ## Read and interpret number of lanes
 #################################################  
 sub getLanes {
-  my $id = shift @_;
-  my $t = $waydata->{$id}{tags};
+  my $obj = shift @_;
+  my $t = $obj->{tags};
   my @lanedir;
   my $fwdlane = 0; my $bcklane = 0; my $nolane = 0; my $bothlane = 0;
 
@@ -63,7 +59,7 @@ sub getLanes {
     $fwdlane = 1;
     $bcklane = 1;
     }
-  if(!$waydata->{$id}{reversed}) {
+  if(!$obj->{reversed}) {
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'backward');}
     for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'nolane');}
     for(my $i=0; $i<$fwdlane;$i++)  {push(@lanedir,'forward');}
@@ -74,12 +70,12 @@ sub getLanes {
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'forward');}
     }
     
-  $lanes->{fwd}  = $fwdlane;
-  $lanes->{bck}  = $bcklane;
-  $lanes->{both} = $bothlane;
-  $lanes->{none} = $nolane;
-  $lanes->{list} = \@lanedir;
-  $lanes->{numlanes} = scalar (@{$lanes->{list}});
+  $obj->{lanes}{fwd}  = $fwdlane;
+  $obj->{lanes}{bck}  = $bcklane;
+  $obj->{lanes}{both} = $bothlane;
+  $obj->{lanes}{none} = $nolane;
+  $obj->{lanes}{list} = \@lanedir;
+  $obj->{lanes}{numlanes} = scalar (@{$obj->{lanes}{list}});
 
   }
 
@@ -88,10 +84,11 @@ sub getLanes {
 ## generic reader for :lanes tagging
 #################################################  
 sub getLaneTags {
-  my $id = shift @_;
+  my $obj = shift @_;
   my $tag = shift @_;
   my $options = shift @_;
-  my $t = $waydata->{$id}{tags};
+  my $t = $obj->{tags};
+  my $lanes = $obj->{lanes};
   my @out;
   
   if(defined $t->{$tag} && !($options =~ /nonolanes/))   {
@@ -123,7 +120,7 @@ sub getLaneTags {
       }
     }
     
-  if(!($options =~ /noreverse/) && $waydata->{$id}{reversed}) {
+  if(!($options =~ /noreverse/) && $obj->{reversed}) {
     @out  = reverse @out;
     }  
   return \@out;
@@ -133,47 +130,48 @@ sub getLaneTags {
   
   
 sub getTurn {
-  $lanes->{turn} = getLaneTags($_[0],'turn');
+  $_[0]->{lanes}{turn} = getLaneTags($_[0],'turn');
   }
 
 sub getDestination {  
-  $lanes->{destination} = getLaneTags($_[0],'destination');
+  $_[0]->{lanes}{destination} = getLaneTags($_[0],'destination');
   } 
   
 sub getDestinationRef {  
-  $lanes->{destinationref} = getLaneTags($_[0],'destination:ref');
+  $_[0]->{lanes}{destinationref} = getLaneTags($_[0],'destination:ref');
   }  
 
 sub getDestinationColour {  
-  $lanes->{destinationcolour} = getLaneTags($_[0],'destination:colour');
+  $_[0]->{lanes}{destinationcolour} = getLaneTags($_[0],'destination:colour');
   }  
   
 sub getDestinationSymbol {  
-  $lanes->{destinationsymbol} = getLaneTags($_[0],'destination:symbol');
+  $_[0]->{lanes}{destinationsymbol} = getLaneTags($_[0],'destination:symbol');
   } 
   
 sub getDestinationCountry {  
-  $lanes->{destinationcountry} = getLaneTags($_[0],'destination:country');
+  $_[0]->{lanes}{destinationcountry} = getLaneTags($_[0],'destination:country');
   }
   
 sub getMaxspeed {
-  $lanes->{maxspeed} = getLaneTags($_[0],'maxspeed','nonolanes');
+  $_[0]->{lanes}{maxspeed} = getLaneTags($_[0],'maxspeed','nonolanes');
   }  
 
 sub getWidth {
-  $lanes->{width} = getLaneTags($_[0],'width','nonolanes');
-  if(defined $waydata->{$_[0]}{tags}{'width'}) {
-    $lanes->{haswidth} = 1;
-    my $lw = $waydata->{$_[0]}{tags}{'width'}/$lanes->{numlanes};
-    for my $i (0..$lanes->{numlanes}-1) {
-      next if ($lanes->{width}[$i]);
-      $lanes->{width}[$i] = $lw;
+  my $obj = $_[0];
+  $obj->{lanes}{width} = getLaneTags($obj,'width','nonolanes');
+  if(defined $obj->{tags}{'width'}) {
+    $obj->{lanes}{haswidth} = 1;
+    my $lw = $obj->{tags}{'width'}/$obj->{lanes}{numlanes};
+    for my $i (0..$obj->{lanes}{numlanes}-1) {
+      next if ($obj->{lanes}{width}[$i]);
+      $obj->{lanes}{width}[$i] = $lw;
       }
     }
-  for my $i (0..$lanes->{numlanes}-1) {
-    if ($lanes->{width}[$i]) {
-      $lanes->{haswidth} = 1;
-      $lanes->{totalwidth} += $lanes->{width}[$i];
+  for my $i (0..$obj->{lanes}{numlanes}-1) {
+    if ($obj->{lanes}{width}[$i]) {
+      $obj->{lanes}{haswidth} = 1;
+      $obj->{lanes}{totalwidth} += $obj->{lanes}{width}[$i];
       }
     }
   }    
@@ -182,25 +180,25 @@ sub getWidth {
 ## Read change:lanes and overtaking for proper lane markings
 #################################################   
 sub getChange {
-  my $id = shift @_;
-  $lanes->{change} = getLaneTags($id,'change','noreverse');
-  for(my $c=0;$c < scalar (@{$lanes->{change}}); $c++) {
-    $lanes->{change}[$c] =~ s/yes//;
+  my $obj = shift @_;
+  $obj->{lanes}{change} = getLaneTags($obj,'change','noreverse');
+  for(my $c=0;$c < scalar (@{$obj->{lanes}{change}}); $c++) {
+    $obj->{lanes}{change}[$c] =~ s/yes//;
     }
-  if(defined $waydata->{$id}{tags}{'overtaking'} && $waydata->{$id}{tags}{'overtaking'} eq 'no') {
-    $lanes->{change}[$lanes->{bck}-1]          .=" not_left"  if $lanes->{bck} != 0;
-    $lanes->{change}[$lanes->{bck}+$lanes->{both}]  .=" not_left"  if $lanes->{fwd} != 0;
+  if(defined $obj->{tags}{'overtaking'} && $obj->{tags}{'overtaking'} eq 'no') {
+    $obj->{lanes}{change}[$obj->{lanes}{bck}-1]          .=" not_left"  if $obj->{lanes}{bck} != 0;
+    $obj->{lanes}{change}[$obj->{lanes}{bck}+$obj->{lanes}{both}]  .=" not_left"  if $obj->{lanes}{fwd} != 0;
     }
 
   ## Put markers on both sides of the street    
-  $lanes->{change}[0]  .=" not_right" if $lanes->{bck};
-  $lanes->{change}[0]  .=" not_left" unless $lanes->{bck};
-  $lanes->{change}[-1] .=" not_right" if $lanes->{fwd};
-  $lanes->{change}[-1] .=" not_left" unless $lanes->{fwd};
+  $obj->{lanes}{change}[0]  .=" not_right" if $obj->{lanes}{bck};
+  $obj->{lanes}{change}[0]  .=" not_left" unless $obj->{lanes}{bck};
+  $obj->{lanes}{change}[-1] .=" not_right" if $obj->{lanes}{fwd};
+  $obj->{lanes}{change}[-1] .=" not_left" unless $obj->{lanes}{fwd};
   
-  if($waydata->{$id}{reversed}) {
-    my @tmp = reverse @{$lanes->{change}};
-    $lanes->{change} = \@tmp;
+  if($obj->{reversed}) {
+    my @tmp = reverse @{$obj->{lanes}{change}};
+    $obj->{lanes}{change} = \@tmp;
     }
   }
 
@@ -209,35 +207,35 @@ sub getChange {
 ## Read placement tag and calculate drawing offset
 #################################################   
 sub getPlacement {
-  my $id = shift @_;
-  my $t = $waydata->{$id}{tags};
+  my $obj = shift @_;
+  my $t = $obj->{tags};
   my $offset;
 
-  if($lanewidth && $lanes->{haswidth}) {
+  if($lanewidth && $obj->{lanes}{haswidth}) {
     $offset = 0;
     if(defined $t->{'placement'}) {
       if(defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
         my @p = split(':',$t->{'placement'});
         for(my $i = 0; $i < $p[1];$i++) {
           if($i == $p[1]-1) {
-            if($p[0] eq "right_of")  {$offset += $lanes->{width}[$i];}
-            if($p[0] eq "middle_of") {$offset += $lanes->{width}[$i]/2;}
+            if($p[0] eq "right_of")  {$offset += $obj->{lanes}{width}[$i];}
+            if($p[0] eq "middle_of") {$offset += $obj->{lanes}{width}[$i]/2;}
             }
           else {
-            $offset += $lanes->{width}[$i];
+            $offset += $obj->{lanes}{width}[$i];
             }
           }
         }
       }
     else {
-      $offset = $lanes->{totalwidth}/2;
+      $offset = $obj->{lanes}{totalwidth}/2;
       }
     $offset  = $maxlanes*4 - $offset;  
     $offset *= $LANEWIDTH/4;  
     }
   else {
     if($placement) {
-      $offset = $maxlanes - (scalar @{$lanes->{list}})/2;
+      $offset = $maxlanes - (scalar @{$obj->{lanes}{list}})/2;
       my $d;
       if(defined $t->{'placement'} && defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
         my @p = split(':',$t->{'placement'});
@@ -248,7 +246,7 @@ sub getPlacement {
         }
       elsif(defined $t->{'placement:forward'}) {
         my @p = split(':',$t->{'placement:forward'});
-        $d = $p[1]-1 + $lanes->{bck};
+        $d = $p[1]-1 + $obj->{lanes}{bck};
         if($p[0] eq "right_of")  {$d += 1;}
         if($p[0] eq "middle_of") {$d += .5;}
         }
@@ -257,29 +255,44 @@ sub getPlacement {
         $d = $p[1]-1;
         if($p[0] eq "right_of")  {$d += 1;}
         if($p[0] eq "middle_of") {$d += .5;}
-        $d = $lanes->{bck} - $d;
+        $d = $obj->{lanes}{bck} - $d;
         }
       if(defined $d) {  
-        if($waydata->{$id}{reversed} == 0) {
+        if($obj->{reversed} == 0) {
           $offset = $maxlanes - $d;
           }
         else {
-          $offset = $maxlanes  - (scalar @{$lanes->{list}}) + $d;
+          $offset = $maxlanes  - (scalar @{$obj->{lanes}{list}}) + $d;
           }
         }  
       $offset *= $LANEWIDTH;  
       }
     else {
-      $offset = $maxlanes - $lanes->{bck} - $lanes->{both}/2.;
-      if($waydata->{$id}{reversed}) {$offset = $maxlanes - $lanes->{fwd} - $lanes->{both}/2.;}    
+      $offset = $maxlanes - $obj->{lanes}{bck} - $obj->{lanes}{both}/2.;
+      if($obj->{reversed}) {$offset = $maxlanes - $obj->{lanes}{fwd} - $obj->{lanes}{both}/2.;}    
       $offset *= $LANEWIDTH;
       }
     }
-  $lanes->{offset} = $offset;  
+  $obj->{lanes}{offset} = $offset;  
   }
 
   
-  
+sub InspectLanes {
+  my $obj = shift @_;
+
+  OSMLanes::getLanes($obj);
+  OSMLanes::getTurn($obj);
+  OSMLanes::getWidth($obj);
+  OSMLanes::getPlacement($obj);
+  OSMLanes::getChange($obj);
+  OSMLanes::getDestinationRef($obj);
+  OSMLanes::getDestination($obj);
+  OSMLanes::getMaxspeed($obj);
+  OSMLanes::getDestinationColour($obj);
+  OSMLanes::getDestinationSymbol($obj);
+  OSMLanes::getDestinationCountry($obj);
+
+  }
   
   
 1;

@@ -43,14 +43,17 @@ sub readData {
     if ($w->{'type'} eq 'way') {  
       $store->{way}[$st]{$w->{'id'}}{tags} = $w->{'tags'};
       $store->{way}[$st]{$w->{'id'}}{nodes} = $w->{'nodes'};
+      $store->{way}[$st]{$w->{'id'}}{id} = $w->{'id'};
       }
     elsif ($w->{'type'} eq 'node') {  
       $store->{node}[$st]{$w->{'id'}}{tags} = $w->{'tags'};
       $store->{node}[$st]{$w->{'id'}}{lat} = $w->{'lat'};
       $store->{node}[$st]{$w->{'id'}}{lon} = $w->{'lon'};
+      $store->{node}[$st]{$w->{'id'}}{id} = $w->{'id'};
       }
     elsif ($w->{'type'} eq 'relation') {  
       $store->{rel}[$st]{$w->{'id'}} = $w;
+      $store->{rel}[$st]{$w->{'id'}}{id} = $w->{'id'};
       }
     }
   if(scalar $store->{way}[$st] < 2) {
@@ -61,7 +64,8 @@ sub readData {
     push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[0]}},$w);
     push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[-1]}},$w);
     }    
-    
+
+  
   $waydata = $store->{way}[0];
   $nodedata = $store->{node}[0];
   $reladata = $store->{rel}[0];
@@ -158,6 +162,15 @@ sub calcLength {
   return $l;
   }
   
+#################################################
+## 
+#################################################  
+sub NormalizeAngle { 
+  my $a = shift @_;
+  while($a<-180) {$a+=360;}
+  while($a>180) {$a-=360;}
+  return $a;
+  }
   
   
 1;
