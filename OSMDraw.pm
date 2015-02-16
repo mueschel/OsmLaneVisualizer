@@ -271,6 +271,8 @@ sub drawWay {
   $out .= '<div class="signs">';
   $out .= OSMDraw::makeRef(($t->{'ref'}||''),'');
   $out .= "<div style=\"clear:both;\">".($t->{'name'}||'&nbsp;')."</div>";
+  $out .= "<div style=\"clear:both;\"><span class=\"bridge-name\">] [".($t->{'bridge:name'})."</span></div>" if $t->{'bridge:name'};
+  $out .= "<div style=\"clear:both;\"><span class=\"tunnel-name\">) (".($t->{'tunnel:name'})."</span></div>" if $t->{'tunnel:name'};
   $out .= OSMDraw::makeMaxspeed($id);
   $out .= "</div>\n";
   
