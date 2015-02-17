@@ -198,7 +198,9 @@ div.condition.hgv {
   }  
   
 div.lane .max {
-  float:none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
   }  
 
 .extrasize {
@@ -214,6 +216,7 @@ div.lane .max {
 
   
 div.lane {
+  position: relative;
   background:#cdc;
   height:$laneHeight;
   border-left:3px dashed white;

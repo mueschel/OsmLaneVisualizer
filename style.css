@@ -160,7 +160,9 @@ div.condition.hgv {
   height: 35px; }
 
 div.lane .max {
-  float: none; }
+  position: absolute;
+  bottom: 10px;
+  left: 10px; }
 
 .extrasize div.lane, .extrasize div.nolane {
   width: 177.6px;
@@ -170,6 +172,7 @@ div.lane .max {
   left: 984.4px; }
 
 div.lane {
+  position: relative;
   background: #cdc;
   height: 135px;
   border-left: 3px dashed white;
