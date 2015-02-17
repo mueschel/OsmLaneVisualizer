@@ -198,7 +198,9 @@ div.condition.hgv {
   }  
   
 div.lane .max {
-  float:none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
   }  
 
 .extrasize {
@@ -214,6 +216,7 @@ div.lane .max {
 
   
 div.lane {
+  position: relative;
   background:#cdc;
   height:$laneHeight;
   border-left:3px dashed white;
@@ -284,12 +287,15 @@ div.destination {
   }    
 
 div.destination.double {
+  z-index: 1;
   width:(2*$laneWidth - $laneSub - 4px);
   }  
 div.destination.triple {
+  z-index: 1;
   width:(3*$laneWidth - $laneSub - 4px);
   }
 div.destination.quadruple {
+  z-index: 1;
   width:(4*$laneWidth - $laneSub - 4px);
   }
 
