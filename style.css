@@ -231,12 +231,15 @@ div.destination {
   top: -15px; }
 
 div.destination.double {
+  z-index: 1;
   width: 230px; }
 
 div.destination.triple {
+  z-index: 1;
   width: 350px; }
 
 div.destination.quadruple {
+  z-index: 1;
   width: 470px; }
 
 .extrasize div.destination {

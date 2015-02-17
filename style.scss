@@ -287,12 +287,15 @@ div.destination {
   }    
 
 div.destination.double {
+  z-index: 1;
   width:(2*$laneWidth - $laneSub - 4px);
   }  
 div.destination.triple {
+  z-index: 1;
   width:(3*$laneWidth - $laneSub - 4px);
   }
 div.destination.quadruple {
+  z-index: 1;
   width:(4*$laneWidth - $laneSub - 4px);
   }
 
