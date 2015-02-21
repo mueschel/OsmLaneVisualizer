@@ -59,6 +59,7 @@ sub getLanes {
   
   if(defined $t->{'oneway'} && $t->{'oneway'} ne "no") {
     push(@{$st->{f}},1);
+    push(@{$st->{f}},@{$st->{l}});
     }
   else {
     push(@{$st->{f}},1);
@@ -75,7 +76,6 @@ sub getLanes {
     }
 #   print Dumper $st;   
 #   print $fwdlane." ".$bcklane." ".$bothlane."\n";
-  
 
   if(!$obj->{reversed}) {
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'backward');}
@@ -87,7 +87,6 @@ sub getLanes {
     for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'nolane');}
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'forward');}
     }
-
 
   $obj->{lanes}{fwd}  = $fwdlane;
   $obj->{lanes}{bck}  = $bcklane;
@@ -147,7 +146,9 @@ sub getLaneTags {
 
 
   
-  
+#################################################
+## few wrappers to read lane tags
+#################################################    
 sub getTurn {
   $_[0]->{lanes}{turn} = getLaneTags($_[0],'turn');
   }
@@ -176,6 +177,9 @@ sub getMaxspeed {
   $_[0]->{lanes}{maxspeed} = getLaneTags($_[0],'maxspeed','nonolanes');
   }  
 
+#################################################
+## Get or calculate width
+#################################################    
 sub getWidth {
   my $obj = $_[0];
   $obj->{lanes}{width} = getLaneTags($obj,'width','nonolanes');
@@ -237,11 +241,11 @@ sub getPlacement {
         my @p = split(':',$t->{'placement'});
         for(my $i = 0; $i < $p[1];$i++) {
           if($i == $p[1]-1) {
-            if($p[0] eq "right_of")  {$offset += $obj->{lanes}{width}[$i];}
-            if($p[0] eq "middle_of") {$offset += $obj->{lanes}{width}[$i]/2;}
+            if($p[0] eq "right_of")  {$offset += $obj->{lanes}{width}[$i]-12/$LANEWIDTH;}
+            if($p[0] eq "middle_of") {$offset += $obj->{lanes}{width}[$i]/2-12/$LANEWIDTH;}
             }
           else {
-            $offset += $obj->{lanes}{width}[$i];
+            $offset += $obj->{lanes}{width}[$i]-12/$LANEWIDTH;
             }
           }
         }
@@ -295,7 +299,31 @@ sub getPlacement {
   $obj->{lanes}{offset} = $offset;  
   }
 
+#################################################
+## access tags...
+#################################################  
+sub getAccess {
+  my $obj = shift @_;  
+  my $t;
+  $t->{access}  = getLaneTags($obj,'access','nonolanes');
+  $t->{bicycle} = getLaneTags($obj,'bicycle','nonolanes');
+  $t->{psv}     = getLaneTags($obj,'psv','nonolanes');
+  $t->{bus}     = getLaneTags($obj,'bus','nonolanes');
   
+  for (my $i = 0; $i < $obj->{lanes}{numlanes}; $i++) {
+    if($t->{bicycle}[$i] eq 'designated' || $t->{bicycle}[$i] eq 'official') {
+      $obj->{lanes}{access}[$i] .= " bicycledesig";
+      }
+    if($t->{psv}[$i] eq 'designated' || $t->{psv}[$i] eq 'official' ||
+       $t->{bus}[$i] eq 'designated' || $t->{bus}[$i] eq 'official' ) {
+      $obj->{lanes}{access}[$i] .= " busdesig";
+      }
+    }
+  }
+  
+#################################################
+## Run all subs for lane tags
+#################################################    
 sub InspectLanes {
   my $obj = shift @_;
 
@@ -307,6 +335,7 @@ sub InspectLanes {
   OSMLanes::getDestinationRef($obj);
   OSMLanes::getDestination($obj);
   OSMLanes::getMaxspeed($obj);
+  OSMLanes::getAccess($obj);
   OSMLanes::getDestinationColour($obj);
   OSMLanes::getDestinationSymbol($obj);
   OSMLanes::getDestinationCountry($obj);

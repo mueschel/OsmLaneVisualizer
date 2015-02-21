@@ -376,14 +376,15 @@ sub drawWay {
   $waydata->{$id}{lanes}{destinations} = OSMDraw::makeAllDestinations($id,0);
   
   for(my $i=0; $i < $lanes->{numlanes}; $i++) {
-    my $dir   = $lanes->{list}[$i];
-    my $turns = $lanes->{turn}[$i];
-    my $max   = $lanes->{maxspeed}[$i];
-    my $width = $lanes->{width}[$i];
-    my $change= ($lanes->{change}[$i]||"")." ";
-    my $bridge= (defined $t->{'bridge'})?'bridge':'';
+    my $dir    = $lanes->{list}[$i];
+    my $turns  = $lanes->{turn}[$i];
+    my $max    = $lanes->{maxspeed}[$i];
+    my $width  = $lanes->{width}[$i];
+    my $access = $lanes->{access}[$i];
+    my $change = ($lanes->{change}[$i]||"")." ";
+    my $bridge = (defined $t->{'bridge'})?'bridge':'';
 
-    $out .= '<div class="lane '.$dir." ".$change.$bridge.'" ';
+    $out .= '<div class="lane '.$dir." ".$change.$bridge.$access.'" ';
     $out .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
     $out .= '>';
     if($dir ne "nolane") {
@@ -394,7 +395,10 @@ sub drawWay {
       if($max) {
         $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
         }
-      if($width) {
+      if($access) {
+        $out .= "<div class=\"access $access\">&nbsp;</div>";
+        }
+      if($width && !$lanewidth ) {
         $out .= "<div class=\"width\">&lt;-".(sprintf('%.1f',$width))."-&gt;</div>";
         }
       }

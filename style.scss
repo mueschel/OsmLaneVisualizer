@@ -202,7 +202,15 @@ div.lane .max {
   bottom: 10px;
   left: 10px;
   }  
-
+div.lane .access {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  height:24px;
+  width:24px; 
+  background-size:24px;
+  }
+  
 .extrasize {
   div.lane, div.nolane {
     width:($laneWidth * $extraMult - $laneSub);
@@ -257,6 +265,9 @@ div.placeholder {
   float:left;
   }
 
+div.lane.bicycledesig {
+  background:#ccc;
+  }  
   
 div.rightshoulder, div.norightshoulder, div.leftshoulder, div.noleftshoulder {
   background:#ccc;
@@ -526,7 +537,13 @@ div.refcont div {
     width:24px;
     }
   }
-  
+
+div.bicycledesig {
+  background-image:url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg");
+  }
+div.busdesig {
+  background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg");
+  }  
 
 .extrasize div.refA, .extrasize div.refB, .extrasize div.refK {  
   max-width:155px;
