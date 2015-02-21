@@ -91,39 +91,41 @@ sub makeDestination {
     $cr = 'K';
     $cr = "B" if $roadref =~ /^\s*B/;
     $cr = "A" if $roadref =~ /^\s*A/ || $ref =~ /^\s*A/;
+
     
     $o .='<div class="'.$cr.'" >';
-    if($destcol || $destsym) {
-      my @dests = split(";",$dest);
-      my @cols  = split(";",$destcol);
-      my @syms  = split(";",$destsym);
-      for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
-        if($cols[$i]) {
-          my $tc = '';
-          if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
-          if($cols[$i] eq 'blue') {$tc = 'color:white';}
-          $cols[$i] = 'style="background-color:'.$cols[$i].';';
-          $cols[$i] .= $tc.'"';
-          }
-        if($syms[$i]) {
-          if(!$dests[$i]) {$syms[$i] .= " symbolonly";}
-          else {$syms[$i] .= " symbol";}
-          }
-        $syms[$i] = "dest ".$syms[$i];
-        $o .= '<div class="'.$syms[$i].'"><span '.$cols[$i].'>'.($dests[$i]||"&nbsp;").'</span></div>';
+    my @dests = split(";",$dest,-1);
+    my @cols  = split(";",$destcol,-1);
+    my @syms  = split(";",$destsym,-1);
+    my @ctr   = split(';',$destcountry,-1);
+
+    for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
+      if($cols[$i]) {
+        my $tc = '';
+        if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
+        if($cols[$i] eq 'blue') {$tc = 'color:white';}
+        $cols[$i] = 'style="background-color:'.$cols[$i].';';
+        $cols[$i] .= $tc.'"';
         }
+      if($syms[$i]) {
+        if(!$dests[$i]) {$syms[$i] .= " symbolonly";}
+        else {$syms[$i] .= " symbol";}
+        }
+      $syms[$i] = "dest ".$syms[$i];
+      $o .= '<div class="'.$syms[$i].'"><span '.$cols[$i].'>'.($dests[$i]||"&nbsp;").'</span>';
+      $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
+      $o .= '</div>';
       }
-    else {
-      $o .= $signdest;
-      }
-    $o .= '<div class="clear">&nbsp;</div>';  
-    if($destcountry) {
-      my @ctr = split(';',$destcountry);
+
+    $o .= '<div class="clear">&nbsp;</div>'; 
+ 
+    if(scalar @ctr != scalar @dests) {
       foreach my $c (@ctr) {
         next if $c eq 'none';
         $o .= '<div class="destCountry">'.$c.'</div>';
         }
       }
+
     if($ref) {
       my @refs = split('/',$ref);
       foreach my $r (reverse @refs) {

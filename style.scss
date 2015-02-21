@@ -265,12 +265,14 @@ div.turns.backward {
   }
   
 div.middle {
+  z-index:10;
   position:relative;
   height:$laneHeight;
   left:(4*$laneWidth + $labelWidth + $signsWidth );
   width:1px;
   background:#888;
   float:left;
+  opacity:.5;
   }  
   
 div.destination {
@@ -329,18 +331,35 @@ div.clear {
   }  
   
 div.destCountry {
-  margin:2px 2px 2px 2px;
+  margin:2 px;
   padding: 0px 5px 1px 5px;
   background:white;
   color:black;
   border:1px solid black;
   border-radius: 30px;
-  height:11px;
+  font-size:9px;
+  height:9px;
   max-width:100px;
   display:inline;
   float:left;
   }   
   
+span.destCountry {
+  margin:1 px;
+  margin-left:2px;
+  padding: 0px 5px 1px 5px;
+  background:white;
+  color:black;
+  border:1px solid black;
+  border-radius: 30px;
+  font-size:9px;
+  height:8px;
+  max-width:100px;
+  display:inline;
+}
+
+
+
 .signs .A, .signs .B, .signs .refA, .signs .refB, .signs .refK, .signs .refK {
   float:left;
   height:16px;
