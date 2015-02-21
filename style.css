@@ -88,6 +88,9 @@ div.connects.main.from {
   z-index: 2;
   opacity: 1; }
 
+div.connects.toward {
+  border-right: 50px solid #ff4030; }
+
 div.waylayout a {
   text-decoration: none !important; }
 

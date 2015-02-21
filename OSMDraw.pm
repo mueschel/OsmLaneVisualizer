@@ -264,6 +264,14 @@ sub makeWaylayout {
     $nd = $store->{way}[1]{$i}{nodes}[-2]    if ($store->{way}[1]{$i}{nodes}[-1] == $waydata->{$id}{end});
     my $angle = sprintf("%.1f",OSMData::NormalizeAngle(OSMData::calcDirection($store->{node}[1]{$waydata->{$id}{end}},$store->{node}[1]{$nd})-$stangle));
     my $main =  (defined $waydata->{$i})?'main':'';
+    my $direction = "toward";
+    if ($store->{way}[1]{$i}{nodes}[0] == $waydata->{$id}{end} && (!(exists $store->{way}[1]{$i}{tags}{"oneway"}) || $store->{way}[1]{$i}{tags}{"oneway"} ne "-1")) {
+      $direction = "away";
+      }
+    elsif ($store->{way}[1]{$i}{nodes}[-1] == $waydata->{$id}{end} && (!(exists $store->{way}[1]{$i}{tags}{"oneway"}) || $store->{way}[1]{$i}{tags}{"oneway"} eq "-1")) {
+      $direction = "away";
+      }
+
     if($main) {
       my $from = ($i == $id)?'from':'';
       $out .= '<div class="connects '.$main.' '.$from.'" style="transform:rotate('.$angle.'deg)">&nbsp;</div>';
@@ -273,7 +281,7 @@ sub makeWaylayout {
       $cntways++;
       $connectsangle = $angle;
       $connectsid = $i;
-      $out .= '<a href="https://www.openstreetmap.org/way/'.$i.'" target="_blank"><div class="connects" style="transform:rotate('.$angle.'deg)" title="Way '.$i."\n".$title.'" >&nbsp;</div></a>';
+      $out .= '<a href="https://www.openstreetmap.org/way/'.$i.'" target="_blank"><div class="connects'.' '.$direction.'" style="transform:rotate('.$angle.'deg)" title="Way '.$i."\n".$title.'" >&nbsp;</div></a>';
       }
     }
   $out .= '</div>';
