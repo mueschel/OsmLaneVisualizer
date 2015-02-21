@@ -227,11 +227,14 @@ div.lane {
   }
   
 div.nolane {
-  background:#eef;
+  background:#aaa;
+  border-left:3px solid white;
+  border-right:3px solid white;
   height:$laneHeight;
-  width:$laneWidth - $laneSub;
+  width:($laneWidth) - $laneSub;
   float:left;
   }
+  
   
 div.lane.backward {
   background:#dcc;
@@ -253,8 +256,31 @@ div.lane.not_right.forward, div.lane.not_left.backward {
 div.placeholder {
   float:left;
   }
+
   
- 
+div.rightshoulder, div.norightshoulder, div.leftshoulder, div.noleftshoulder {
+  background:#ccc;
+  height:$laneHeight;
+}
+  
+div.rightshoulder, div.leftshoulder {
+  border-left:3px solid white;
+  border-right:3px solid white;
+  width:($laneWidth*0.6) - $laneSub;
+  float:left;  
+  }  
+div.norightshoulder, div.noleftshoulder {
+  border:none;
+  width:5px;
+  float:left;  
+  } 
+
+div.noleftshoulder, div.leftshoulder {
+  float:none;
+  box-shadow:none !important;
+  position:absolute;
+  }  
+  
 div.turns.backward {
   position:relative;
   top:($laneHeight - 25px);
@@ -316,7 +342,7 @@ div.destination.quadruple {
   }
   
 div.bridge  {
-  box-shadow:5px 0px 5px #aaa;
+  box-shadow:5px 0px 5px #888;
   }
 
 .label a {

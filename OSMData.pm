@@ -171,6 +171,22 @@ sub NormalizeAngle {
   while($a>180) {$a-=360;}
   return $a;
   }
-  
+
+#################################################
+## Majority voting - http://www.perlmonks.org/?node_id=235679  
+################################################# 
+sub MostFrequent {
+  my @items = @_;
+  my %count;
+  $count{$_}++ for @items;
+  my ($winner, $winner_count) = each %count;
+  while (my ($maybe, $maybe_count) = each %count) {
+    if ($maybe_count > $winner_count) {
+      $winner = $maybe;
+      $winner_count = $maybe_count;
+      }
+    }
+  return $winner;
+  }
   
 1;

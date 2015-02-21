@@ -182,7 +182,9 @@ div.lane {
   cursor: default; }
 
 div.nolane {
-  background: #eef;
+  background: #aaa;
+  border-left: 3px solid white;
+  border-right: 3px solid white;
   height: 135px;
   width: 114px;
   float: left; }
@@ -202,6 +204,26 @@ div.lane.not_right.forward, div.lane.not_left.backward {
 
 div.placeholder {
   float: left; }
+
+div.rightshoulder, div.norightshoulder, div.leftshoulder, div.noleftshoulder {
+  background: #ccc;
+  height: 135px; }
+
+div.rightshoulder, div.leftshoulder {
+  border-left: 3px solid white;
+  border-right: 3px solid white;
+  width: 66px;
+  float: left; }
+
+div.norightshoulder, div.noleftshoulder {
+  border: none;
+  width: 5px;
+  float: left; }
+
+div.noleftshoulder, div.leftshoulder {
+  float: none;
+  box-shadow: none !important;
+  position: absolute; }
 
 div.turns.backward {
   position: relative;
@@ -257,7 +279,7 @@ div.destination.quadruple {
   width: 724.4px; }
 
 div.bridge {
-  box-shadow: 5px 0px 5px #aaa; }
+  box-shadow: 5px 0px 5px #888; }
 
 .label a {
   font-size: 12px;
