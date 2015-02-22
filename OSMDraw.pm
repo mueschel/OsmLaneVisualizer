@@ -369,6 +369,7 @@ sub drawWay {
   $out .= sprintf("<br>%im",$length);
   $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/map/im/bbox/%.5f/%.5f/%.5f/%.5f\">(M)</a>",$lat-0.005,$lat+0.005,$lon-0.005,$lon+0.005);
   $out .= sprintf("<a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
+  $out .= "<a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
   $out .= "</div>\n";
   
   $out .= '<div class="signs">';
