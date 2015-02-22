@@ -57,7 +57,49 @@ sub makeMaxspeed {
       $out .= '</div>';
       }
     }
-    
+  return $out;
+  }
+
+#################################################
+## road signs
+################################################# 
+sub makeSigns {
+  my $obj = shift @_;
+  my $i   = shift @_;
+  my $t;
+  my $out;
+  if(defined $i) {
+    $t->{'access'}  = $obj->{lanes}{access}[$i];
+    $t->{'bicycle'} = $obj->{lanes}{bicycle}[$i];
+    $t->{'foot'}    = $obj->{lanes}{foot}[$i];
+    $t->{'bus'}     = $obj->{lanes}{bus}[$i];
+    $t->{'psv'}     = $obj->{lanes}{psv}[$i];
+    $t->{'hgv'}     = $obj->{lanes}{hgv}[$i];
+    }
+  else {
+    $t = $obj->{tags};
+    }
+  if ($t->{'bicycle'} eq "no") {
+    $out .= "<div class=\"bicycleno\">&nbsp;</div>";
+    }
+  if ($t->{'bicycle'} eq 'designated' || $t->{'bicycle'} eq 'official') {
+    $out .= "<div class=\"bicycledesig\">&nbsp;</div>";
+    }
+  if ($t->{'foot'} eq "no") {
+    $out .= "<div class=\"footno\">&nbsp;</div>";
+    }
+  if ($t->{'foot'} eq 'designated' || $t->{'foot'} eq 'official') {
+    $out .= "<div class=\"footdesig\">&nbsp;</div>";
+    }
+  if ($t->{'hgv'} eq 'no') {
+    $out .= "<div class=\"hgvno\">&nbsp;</div>";
+    }
+  if ($t->{'hgv'} eq 'designated' || $t->{'hgv'} eq 'official') {
+    $out .= "<div class=\"hgvdesig\">&nbsp;</div>";
+    }
+  if ($t->{'motorroad'} eq "yes") {
+    $out .= "<div class=\"motorroad\">&nbsp;</div>";
+    }
   return $out;
   }
   
@@ -372,12 +414,13 @@ sub drawWay {
   $out .= "<a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
   $out .= "</div>\n";
   
-  $out .= '<div class="signs">';
+  $out .= '<div class="info">';
   $out .= OSMDraw::makeRef(($t->{'ref'}||''),'');
-  $out .= "<div style=\"clear:both;\">$name</div>";
-
+  $out .= "<div style=\"clear:both;width:100%\">$name</div>";
+  $out .= "<div class=\"signs\">";
   $out .= OSMDraw::makeMaxspeed($id);
-  $out .= "</div>\n";
+  $out .= OSMDraw::makeSigns($waydata->{$id},undef);
+  $out .= "</div></div>\n";
   
   $out .= '<div class="placeholder" style="width:'.($lanes->{offset}).'px">&nbsp;</div>'."\n";
   
@@ -401,12 +444,12 @@ sub drawWay {
       if($lanes->{destinations}[$i]) {  
         $out .= $lanes->{destinations}[$i];  
         }
+      $out .= "<div class=\"signs\">";
       if($max) {
         $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
         }
-      if($access) {
-        $out .= "<div class=\"access $access\">&nbsp;</div>";
-        }
+      $out .= OSMDraw::makeSigns($waydata->{$id},$i);
+      $out .= "</div>";
       if($width && !$lanewidth ) {
         $out .= "<div class=\"width\">&lt;-".(sprintf('%.1f',$width))."-&gt;</div>";
         }

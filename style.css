@@ -102,7 +102,7 @@ div.label {
   float: left;
   top: -15px; }
 
-div.signs {
+div.info {
   z-index: 10;
   float: left;
   position: relative;
@@ -124,7 +124,7 @@ div.max {
   border: 4px solid red;
   border-radius: 25px;
   font-size: 10px;
-  background: white;
+  background: white !important;
   font-weight: bold;
   line-height: 25px;
   overflow: hidden;
@@ -132,11 +132,43 @@ div.max {
 
 div.max.none {
   border-color: #aaa;
+  background: white;
   color: white; }
 
 div.max.unkwn {
   border-color: yellow;
+  background: white;
   color: #aaa; }
+
+div.signs div {
+  width: 25px;
+  height: 25px;
+  float: left;
+  text-align: center;
+  background: center center no-repeat transparent;
+  background-size: 20px; }
+div.signs .bicycleno {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/48/Zeichen_254.svg"); }
+div.signs .footno {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/cc/Zeichen_259.svg"); }
+div.signs .hgvno {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_253.svg"); }
+div.signs .motorroad {
+  height: 25px;
+  width: 25px;
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg"); }
+div.signs .bicycledesig {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
+div.signs .busdesig {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
+
+.lane .signs .max {
+  background-color: white;
+  border-width: 3px;
+  font-size: 11px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px; }
 
 div.maxcont {
   width: 33px;
@@ -149,8 +181,10 @@ div.maxcont .condition {
   border: 1px solid black;
   border-radius: 2px;
   text-align: center;
-  font-size: 10px;
+  font-size: 9px;
   background: no-repeat center center white;
+  width: 31px;
+  height: 12px;
   background-size: 30px; }
 
 div.condition.wet {
@@ -161,20 +195,14 @@ div.condition.wet {
 div.condition.hgv {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
   border: none;
-  height: 35px; }
+  height: 20px; }
 
-div.lane .max {
+div.lane .signs {
   position: absolute;
-  bottom: 10px;
-  left: 10px; }
-
-div.lane .access {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 5px;
+  left: 0px;
   height: 24px;
-  width: 24px;
-  background-size: 24px; }
+  width: 100%; }
 
 .extrasize div.lane, .extrasize div.nolane {
   width: 177.6px;
@@ -195,8 +223,8 @@ div.lane {
 
 div.nolane {
   background: #aaa;
-  border-left: 3px solid white;
-  border-right: 3px solid white;
+  border-left: 3px solid #aaa !important;
+  border-right: 3px solid #aaa !important;
   height: 135px;
   width: 114px;
   float: left; }
@@ -331,10 +359,10 @@ span.destCountry {
   max-width: 100px;
   display: inline; }
 
-.signs .A, .signs .B, .signs .refA, .signs .refB, .signs .refK, .signs .refK {
+.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK {
   float: left;
-  height: 16px;
-  font-size: 13px;
+  height: 14px;
+  font-size: 11px;
   padding: 1px; }
 
 div.refA, div.refB, div.refK {
@@ -446,12 +474,6 @@ div.refcont div div.symbolonly span {
   display: block;
   height: 24px;
   width: 24px; }
-
-div.bicycledesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
-
-div.busdesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
 
 .extrasize div.refA, .extrasize div.refB, .extrasize div.refK {
   max-width: 155px; }

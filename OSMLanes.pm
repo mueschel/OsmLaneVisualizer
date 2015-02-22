@@ -144,39 +144,6 @@ sub getLaneTags {
   return \@out;
   }
 
-
-  
-#################################################
-## few wrappers to read lane tags
-#################################################    
-sub getTurn {
-  $_[0]->{lanes}{turn} = getLaneTags($_[0],'turn');
-  }
-
-sub getDestination {  
-  $_[0]->{lanes}{destination} = getLaneTags($_[0],'destination');
-  } 
-  
-sub getDestinationRef {  
-  $_[0]->{lanes}{destinationref} = getLaneTags($_[0],'destination:ref');
-  }  
-
-sub getDestinationColour {  
-  $_[0]->{lanes}{destinationcolour} = getLaneTags($_[0],'destination:colour');
-  }  
-  
-sub getDestinationSymbol {  
-  $_[0]->{lanes}{destinationsymbol} = getLaneTags($_[0],'destination:symbol');
-  } 
-  
-sub getDestinationCountry {  
-  $_[0]->{lanes}{destinationcountry} = getLaneTags($_[0],'destination:country');
-  }
-  
-sub getMaxspeed {
-  $_[0]->{lanes}{maxspeed} = getLaneTags($_[0],'maxspeed','nonolanes');
-  }  
-
 #################################################
 ## Get or calculate width
 #################################################    
@@ -299,24 +266,16 @@ sub getPlacement {
   $obj->{lanes}{offset} = $offset;  
   }
 
-#################################################
-## access tags...
-#################################################  
-sub getAccess {
-  my $obj = shift @_;  
-  my $t;
-  $t->{access}  = getLaneTags($obj,'access','nonolanes');
-  $t->{bicycle} = getLaneTags($obj,'bicycle','nonolanes');
-  $t->{psv}     = getLaneTags($obj,'psv','nonolanes');
-  $t->{bus}     = getLaneTags($obj,'bus','nonolanes');
-  
-  for (my $i = 0; $i < $obj->{lanes}{numlanes}; $i++) {
-    if($t->{bicycle}[$i] eq 'designated' || $t->{bicycle}[$i] eq 'official') {
-      $obj->{lanes}{access}[$i] .= " bicycledesig";
-      }
-    if($t->{psv}[$i] eq 'designated' || $t->{psv}[$i] eq 'official' ||
-       $t->{bus}[$i] eq 'designated' || $t->{bus}[$i] eq 'official' ) {
-      $obj->{lanes}{access}[$i] .= " busdesig";
+sub makeAccess {
+  my $obj = shift @_;
+  for(my $i = 0; $i < $obj->{lanes}{numlanes};$i++) {
+    if (  $obj->{lanes}{bicycle}[$i] eq 'designated'
+       || $obj->{lanes}{bicycle}[$i] eq 'official'
+       || $obj->{lanes}{foot}[$i] eq 'designated'
+       || $obj->{lanes}{foot}[$i] eq 'official'
+       || $obj->{lanes}{psv}[$i] eq 'designated'
+       || $obj->{lanes}{bus}[$i] eq 'designated') {
+      $obj->{lanes}{access}[$i] .= " nolane"; 
       }
     }
   }
@@ -328,18 +287,28 @@ sub InspectLanes {
   my $obj = shift @_;
 
   OSMLanes::getLanes($obj);
-  OSMLanes::getTurn($obj);
   OSMLanes::getWidth($obj);
   OSMLanes::getPlacement($obj);
   OSMLanes::getChange($obj);
-  OSMLanes::getDestinationRef($obj);
-  OSMLanes::getDestination($obj);
-  OSMLanes::getMaxspeed($obj);
-  OSMLanes::getAccess($obj);
-  OSMLanes::getDestinationColour($obj);
-  OSMLanes::getDestinationSymbol($obj);
-  OSMLanes::getDestinationCountry($obj);
+  
+  $obj->{lanes}{turn} = getLaneTags($obj,'turn');
+  $obj->{lanes}{destinationref}     = getLaneTags($obj,'destination:ref');
+  $obj->{lanes}{destination}        = getLaneTags($obj,'destination');
+  $obj->{lanes}{maxspeed}           = getLaneTags($obj,'maxspeed','nonolanes');
+  $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
+  $obj->{lanes}{bus}                = getLaneTags($obj,'bus','nonolanes');
+  $obj->{lanes}{psv}                = getLaneTags($obj,'psv','nonolanes');
+  $obj->{lanes}{foot}               = getLaneTags($obj,'foot','nonolanes');
+  $obj->{lanes}{destinationcolour}  = getLaneTags($obj,'destination:colour');
+  $obj->{lanes}{destinationsymbol}  = getLaneTags($obj,'destination:symbol');
+  $obj->{lanes}{destinationcountry} = getLaneTags($obj,'destination:country');
+  
+  $obj->{lanes}{access}             = getLaneTags($obj,'access','nonolanes');
+  $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
+  $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
+  $obj->{lanes}{psv}                = getLaneTags($obj,'psv','nonolanes');
+  $obj->{lanes}{bus}                = getLaneTags($obj,'bus','nonolanes');
+  makeAccess($obj);
   }
-  
-  
+ 
 1;
