@@ -288,8 +288,8 @@ div.lane {
   
 div.nolane {
   background:#aaa;
-  border-left:3px solid #aaa !important;
-  border-right:3px solid #aaa !important;
+  border-left:1px solid white !important;
+  border-right:1px solid white !important;
   height:$laneHeight;
   width:($laneWidth) - $laneSub;
   float:left;

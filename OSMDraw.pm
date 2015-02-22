@@ -91,6 +91,10 @@ sub makeSigns {
   if ($t->{'foot'} eq 'designated' || $t->{'foot'} eq 'official') {
     $out .= "<div class=\"footdesig\">&nbsp;</div>";
     }
+  if ($t->{'bus'} eq 'designated' || $t->{'bus'} eq 'official'
+   || $t->{'psv'} eq 'designated' || $t->{'psv'} eq 'official') {
+    $out .= "<div class=\"busdesig\">&nbsp;</div>";
+    }
   if ($t->{'hgv'} eq 'no') {
     $out .= "<div class=\"hgvno\">&nbsp;</div>";
     }
