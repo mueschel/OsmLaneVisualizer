@@ -49,6 +49,20 @@ sub getLanes {
   push(@{$st->{m}},$t->{'lanes:both_ways'});
   push(@{$st->{l}},$t->{'lanes'});
   
+  if(defined $t->{'lanes:forward'} && defined $t->{'lanes'} && ! defined $t->{'lanes:backward'}) {
+    push(@{$st->{b}},$t->{'lanes'} - $t->{'lanes:forward'});
+    }
+  if(defined $t->{'lanes:backward'} && defined $t->{'lanes'} && ! defined $t->{'lanes:forward'}) {
+    push(@{$st->{f}},$t->{'lanes'} - $t->{'lanes:backward'});
+    }
+  
+  if(defined max(@{$st->{f}}) && defined max(@{$st->{l}}) && !defined defined max(@{$st->{b}})) {
+    push(@{$st->{b}},max(@{$st->{l}})-max(@{$st->{f}}));
+    }
+  if(defined max(@{$st->{b}}) && defined max(@{$st->{l}}) && !defined defined max(@{$st->{f}})) {
+    push(@{$st->{f}},max(@{$st->{l}})-max(@{$st->{b}}));
+    }
+  
   if(defined $t->{'oneway'} && $t->{'oneway'} ne "no") {
     push(@{$st->{f}},$t->{'lanes'});
     }
