@@ -354,18 +354,18 @@ sub makeShoulder {
   my $shoulder = $obj->{tags}{'shoulder'};
   my $bridge= (defined $obj->{tags}{'bridge'})?' bridge':'';
   my $stl = "style=\"left:".($obj->{lanes}{offset}+246)."px\"";
-  return unless(defined $shoulder);
+
   if(!$obj->{reversed}) {
     if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
       $o .= "<div class=\"lane rightshoulder$bridge\">&nbsp;</div>";
       }
-    if($shoulder eq 'left' || $shoulder eq 'no') {
+    if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
       $o .= "<div class=\"lane norightshoulder$bridge\">&nbsp;</div>";
       }
     if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
       $o .= "<div class=\"lane leftshoulder$bridge\" $stl>&nbsp;</div>";
       }
-    if($shoulder eq 'right' || $shoulder eq 'no') {
+    if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
       $o .= "<div class=\"lane noleftshoulder$bridge\" $stl>&nbsp;</div>";
       }
     }
@@ -373,13 +373,13 @@ sub makeShoulder {
     if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
       $o .= "<div class=\"lane leftshoulder$bridge\" $stl>&nbsp;</div>";
       }
-    if($shoulder eq 'left' || $shoulder eq 'no') {
+    if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
       $o .= "<div class=\"lane noleftshoulder$bridge\" $stl>&nbsp;</div>";
       }
     if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
       $o .= "<div class=\"lane rightshoulder$bridge\">&nbsp;</div>";
       }
-    if($shoulder eq 'right' || $shoulder eq 'no') {
+    if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
       $o .= "<div class=\"lane norightshoulder$bridge\">&nbsp;</div>";
       }
     }
