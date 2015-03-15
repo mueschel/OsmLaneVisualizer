@@ -135,20 +135,22 @@ sub getLaneTags {
   else{  
     if(defined $t->{$tag.':lanes:backward'}) {
       my @tmp = split('\|',$t->{$tag.':lanes:backward'},-1);
+      for(@tmp) {$_ = $_ || $t->{$tag.':backward'}; }
       push(@out,reverse @tmp);
       }  
     elsif ($lanes->{bck}) {
-      for(my $i=0; $i<$lanes->{bck};$i++){push(@out,'');}
+      for(my $i=0; $i<$lanes->{bck};$i++){push(@out,$t->{$tag.':backward'} || '');}
       }
     
     for(my $i=0; $i<$lanes->{both};$i++){push(@out,'');}
     
     if(defined $t->{$tag.':lanes:forward'}) {
       my @tmp = split('\|',$t->{$tag.':lanes:forward'},-1);
+      for(@tmp) {$_ = $_ || $t->{$tag.':forward'}; }
       push(@out,@tmp);
       }
     else {
-      for(my $i=0; $i<$lanes->{fwd};$i++){push(@out,'');}
+      for(my $i=0; $i<$lanes->{fwd};$i++){push(@out, $t->{$tag.':forward'} || '');}
       }
     }
 
