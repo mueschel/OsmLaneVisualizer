@@ -188,6 +188,8 @@ sub getChange {
   $obj->{lanes}{change} = getLaneTags($obj,'change','noreverse');
   for(my $c=0;$c < scalar (@{$obj->{lanes}{change}}); $c++) {
     $obj->{lanes}{change}[$c] =~ s/yes//;
+    $obj->{lanes}{change}[$c] =~ s/only_left/not_right/;
+    $obj->{lanes}{change}[$c] =~ s/only_right/not_left/;
     }
   if(defined $obj->{tags}{'overtaking'} && $obj->{tags}{'overtaking'} eq 'no') {
     $obj->{lanes}{change}[$obj->{lanes}{bck}-1]          .=" not_left"  if $obj->{lanes}{bck} != 0;
@@ -318,10 +320,7 @@ sub InspectLanes {
   $obj->{lanes}{destinationcountry} = getLaneTags($obj,'destination:country');
   
   $obj->{lanes}{access}             = getLaneTags($obj,'access','nonolanes');
-  $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
   $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
-  $obj->{lanes}{psv}                = getLaneTags($obj,'psv','nonolanes');
-  $obj->{lanes}{bus}                = getLaneTags($obj,'bus','nonolanes');
   makeAccess($obj);
   }
  
