@@ -179,12 +179,17 @@ div.max.unkwn {
 
 div.signs {
   div { 
-    width:25px;
-    height:25px;
+    width:35px;
+    height:35px;
     float:left;
     text-align:center;
     background:center center no-repeat transparent;
-    background-size:20px;
+    background-size:30px;
+    }
+  
+  .max {
+    width:25px;
+    height:25px;    
     }
   
   .bicycleno {
@@ -200,11 +205,17 @@ div.signs {
     }
     
   .motorroad {
-    height:25px;
-    width:25px;
+/*     height:25px; */
+/*     width:25px; */
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg");
     }  
-
+  .overtaking {
+    background-image:url("http://upload.wikimedia.org/wikipedia/commons/8/87/Zeichen_276.svg");
+    }  
+  .overtakinghgv {
+    background-image:url("http://upload.wikimedia.org/wikipedia/commons/c/ca/Zeichen_277.svg");
+    }  
+    
   .bicycledesig {
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg");
     }
@@ -212,11 +223,17 @@ div.signs {
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg");
     }  
   } 
+
+.lane div.signs div {
+  height:26px;
+  width:26px;
+  background-size:20px;
+  }  
   
 .lane .signs  .max {
   background-color:white;
   border-width:3px;
-  font-size:11px;
+  font-size:10px;
   height:20px;
   width:20px;
   line-height:20px;

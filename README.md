@@ -29,13 +29,13 @@ Interpreted Tags
 *  **motorroad** If yes, the corresponding sign is shown
 *  **name** Shown in left column
 *  **oneway**  Mostly supported, oneway=-1 might fail in some cases
+*  **overtaking[:hgv][:forward|:backward]** Shown as solid line between forward and backward lanes
+*  **placement[:forward|:backward]** Used for positioning lanes if enabled
 *  **psv[:lanes][:forward|:backward]** The values designated and official are displayed
 *  **ref** Shown in left column
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
 *  **tunnel:name** Name is shown if available
 *  **turn[:lanes][:forward|:backward]** Rendered by using Unicode characters. 
-*  **overtaking** Shown as solid line between forward and backward lanes
-*  **placement[:forward|:backward]** Used for positioning lanes if enabled
 *  **width[:lanes][:forward|:backward]** Used if enabled
 
 

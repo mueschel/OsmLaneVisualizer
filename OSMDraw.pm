@@ -79,6 +79,12 @@ sub makeSigns {
   else {
     $t = $obj->{tags};
     }
+  if ($t->{'overtaking'} eq "no" || $t->{'overtaking:forward'} eq "no" || $t->{'overtaking:backward'} eq "no") {
+    $out .= "<div class=\"overtaking\">&nbsp;</div>";
+    }    
+  if ($t->{'overtaking:hgv'} eq "no" || $t->{'overtaking:hgv:backward'} eq "no" || $t->{'overtaking:hgv:forward'} eq "no") {
+    $out .= "<div class=\"overtakinghgv\">&nbsp;</div>";
+    }    
   if ($t->{'bicycle'} eq "no") {
     $out .= "<div class=\"bicycleno\">&nbsp;</div>";
     }
