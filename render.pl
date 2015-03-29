@@ -38,7 +38,7 @@ if(defined $ENV{'QUERY_STRING'}) {
     $opts->{$v[0]} = $v[1] || 1;
     if($v[0] eq 'url')      {$url   = $v[1];}
     if($v[0] eq 'start')    {$start = $v[1];}
-    if($v[0] eq 'placement'){$placement = "checked";}
+    if($v[0] eq 'placement'){$USEplacement = "checked";}
     if($v[0] eq 'adjacent') {$adjacent = "checked";}
     if($v[0] eq 'lanewidth') {$lanewidth = "checked";}
     if($v[0] eq 'extendway') {$extendway = "checked";}
@@ -178,7 +178,7 @@ print <<HDOC;
 <div class="config">
 <h3>Configuration</h3>
 <label title="Evaluate the placement tag to get a more natural arrangement of lanes">
-  <input type="checkbox" name="placement" $placement>Use placement</label>
+  <input type="checkbox" name="placement" $USEplacement>Use placement</label>
 <br><label title="Show the geometry of all ways joining at the end nodes of each segment">
   <input style="margin_left:30px;" type="checkbox" name="adjacent" $adjacent >Use adjacent ways</label>
 <br><label title="Determine width of lanes from width tag. Note that this does not work well in combination with destination signs">

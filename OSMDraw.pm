@@ -413,7 +413,7 @@ sub drawWay {
      $name .= "&nbsp;" unless $name;
   $out .= '<div class="way">';
   
-  $out .= '<div class="middle">&nbsp;</div>' if $placement;
+  $out .= '<div class="middle">&nbsp;</div>' if $USEplacement;
   
   $out .= '<div class="label">';
   $out .= sprintf("km %.1f",$totallength/1000);
@@ -432,7 +432,7 @@ sub drawWay {
   $out .= OSMDraw::makeSigns($waydata->{$id},undef);
   $out .= "</div></div>\n";
   
-  $out .= '<div class="placeholder" style="width:'.($lanes->{offset}).'px">&nbsp;</div>'."\n";
+  $out .= '<div class="placeholder" style="transform:skewX('.($lanes->{tilt}||0).'deg);left:'.($lanes->{offset}).'px">'."\n";
   
 
   $waydata->{$id}{lanes}{destinations} = OSMDraw::makeAllDestinations($id,0);
@@ -467,6 +467,7 @@ sub drawWay {
     $out .= '</div>'."\n";
     }
   $out .= OSMDraw::makeShoulder($waydata->{$id});
+  $out .= "</div>";#placeholder
   
   my $beginnodetags = $nodedata->{$waydata->{$id}{begin}}{'tags'};  
   if(defined $beginnodetags->{highway} && $beginnodetags->{highway} eq "motorway_junction") {

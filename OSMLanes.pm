@@ -6,14 +6,15 @@ use lib '/www/htdocs/w00fe1e3/lanes/';
 use Data::Dumper;
 use OSMData;
 use List::Util qw(min max);
-
+use Math::Trig;
+ 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($lanes $maxlanes $placement $adjacent $lanewidth $extrasize $LANEWIDTH);
+our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $LANEWIDTH);
 
 our $LANEWIDTH = 120;
 our $lanes;
-our $placement = 0;
+our $USEplacement = 0;
 our $maxlanes = 4;
 our $adjacent = 0;
 our $lanewidth = 0;
@@ -210,6 +211,55 @@ sub getChange {
     }
   }
 
+#################################################
+## Count offset given by placement
+#################################################   
+sub PlacementCountLanes {
+  my $pm = ($_[1]||$_[2]||$_[3]);
+  my $obj = $_[0];
+  my @p; my $d; my $offset;
+  if(defined $pm) {
+    @p = split(':',$pm);
+    
+    if($p[0] eq "right_of")  {$p[1] += 1;}
+    if($p[0] eq "middle_of") {$p[1] += .5;}
+    if($p[0] eq "transition"){$p[1] = undef;} 
+    
+    if   (defined $_[2]) {  $d = $obj->{lanes}{bck} + ($p[1]-1);}
+    elsif(defined $_[3]) {  $d = $obj->{lanes}{bck} - ($p[1]-1);}
+    else                 {  $d = $p[1]-1; }
+          
+    }
+      
+    if(defined $d) {  
+      if($obj->{reversed} == 0) { $offset = $maxlanes - $d;}
+      else                      { $offset = $maxlanes - (scalar @{$obj->{lanes}{list}}) + $d;}
+      } 
+    else                        { $offset = $maxlanes - ($obj->{lanes}{fwd} + $obj->{lanes}{bck} + $obj->{lanes}{both})/2;}
+    
+    
+  return $offset;
+  }
+
+#################################################
+## Placement with :start and :end
+#################################################   
+sub PlacementStartEnd {
+  my ($obj) = @_;
+  my $offset; my $offend; my $tilt;
+  my $start = $obj->{tags}{'placement:start'};
+  
+  if($obj->{reversed} == 0) { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:end'},$obj->{tags}{'placement:forward:end'},$obj->{tags}{'placement:backward:end'});}
+  else                      { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:start'},$obj->{tags}{'placement:forward:start'},$obj->{tags}{'placement:backward:start'});} 
+  
+  if($obj->{reversed} == 0) { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:start'},$obj->{tags}{'placement:forward:start'},$obj->{tags}{'placement:backward:start'});}
+  else                      { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:end'},$obj->{tags}{'placement:forward:end'},$obj->{tags}{'placement:backward:end'});} 
+  $tilt = $offset - $offend;
+  $tilt = rad2deg(atan2($tilt*$LANEWIDTH,135));
+
+  $obj->{lanes}{tilt} = -$tilt;
+  return $offset;
+  }
   
 #################################################
 ## Read placement tag and calculate drawing offset
@@ -241,49 +291,29 @@ sub getPlacement {
     $offset  = $maxlanes*4 - $offset;  
     $offset *= $LANEWIDTH/4;  
     }
+    
+  elsif($USEplacement) {
+    if(defined $t->{'placement:start'} && defined $t->{'placement:end'}) {
+      $offset = PlacementStartEnd($obj);
+      }
+    else {  
+      $offset = PlacementCountLanes($obj,$t->{'placement'},$t->{'placement:forward'},$t->{'placement:backward'});
+      }
+    $offset *= $LANEWIDTH;  
+    }
+    
   else {
-    if($placement) {
-      $offset = $maxlanes - ($obj->{lanes}{fwd}+$obj->{lanes}{bck}+$obj->{lanes}{both})/2;
-      my $d;
-      if(defined $t->{'placement'} && defined $t->{'oneway'} && $t->{'oneway'} eq "yes") {
-        my @p = split(':',$t->{'placement'});
-        $d = $p[1]-1;
-        if($p[0] eq "right_of")  {$d += 1;}
-        if($p[0] eq "middle_of") {$d += .5;}
-        if($p[0] eq "transition"){$d = undef;}
-        }
-      elsif(defined $t->{'placement:forward'}) {
-        my @p = split(':',$t->{'placement:forward'});
-        $d = $p[1]-1 + $obj->{lanes}{bck};
-        if($p[0] eq "right_of")  {$d += 1;}
-        if($p[0] eq "middle_of") {$d += .5;}
-        }
-      elsif(defined $t->{'placement:backward'}) {
-        my @p = split(':',$t->{'placement:backward'});
-        $d = $p[1]-1;
-        if($p[0] eq "right_of")  {$d += 1;}
-        if($p[0] eq "middle_of") {$d += .5;}
-        $d = $obj->{lanes}{bck} - $d;
-        }
-      if(defined $d) {  
-        if($obj->{reversed} == 0) {
-          $offset = $maxlanes - $d;
-          }
-        else {
-          $offset = $maxlanes  - (scalar @{$obj->{lanes}{list}}) + $d;
-          }
-        }  
-      $offset *= $LANEWIDTH;  
-      }
-    else {
-      $offset = $maxlanes - $obj->{lanes}{bck} - $obj->{lanes}{both}/2.;
-      if($obj->{reversed}) {$offset = $maxlanes - $obj->{lanes}{fwd} - $obj->{lanes}{both}/2.;}    
-      $offset *= $LANEWIDTH;
-      }
+    $offset = $maxlanes - $obj->{lanes}{bck} - $obj->{lanes}{both}/2.;
+    if($obj->{reversed}) {$offset = $maxlanes - $obj->{lanes}{fwd} - $obj->{lanes}{both}/2.;}    
+    $offset *= $LANEWIDTH;
     }
   $obj->{lanes}{offset} = $offset;  
   }
 
+  
+#################################################
+## Check access tags to determine colour of lane
+#################################################     
 sub makeAccess {
   my $obj = shift @_;
   for(my $i = 0; $i < $obj->{lanes}{numlanes};$i++) {

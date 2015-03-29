@@ -255,7 +255,7 @@ div.lane.not_right.forward, div.lane.not_left.backward {
   border-right: 3px solid white; }
 
 div.placeholder {
-  float: left; }
+  position: relative; }
 
 div.lane.bicycledesig {
   background: #ccc; }

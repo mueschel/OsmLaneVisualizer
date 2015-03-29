@@ -31,8 +31,9 @@ Interpreted Tags
 *  **oneway**  Mostly supported, oneway=-1 might fail in some cases
 *  **overtaking[:hgv][:forward|:backward]** Shown as solid line between forward and backward lanes
 *  **placement[:forward|:backward]** Used for positioning lanes if enabled
+*  **placement[:forward|:backward](:start|:end)** Experimental support for a tag proposed by Imagic to give further detail in case of placement=transistion
 *  **psv[:lanes][:forward|:backward]** The values designated and official are displayed
-*  **ref** Shown in left column
+*  **ref** Shown in left column, used to determine color of signs
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
 *  **tunnel:name** Name is shown if available
 *  **turn[:lanes][:forward|:backward]** Rendered by using Unicode characters. 
