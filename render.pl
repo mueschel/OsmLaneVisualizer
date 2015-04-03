@@ -171,9 +171,7 @@ print <<HDOC;
 <h1>OSM Lane Visualizer</h1>
 <p>Enter a valid overpass query that delivers a list of continuous ways, e.g. as shown here: <a href="http://overpass-turbo.eu/s/6vr">Overpass Turbo</a>. Just put the Overpass query to the text box.
 <br>As there are several "last ways" (at least two...) in each data set, select one by putting a number in the box below. All tags of a way are shown as mouse-over on the text "way" on the left side.
-<br>Currently supported: lanes, turn:lanes, change:lanes, maxspeed, overtaking, most destination* tags, some maxspeed:conditional.
-<br>Adjacent ways, intersection geometries. If enabled, the geometry of ways at each connection between two road pieces is shown. Additional roads are shown in green (Note the mouse-over text with all tags and the link to the way in OSM)
-<br>All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>. Pictures are linked from wikimedia-commons.
+<br><a href="https://github.com/mueschel/OsmLaneVisualizer#interpreted-tags">Currently supported keys.</a> All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>. Pictures are linked from wikimedia-commons.
 
 <div class="config">
 <h3>Configuration</h3>
