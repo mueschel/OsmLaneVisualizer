@@ -300,6 +300,7 @@ div.lane {
   border-right:3px dashed white;
   width:$laneWidth - $laneSub;
   float:left;
+  display:inline-block;
   cursor:default;
   }
   
@@ -309,6 +310,7 @@ div.nolane {
   border-right:1px solid white !important;
   height:$laneHeight;
   width:($laneWidth) - $laneSub;
+  display:inline-block;
   float:left;
   }
   
@@ -332,34 +334,39 @@ div.lane.not_right.forward, div.lane.not_left.backward {
 
 div.placeholder {
   position:relative;
+  height: ($laneHeight - 3px);
+/*   left: ($labelWidth + $signsWidth); */
+  display:inline-block;
+  padding:0;
+/*   border:1px solid black; */
   }
 
 div.lane.bicycledesig {
   background:#ccc;
   }  
   
-div.rightshoulder, div.norightshoulder, div.leftshoulder, div.noleftshoulder {
+div.shoulder, div.noshoulder {
   background:#ccc;
   height:$laneHeight;
 }
   
-div.rightshoulder, div.leftshoulder {
+div.shoulder {
   border-left:3px solid white;
   border-right:3px solid white;
   width:($laneWidth*0.6) - $laneSub;
-  float:left;  
+  background:#ccc;
   }  
-div.norightshoulder, div.noleftshoulder {
+div.noshoulder {
   border:none;
-  width:5px;
-  float:left;  
+  width:4px;
+  background:#aaa;
   } 
 
-div.noleftshoulder, div.leftshoulder {
+/*div.noleftshoulder, div.leftshoulder {
   float:none;
   box-shadow:none !important;
   position:absolute;
-  }  
+  }  */
   
 div.turns.backward {
   position:relative;
@@ -369,6 +376,11 @@ div.turns.backward {
 .extrasize div.turns.backward {
   top:($laneHeight*$extraMult - 25px);
   }
+  
+div.nolane.island {
+  background:#666;
+  width: ($laneWidth*0.5);
+  }  
   
 div.middle {
   z-index:10;
@@ -388,6 +400,7 @@ div.destination {
   text-align:center;
   top:10px;
   margin-left:2px;
+  z-index:1;
   }  
 
 .backward div.destination {
@@ -395,15 +408,12 @@ div.destination {
   }    
 
 div.destination.double {
-  z-index: 1;
   width:(2*$laneWidth - $laneSub - 4px);
   }  
 div.destination.triple {
-  z-index: 1;
   width:(3*$laneWidth - $laneSub - 4px);
   }
 div.destination.quadruple {
-  z-index: 1;
   width:(4*$laneWidth - $laneSub - 4px);
   }
 

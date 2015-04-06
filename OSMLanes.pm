@@ -231,15 +231,15 @@ sub PlacementCountLanes {
           
     }
       
-    if(defined $d) {  
+    if(defined $d && defined $p[1]) {  
       if($obj->{reversed} == 0) { $offset = $maxlanes - $d;}
       else                      { $offset = $maxlanes - (scalar @{$obj->{lanes}{list}}) + $d;}
       } 
     else                        { $offset = $maxlanes - ($obj->{lanes}{fwd} + $obj->{lanes}{bck} + $obj->{lanes}{both})/2;}
     
-    
   return $offset;
   }
+
 
 #################################################
 ## Placement with :start and :end
@@ -249,17 +249,29 @@ sub PlacementStartEnd {
   my $offset; my $offend; my $tilt;
   my $start = $obj->{tags}{'placement:start'};
   
-  if($obj->{reversed} == 0) { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:end'},$obj->{tags}{'placement:forward:end'},$obj->{tags}{'placement:backward:end'});}
-  else                      { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:start'},$obj->{tags}{'placement:forward:start'},$obj->{tags}{'placement:backward:start'});} 
+  if($obj->{reversed} == 0) { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:end'} || $obj->{tags}{'placement'},
+                                                                 $obj->{tags}{'placement:forward:end'} || $obj->{tags}{'placement:forward'},
+                                                                 $obj->{tags}{'placement:backward:end'} || $obj->{tags}{'placement:backward'});}
+  else                      { $offset = PlacementCountLanes($obj,$obj->{tags}{'placement:start'} || $obj->{tags}{'placement'},
+                                                                 $obj->{tags}{'placement:forward:start'} || $obj->{tags}{'placement:forward'},
+                                                                 $obj->{tags}{'placement:backward:start'} || $obj->{tags}{'placement:backward'});} 
   
-  if($obj->{reversed} == 0) { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:start'},$obj->{tags}{'placement:forward:start'},$obj->{tags}{'placement:backward:start'});}
-  else                      { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:end'},$obj->{tags}{'placement:forward:end'},$obj->{tags}{'placement:backward:end'});} 
-  $tilt = $offset - $offend;
-  $tilt = rad2deg(atan2($tilt*$LANEWIDTH,135));
+  if($obj->{reversed} == 0) { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:start'} || $obj->{tags}{'placement'},
+                                                                 $obj->{tags}{'placement:forward:start'} || $obj->{tags}{'placement:forward'},
+                                                                 $obj->{tags}{'placement:backward:start'} || $obj->{tags}{'placement:backward'});}
+  else                      { $offend = PlacementCountLanes($obj,$obj->{tags}{'placement:end'} || $obj->{tags}{'placement'},
+                                                                 $obj->{tags}{'placement:forward:end'} || $obj->{tags}{'placement:forward'},
+                                                                 $obj->{tags}{'placement:backward:end'} || $obj->{tags}{'placement:backward'});} 
+  $obj->{lanes}{offend} = $offend;
+  $obj->{lanes}{offset} = ($offset + $offend) /2;
+  
+  my $tilt = $offset - $offend;
+     $tilt = rad2deg(atan2($tilt*$LANEWIDTH,135));
+  $obj->{lanes}{tilt} = -$tilt;  
 
-  $obj->{lanes}{tilt} = -$tilt;
-  return $offset;
+  return $obj->{lanes}{offset};
   }
+
   
 #################################################
 ## Read placement tag and calculate drawing offset
@@ -293,13 +305,13 @@ sub getPlacement {
     }
     
   elsif($USEplacement) {
-    if(defined $t->{'placement:start'} && defined $t->{'placement:end'}) {
+    if(defined $t->{'placement:start'} || defined $t->{'placement:end'}) {
       $offset = PlacementStartEnd($obj);
       }
     else {  
       $offset = PlacementCountLanes($obj,$t->{'placement'},$t->{'placement:forward'},$t->{'placement:backward'});
       }
-    $offset *= $LANEWIDTH;  
+    $offset *= $LANEWIDTH;
     }
     
   else {

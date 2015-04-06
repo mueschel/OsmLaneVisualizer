@@ -197,12 +197,14 @@ sub makeAllDestinations {
   my $id = shift @_;
   my $st = shift @_;
   my $option = shift @_;
+  my $correspondingid = shift @_;
   my $t;
   my $lanes;
   
   $t = $store->{way}[$st]{$id}{tags};
   $lanes = $store->{way}[$st]{$id}{lanes};
 
+  my $tilt = -($store->{way}[$st]{$correspondingid || $id}{lanes}->{tilt}||0);
   
   my @destinations;
   for(my $i=0; $i < $lanes->{numlanes}; $i++) {
@@ -224,7 +226,7 @@ sub makeAllDestinations {
             }
           }
         }
-      @destinations[$i] = '<div class="destination '.$w.'">'.@destinations[$i].'</div>';  
+      @destinations[$i] = '<div class="destination '.$w.'"  style="transform:skewX('.$tilt.'deg)">'.@destinations[$i].'</div>';  
       }
     } 
   return \@destinations;
@@ -342,7 +344,7 @@ sub makeWaylayout {
     OSMLanes::InspectLanes($store->{way}[1]{$connectsid});
     
     $out .= '<div class="connectdestination">';
-    my $d = OSMDraw::makeAllDestinations($connectsid,1,'notooltip');
+    my $d = OSMDraw::makeAllDestinations($connectsid,1,'notooltip',$id);
     foreach my $l (@{$d}) {
       $out .= $l;
       }
@@ -356,38 +358,49 @@ sub makeWaylayout {
 #################################################  
 sub makeShoulder {
   my $obj = shift @_;
+  my $side = shift @_;
   my $o = '';
   my $shoulder = $obj->{tags}{'shoulder'};
-  my $bridge= (defined $obj->{tags}{'bridge'})?' bridge':'';
-  my $stl = "style=\"left:".($obj->{lanes}{offset}+246)."px\"";
 
   if(!$obj->{reversed}) {
-    if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
-      $o .= "<div class=\"lane rightshoulder$bridge\">&nbsp;</div>";
+    if($side eq 'right') {
+      if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
+        $o .= "<div class=\"lane shoulder\">&nbsp;</div>";
+        }
+      if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
+        $o .= "<div class=\"lane noshoulder\" >&nbsp;</div>";
+        }
       }
-    if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
-      $o .= "<div class=\"lane norightshoulder$bridge\">&nbsp;</div>";
-      }
-    if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
-      $o .= "<div class=\"lane leftshoulder$bridge\" $stl>&nbsp;</div>";
-      }
-    if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
-      $o .= "<div class=\"lane noleftshoulder$bridge\" $stl>&nbsp;</div>";
+    else {  
+      if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
+        $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
+        $obj->{lanes}{offset} -= 5;
+        }
+      if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
+        $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
+        $obj->{lanes}{offset} -= 36;
+        }
       }
     }
   else {
-    if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
-      $o .= "<div class=\"lane leftshoulder$bridge\" $stl>&nbsp;</div>";
-      }
-    if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
-      $o .= "<div class=\"lane noleftshoulder$bridge\" $stl>&nbsp;</div>";
-      }
-    if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
-      $o .= "<div class=\"lane rightshoulder$bridge\">&nbsp;</div>";
-      }
-    if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
-      $o .= "<div class=\"lane norightshoulder$bridge\">&nbsp;</div>";
-      }
+    if($side eq 'right') {
+      if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
+        $o .= "<div class=\"lane noshoulder\" >&nbsp;</div>";
+        }
+      if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
+        $o .= "<div class=\"lane shoulder\">&nbsp;</div>";
+        }
+      }  
+    else {
+      if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
+        $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
+        $obj->{lanes}{offset} -= 36;
+        }
+      if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
+        $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
+        $obj->{lanes}{offset} -= 5;
+        }
+      }  
     }
   return $o;
   }
@@ -431,11 +444,14 @@ sub drawWay {
   $out .= OSMDraw::makeMaxspeed($id);
   $out .= OSMDraw::makeSigns($waydata->{$id},undef);
   $out .= "</div></div>\n";
-  
-  $out .= '<div class="placeholder" style="transform:skewX('.($lanes->{tilt}||0).'deg);left:'.($lanes->{offset}).'px">'."\n";
-  
+
+  my $bridge = (defined $t->{'bridge'})?'bridge':'';
+ 
+
 
   $waydata->{$id}{lanes}{destinations} = OSMDraw::makeAllDestinations($id,0);
+  
+  my @outputlanes;
   
   for(my $i=0; $i < $lanes->{numlanes}; $i++) {
     my $dir    = $lanes->{list}[$i];
@@ -444,29 +460,47 @@ sub drawWay {
     my $width  = $lanes->{width}[$i];
     my $access = $lanes->{access}[$i];
     my $change = ($lanes->{change}[$i]||"")." ";
-    my $bridge = (defined $t->{'bridge'})?'bridge':'';
-
-    $out .= '<div class="lane '.$dir." ".$change.$bridge.$access.'" ';
-    $out .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
-    $out .= '>';
-    if($dir ne "nolane") {
-      $out .= OSMDraw::makeTurns($turns,$dir);
-      if($lanes->{destinations}[$i]) {  
-        $out .= $lanes->{destinations}[$i];  
-        }
-      $out .= "<div class=\"signs\">";
-      if($max) {
-        $out .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
-        }
-      $out .= OSMDraw::makeSigns($waydata->{$id},$i);
-      $out .= "</div>";
-      if($width && !$lanewidth ) {
-        $out .= "<div class=\"width\">&lt;-".(sprintf('%.1f',$width))."-&gt;</div>";
+    my $o;
+    
+    if($i>0 && $dir eq "forward" && $lanes->{list}[$i-1] eq 'backward') { #between forward and backward, without both_ways
+      if(defined $t->{'traffic_calming'} && $t->{'traffic_calming'} eq 'island') {
+        $o .= '<div class="nolane island" style="width:'.($LANEWIDTH/2).'px;" ';
+        $o .= '></div>';
+        $waydata->{$id}{lanes}{offset} -= $LANEWIDTH/4;
         }
       }
-    $out .= '</div>'."\n";
+    
+    $o .= '<div class="lane '.$dir." ".$change.$access.'" ';
+    $o .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
+    $o .= '>';
+    if($dir ne "nolane") {
+      $o .= OSMDraw::makeTurns($turns,$dir);
+      if($lanes->{destinations}[$i]) {  
+        $o .= $lanes->{destinations}[$i];  
+        }
+      $o .= "<div class=\"signs\" style=\"transform:skewX(-".($lanes->{tilt}||0)."deg)\">";
+      if($max) {
+        $o .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
+        }
+      $o .= OSMDraw::makeSigns($waydata->{$id},$i);
+      $o .= "</div>";
+      if($width && !$lanewidth ) {
+        $o .= "<div class=\"width\">&#x21E0;".(sprintf('%.1f',$width))."&#x21E2;</div>";
+        }
+      }
+    $o .= '</div>';
+    push(@outputlanes,$o);
     }
-  $out .= OSMDraw::makeShoulder($waydata->{$id});
+    
+  unshift(@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'left'));
+  push   (@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'right'));
+  
+#   OSMLanes::calcTilt($waydata->{$id});
+  
+  $out .= '<div class="placeholder '.$bridge.'" style="transform:skewX('.($lanes->{tilt}||0).'deg);margin-left:'.($lanes->{offset}).'px">'."\n";
+  #$out .= OSMDraw::makeSidewalk($waydata->{$id},'left');
+  $out .= join("\n",@outputlanes);
+  #$out .= OSMDraw::makeSidewalk($waydata->{$id},'right');
   $out .= "</div>";#placeholder
   
   my $beginnodetags = $nodedata->{$waydata->{$id}{begin}}{'tags'};  

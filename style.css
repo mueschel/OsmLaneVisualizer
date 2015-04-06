@@ -231,6 +231,7 @@ div.lane {
   border-right: 3px dashed white;
   width: 114px;
   float: left;
+  display: inline-block;
   cursor: default; }
 
 div.nolane {
@@ -239,6 +240,7 @@ div.nolane {
   border-right: 1px solid white !important;
   height: 135px;
   width: 114px;
+  display: inline-block;
   float: left; }
 
 div.lane.backward {
@@ -255,31 +257,36 @@ div.lane.not_right.forward, div.lane.not_left.backward {
   border-right: 3px solid white; }
 
 div.placeholder {
-  position: relative; }
+  position: relative;
+  height: 132px;
+  /*   left: ($labelWidth + $signsWidth); */
+  display: inline-block;
+  padding: 0;
+  /*   border:1px solid black; */ }
 
 div.lane.bicycledesig {
   background: #ccc; }
 
-div.rightshoulder, div.norightshoulder, div.leftshoulder, div.noleftshoulder {
+div.shoulder, div.noshoulder {
   background: #ccc;
   height: 135px; }
 
-div.rightshoulder, div.leftshoulder {
+div.shoulder {
   border-left: 3px solid white;
   border-right: 3px solid white;
   width: 66px;
-  float: left; }
+  background: #ccc; }
 
-div.norightshoulder, div.noleftshoulder {
+div.noshoulder {
   border: none;
-  width: 5px;
-  float: left; }
+  width: 4px;
+  background: #aaa; }
 
-div.noleftshoulder, div.leftshoulder {
-  float: none;
-  box-shadow: none !important;
-  position: absolute; }
-
+/*div.noleftshoulder, div.leftshoulder {
+  float:none;
+  box-shadow:none !important;
+  position:absolute;
+  }  */
 div.turns.backward {
   position: relative;
   top: 110px;
@@ -287,6 +294,10 @@ div.turns.backward {
 
 .extrasize div.turns.backward {
   top: 181.55px; }
+
+div.nolane.island {
+  background: #666;
+  width: 60px; }
 
 div.middle {
   z-index: 10;
@@ -304,21 +315,19 @@ div.destination {
   width: 110px;
   text-align: center;
   top: 10px;
-  margin-left: 2px; }
+  margin-left: 2px;
+  z-index: 1; }
 
 .backward div.destination {
   top: -15px; }
 
 div.destination.double {
-  z-index: 1;
   width: 230px; }
 
 div.destination.triple {
-  z-index: 1;
   width: 350px; }
 
 div.destination.quadruple {
-  z-index: 1;
   width: 470px; }
 
 .extrasize div.destination {
