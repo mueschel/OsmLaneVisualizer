@@ -494,8 +494,7 @@ sub drawWay {
     
   unshift(@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'left'));
   push   (@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'right'));
-  
-#   OSMLanes::calcTilt($waydata->{$id});
+
   
   $out .= '<div class="placeholder '.$bridge.'" style="transform:skewX('.($lanes->{tilt}||0).'deg);margin-left:'.($lanes->{offset}).'px">'."\n";
   #$out .= OSMDraw::makeSidewalk($waydata->{$id},'left');

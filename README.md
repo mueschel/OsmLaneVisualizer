@@ -9,21 +9,21 @@ The code is free to use under conditions of cc-by-nc-sa (http://creativecommons.
 
 Interpreted Tags
 --------------
-*  **bicycle[:lanes][:forward|:backward]** The values no, designated and official are displayed
+*  **bicycle[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **bridge[:name]** Bridges are displayed using a shadow behind the lanes, the name is shown
-*  **bus[:lanes][:forward|:backward]** The values designated and official are displayed
-*  **change[:lanes][:forward|:backward]** Shown as solid or dashed lines between lanes
-*  **destination[:lanes][:forward|:backward]** Shown using german-style destination signs.
-*  **destination:colour[:lanes][:forward|:backward]** Used as background color for individual destinations on a sign.
-*  **destination:country[:lanes][:forward|:backward]** If the number of entries matches the number of destination's, the country codes are listed next to the destination, otherwise they are grouped at the bottom of the sign.
-*  **destination:ref[:lanes][:forward|:backward]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
-*  **destination:symbol[:lanes][:forward|:backward]** Some common symbols are displayed. They are listed next to destination names
-*  **foot[:lanes][:forward|:backward]** The values no, designated and official are displayed
+*  **bus[:lanes][:forward|:backward|:both_ways]** The values designated and official are displayed
+*  **change[:lanes][:forward|:backward|:both_ways]** Shown as solid or dashed lines between lanes
+*  **destination[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs.
+*  **destination:colour[:lanes][:forward|:backward|:both_ways]** Used as background color for individual destinations on a sign.
+*  **destination:country[:lanes][:forward|:backward|:both_ways]** If the number of entries matches the number of destination's, the country codes are listed next to the destination, otherwise they are grouped at the bottom of the sign.
+*  **destination:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
+*  **destination:symbol[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
+*  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
-*  **hgv[:lanes][:forward|:backward]** The values no, designated and official are displayed
+*  **hgv[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **lanes[:forward|:backward|:both_ways]**  Used to determine the number of lanes. Might be overruled by other tags
 *  **maxspeed**  
- * **maxspeed[:lanes][:forward|:backward]**  Supported, shown on left-hand side. Displayed inside lane for lane dependent tags
+ * **maxspeed[:lanes][:forward|:backward|:both_ways]**  Supported, shown on left-hand side. Displayed inside lane for lane dependent tags
  * **maxspeed:conditional**   Supported, shown on left-hand side, no lane or direction dependence.
  * **maxspeed:hgv**   Supported, shown on left-hand side, no lane or direction dependence
 *  **motorroad** If yes, the corresponding sign is shown
@@ -31,11 +31,11 @@ Interpreted Tags
 *  **oneway**  Mostly supported, oneway=-1 might fail in some cases
 *  **overtaking[:hgv][:forward|:backward]** Shown as solid line between forward and backward lanes
 *  **placement[:forward|:backward][:start|:end]** Used for positioning lanes if enabled. Additional: Experimental support for a tag proposed by Imagic to give further detail in case of placement=transistion
-*  **psv[:lanes][:forward|:backward]** The values designated and official are displayed
+*  **psv[:lanes][:forward|:backward|:both_ways]** The values designated and official are displayed
 *  **ref** Shown in left column, used to determine color of signs
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
 *  **tunnel:name** Name is shown if available
-*  **turn[:lanes][:forward|:backward]** Rendered by using Unicode characters. 
+*  **turn[:lanes][:forward|:backward|:both_ways]** Rendered by using Unicode characters. 
 *  **width[:lanes][:forward|:backward]** Used if enabled
 
 

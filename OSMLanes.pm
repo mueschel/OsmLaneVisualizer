@@ -124,37 +124,66 @@ sub getLaneTags {
   my $lanes = $obj->{lanes};
   my @out;
   
+  push(@out,'') for 0..$lanes->{numlanes}-1;
+  
   if(defined $t->{$tag} && !($options =~ /nonolanes/))   {
-    for(my $i=0; $i<$lanes->{bck};$i++)   {push(@out,$t->{$tag});}
-    for(my $i=0; $i<$lanes->{both};$i++)  {push(@out,'');}
-    for(my $i=0; $i<$lanes->{fwd};$i++)   {push(@out,$t->{$tag});}
+    $out[$_] = $t->{$tag}  for 0..$lanes->{numlanes}-1;
     }
-  elsif(defined $t->{$tag.':lanes'}) {
-    my @tmp = split('\|',$t->{$tag.':lanes'},-1);
-    push(@out,@tmp);
-    }
-  else{  
-    if(defined $t->{$tag.':lanes:backward'}) {
-      my @tmp = split('\|',$t->{$tag.':lanes:backward'},-1);
-      for(@tmp) {$_ = $_ || $t->{$tag.':backward'}; }
-      push(@out,reverse @tmp);
-      }  
-    elsif ($lanes->{bck}) {
-      for(my $i=0; $i<$lanes->{bck};$i++){push(@out,$t->{$tag.':backward'} || '');}
-      }
     
-    for(my $i=0; $i<$lanes->{both};$i++){push(@out,'');}
-    
-    if(defined $t->{$tag.':lanes:forward'}) {
-      my @tmp = split('\|',$t->{$tag.':lanes:forward'},-1);
-      for(@tmp) {$_ = $_ || $t->{$tag.':forward'}; }
-      push(@out,@tmp);
-      }
-    else {
-      for(my $i=0; $i<$lanes->{fwd};$i++){push(@out, $t->{$tag.':forward'} || '');}
+  if(defined $t->{$tag.':backward'}) {  
+    for(my $i=0; $i<$lanes->{bck}; $i++) {
+      $out[$i] = $t->{$tag.':backward'};
       }
     }
 
+  if(defined $t->{$tag.':both_ways'}) {  
+    for(my $i=0; $i<$lanes->{both}; $i++) {
+      $out[$i+$lanes->{bck}] = $t->{$tag.':both_ways'};
+      }
+    }
+
+  if(defined $t->{$tag.':forward'}) {  
+    for(my $i=0; $i<$lanes->{fwd}; $i++) {
+      $out[$i+$lanes->{bck}+$lanes->{both}] = $t->{$tag.':forward'};
+      }
+    }
+    
+  if(defined $t->{$tag.':lanes'}) {
+    my @tmp = split('\|',$t->{$tag.':lanes'},-1);
+    for(my $i=0; $i<scalar @tmp;$i++) {
+      if(defined $tmp[$i] && $tmp[$i] ne "" && !($tmp[$i] =~ /^\s*$/)) {
+        $out[$i] = $tmp[$i];
+        }
+      }
+    }
+
+  if(defined $t->{$tag.':lanes:backward'}) {
+    my @tmp = split('\|',$t->{$tag.':lanes:backward'},-1);
+    for(my $i=0; $i<scalar @tmp;$i++) {
+      if(defined $tmp[$i] && $tmp[$i] ne "" && !($tmp[$i] =~ /^\s*$/)) {
+        $out[$lanes->{bck}-1-$i] = $tmp[$i];
+        }
+      }
+    }    
+
+  if(defined $t->{$tag.':lanes:both_ways'}) {
+    my @tmp = split('\|',$t->{$tag.':lanes:both_ways'},-1);
+    for(my $i=0; $i<scalar @tmp;$i++) {
+      if(defined $tmp[$i] && $tmp[$i] ne "" && !($tmp[$i] =~ /^\s*$/)) {
+        $out[$lanes->{bck}+$i] = $tmp[$i];
+        }
+      }
+    }    
+
+  if(defined $t->{$tag.':lanes:forward'}) {
+    my @tmp = split('\|',$t->{$tag.':lanes:forward'},-1);
+    for(my $i=0; $i<scalar @tmp;$i++) {
+      if(defined $tmp[$i] && $tmp[$i] ne "" && !($tmp[$i] =~ /^\s*$/)) {
+        $out[$lanes->{bck}+$lanes->{both}+$i] = $tmp[$i];
+        }
+      }
+    }        
+ 
   if(!($options =~ /noreverse/) && $obj->{reversed}) {
     @out  = reverse @out;
     }  
