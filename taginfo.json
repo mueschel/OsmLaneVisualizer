@@ -154,7 +154,7 @@
     { "key" : "width:lanes",           "object_types": ["way"], "description": "The width of lanes is either displayed or used for drawing the road"},
     { "key" : "width:lanes:backward",  "object_types": ["way"], "description": "The width of lanes is either displayed or used for drawing the road"},
     { "key" : "width:lanes:forward",   "object_types": ["way"], "description": "The width of lanes is either displayed or used for drawing the road"},
-    { "key" : "width:lanes:both_ways", "object_types": ["way"], "description": "The width of lanes is either displayed or used for drawing the road"},
+    { "key" : "width:lanes:both_ways", "object_types": ["way"], "description": "The width of lanes is either displayed or used for drawing the road"}
             
   ]
 }
