@@ -367,12 +367,12 @@ sub makeShoulder {
       if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
         $o .= "<div class=\"lane shoulder\">&nbsp;</div>";
         }
-      if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
+      if((((defined $shoulder && $shoulder ne 'right' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:right'} ne 'yes') || $obj->{tags}{'shoulder:right'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\" >&nbsp;</div>";
         }
       }
     else {  
-      if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
+      if((((defined $shoulder && $shoulder ne 'left' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:left'} ne 'yes') || $obj->{tags}{'shoulder:left'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
         $obj->{lanes}{offset} -= 5;
         }
@@ -384,7 +384,7 @@ sub makeShoulder {
     }
   else {
     if($side eq 'right') {
-      if($shoulder eq 'left' || $shoulder eq 'no' || $obj->{tags}{'shoulder:right'} eq 'no') {
+      if((((defined $shoulder && $shoulder ne 'left' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:left'} ne 'yes') || $obj->{tags}{'shoulder:left'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\" >&nbsp;</div>";
         }
       if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
@@ -396,7 +396,7 @@ sub makeShoulder {
         $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
         $obj->{lanes}{offset} -= 36;
         }
-      if($shoulder eq 'right' || $shoulder eq 'no' || $obj->{tags}{'shoulder:left'} eq 'no') {
+      if((((defined $shoulder && $shoulder ne 'right' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:right'} ne 'yes') || $obj->{tags}{'shoulder:right'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
         $obj->{lanes}{offset} -= 5;
         }
