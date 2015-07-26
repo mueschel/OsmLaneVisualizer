@@ -28,7 +28,6 @@ div.config h3, div.selectquery h3 {
   font-size: 15px; }
 
 div.selectquery input[type=text] {
-  /*   margin-left:40px; */
   width: 100px; }
 
 div.way {
@@ -157,8 +156,6 @@ div.signs .footno {
 div.signs .hgvno {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_253.svg"); }
 div.signs .motorroad {
-  /*     height:25px; */
-  /*     width:25px; */
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg"); }
 div.signs .overtaking {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/8/87/Zeichen_276.svg"); }
@@ -168,6 +165,12 @@ div.signs .bicycledesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
 div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
+div.signs .condition.wet {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
+  height: 35px; }
+div.signs .condition.hgv {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
+  height: 20px; }
 
 .lane div.signs div {
   height: 26px;
@@ -199,15 +202,8 @@ div.maxcont .condition {
   height: 12px;
   background-size: 30px; }
 
-div.condition.wet {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
-  border: none;
-  height: 35px; }
-
-div.condition.hgv {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
-  border: none;
-  height: 20px; }
+div.condition {
+  border: none; }
 
 div.lane .signs {
   position: absolute;
@@ -259,10 +255,8 @@ div.lane.not_right.forward, div.lane.not_left.backward {
 div.placeholder {
   position: relative;
   height: 132px;
-  /*   left: ($labelWidth + $signsWidth); */
   display: inline-block;
-  padding: 0;
-  /*   border:1px solid black; */ }
+  padding: 0; }
 
 div.lane.bicycledesig {
   background: #ccc; }
@@ -282,11 +276,6 @@ div.noshoulder {
   width: 4px;
   background: #aaa; }
 
-/*div.noleftshoulder, div.leftshoulder {
-  float:none;
-  box-shadow:none !important;
-  position:absolute;
-  }  */
 div.turns.backward {
   position: relative;
   top: 110px;

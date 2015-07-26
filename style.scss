@@ -46,7 +46,6 @@ div.config h3, div.selectquery h3{
   }
 
 div.selectquery input[type=text]{
-/*   margin-left:40px; */
   width:100px;
 }  
   
@@ -192,36 +191,7 @@ div.signs {
     height:25px;    
     }
   
-  .bicycleno {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/48/Zeichen_254.svg");
-    }
-  
-  .footno {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/c/cc/Zeichen_259.svg");
-    }  
-
-  .hgvno {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_253.svg");
-    }
-    
-  .motorroad {
-/*     height:25px; */
-/*     width:25px; */
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg");
-    }  
-  .overtaking {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/8/87/Zeichen_276.svg");
-    }  
-  .overtakinghgv {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/c/ca/Zeichen_277.svg");
-    }  
-    
-  .bicycledesig {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg");
-    }
-  .busdesig {
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg");
-    }  
+  @import 'signs_DE'; 
   } 
 
 .lane div.signs div {
@@ -261,16 +231,9 @@ div.maxcont .condition {
   background-size:30px;
 }
 
-div.condition.wet {
-  background-image:url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
+div.condition {
   border:none;
-  height:35px;
   }
-div.condition.hgv {
-  background-image:url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
-  border:none;
-  height:20px;
-  }  
   
 div.lane .signs {
   position: absolute;
@@ -335,10 +298,8 @@ div.lane.not_right.forward, div.lane.not_left.backward {
 div.placeholder {
   position:relative;
   height: ($laneHeight - 3px);
-/*   left: ($labelWidth + $signsWidth); */
   display:inline-block;
   padding:0;
-/*   border:1px solid black; */
   }
 
 div.lane.bicycledesig {
@@ -362,12 +323,7 @@ div.noshoulder {
   background:#aaa;
   } 
 
-/*div.noleftshoulder, div.leftshoulder {
-  float:none;
-  box-shadow:none !important;
-  position:absolute;
-  }  */
-  
+ 
 div.turns.backward {
   position:relative;
   top:($laneHeight - 25px);
@@ -567,36 +523,7 @@ div.refcont div div.dest {
   }  
   
 div.refcont div {
-  div.industrial span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg") ;
-    }
-  div.park_and_ride span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg") ;
-    }  
-  div.parking span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg") ;
-    }  
-  div.fuel span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg") ;
-    }  
-  div.stadium span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg") ;
-    } 
-  div.airport span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg") ;
-    }   
-  div.restaurant span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg") ;
-    }   
-  div.toilets span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg") ;
-    } 
-  div.motorway span, div.highway span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg") ;
-    } 
-  div.hospital span {  
-    background-image:url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg") ;
-    }  
+  @import 'destinationsigns';
 
   div.symbol span {
     padding-left:15px;
