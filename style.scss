@@ -4,7 +4,6 @@ $laneWidth:  120px;
 $laneSub: 6px; /*Width of  borders*/
 $labelWidth: 100px;
 $signsWidth: 150px;
-$extraMult: 1.53;
 
 $colorAutobahn: #5078D0;
 $colorBundesstrasse: #F0E060;
@@ -72,9 +71,6 @@ div.sep .name {
   left:$labelWidth;
   z-index:10;
   }  
-.extrasize div.sep .name {
-  top: -15px;
-  }
   
 div.waylayout {
   position:absolute;
@@ -87,9 +83,6 @@ div.waylayout {
   box-shadow:5px 5px 5px #aaa;
   border:1px solid #aaa;
   }  
-.extrasize div.waylayout {
-  top:(0px - $laneHeight*$extraMult - 52px);
-  }
   
 div.connects {
   position:absolute;
@@ -243,18 +236,6 @@ div.lane .signs {
   width:100%; 
   }
   
-.extrasize {
-  div.lane, div.nolane {
-    width:($laneWidth * $extraMult - $laneSub);
-    height:($laneHeight * $extraMult);
-    }
-  div.middle {
-    height:($laneHeight * $extraMult);
-    left:(4*$laneWidth*$extraMult + $labelWidth + $signsWidth);
-    }
-  }  
-
-  
 div.lane {
   position: relative;
   background:#cdc;
@@ -329,9 +310,6 @@ div.turns.backward {
   top:($laneHeight - 25px);
   transform: rotate(180deg);
   }  
-.extrasize div.turns.backward {
-  top:($laneHeight*$extraMult - 25px);
-  }
   
 div.nolane.island {
   background:#666;
@@ -373,20 +351,6 @@ div.destination.quadruple {
   width:(4*$laneWidth - $laneSub - 4px);
   }
 
-.extrasize div.destination {
-  width:($laneWidth * $extraMult - $laneSub - 4px);
-  } 
-  
-.extrasize div.destination.double {
-  width:(2*$laneWidth*$extraMult - $laneSub - 4px);
-  }  
-.extrasize div.destination.triple {
-  width:(3*$laneWidth*$extraMult - $laneSub - 4px);
-  }
-.extrasize div.destination.quadruple {
-  width:(4*$laneWidth*$extraMult - $laneSub - 4px);
-  }
-  
 div.bridge  {
   box-shadow:5px 0px 5px #888;
   }
@@ -430,8 +394,6 @@ span.destCountry {
   display:inline;
 }
 
-
-
 .info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK {
   float:left;
   height:14px;
@@ -473,9 +435,6 @@ div.A, div.B, div.K {
   max-height:($laneHeight - 20px);
   overflow:hidden;
   }
-.extrasize div.A, .extrasize div.B, .extrasize div.K {
-  max-height:($laneHeight*$extraMult - 20px);
-  }
   
 div.A {
   background:$colorAutobahn;
@@ -509,19 +468,6 @@ div.refcont div div.dest {
   width:(4*$laneWidth - 17px);
   }
   
-.extrasize div.refcont div div.dest {
-  width:($laneWidth*$extraMult - 17px);
-  }  
-.extrasize .double div.refcont div div.dest {
-  width:(2*$laneWidth*$extraMult - 17px);
-  }
-.extrasize .triple div.refcont div div.dest {
-  width:(3*$laneWidth*$extraMult - 17px);
-  }  
-.extrasize .quadruple div.refcont div div.dest {
-  width:(4*$laneWidth*$extraMult - 17px);
-  }  
-  
 div.refcont div {
   @import 'destinationsigns';
 
@@ -543,13 +489,6 @@ div.refcont div {
     width:24px;
     }
   } 
-
-.extrasize div.refA, .extrasize div.refB, .extrasize div.refK {  
-  max-width:155px;
-  }  
-.extrasize div.refcont div div.symbol {
-  width:145px;
-  }  
   
 div.refcont:hover .tooltip {
   opacity:1;
@@ -586,7 +525,6 @@ div.turns {
   
 div.connectdestination .K, div.connectdestination .A, div.connectdestination .B{
   box-shadow:5px 5px 5px #aaa;  
-/*   float:left; */
   }  
   
 div.connectdestination {
