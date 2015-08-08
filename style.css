@@ -161,9 +161,13 @@ div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
 div.signs .condition.wet {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
+  border: none;
+  background-color: transparent;
   height: 35px; }
 div.signs .condition.hgv {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
+  border: none;
+  background-color: transparent;
   height: 20px; }
 
 .lane div.signs div {

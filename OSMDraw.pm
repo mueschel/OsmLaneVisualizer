@@ -42,21 +42,23 @@ sub makeMaxspeed {
     $out .= '<div class="condition hgv">&nbsp;</div>';
     $out .= '</div>';
     }
-  if ($t->{'maxspeed:conditional'})  {
-    my $str = $t->{'maxspeed:conditional'};
-    while ($str =~ /([^\(;]+)\s*@\s*(\(([^\)]+)\)|([^;]+))/g) {
-      my $what = $1;
-      my $when = $3.$4;
-      my $title = $1.' @ '.$3.$4;
-      my $class;
-      $when =~ s/:00//g;
-      if($when eq 'wet') {$when = ''; $class="wet";}
-      $out .= '<div class="maxcont" title="'.$title.'">';
-      $out .= '<div class="max ">'.$what.'</div>';
-      $out .= '<div class="condition '.$class.'">'.$when.'</div>';
-      $out .= '</div>';
+  foreach my $mc (qw(maxspeed:conditional maxspeed:forward:conditional maxspeed:backward:conditional)) {   
+    if ($t->{$mc})  {
+      my $str = $t->{$mc};
+      while ($str =~ /([^\(;]+)\s*@\s*(\(([^\)]+)\)|([^;]+))/g) {
+        my $what = $1;
+        my $when = $3.$4;
+        my $title = $1.' @ '.$3.$4;
+        my $class;
+        $when =~ s/:00//g;
+        if($when eq 'wet') {$when = ''; $class="wet";}
+        $out .= '<div class="maxcont" title="'.$title.'">';
+        $out .= '<div class="max ">'.$what.'</div>';
+        $out .= '<div class="condition '.$class.'">'.$when.'</div>';
+        $out .= '</div>';
+        }
       }
-    }
+    }  
   return $out;
   }
 
@@ -374,7 +376,7 @@ sub makeShoulder {
     else {  
       if((((defined $shoulder && $shoulder ne 'left' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:left'} ne 'yes') || $obj->{tags}{'shoulder:left'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
-        $obj->{lanes}{offset} -= 5;
+        $obj->{lanes}{offset} -= 4;
         }
       if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
         $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
@@ -398,7 +400,7 @@ sub makeShoulder {
         }
       if((((defined $shoulder && $shoulder ne 'right' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:right'} ne 'yes') || $obj->{tags}{'shoulder:right'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
-        $obj->{lanes}{offset} -= 5;
+        $obj->{lanes}{offset} -= 4;
         }
       }  
     }
