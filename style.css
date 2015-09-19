@@ -351,7 +351,7 @@ span.destCountry {
   font-size: 11px;
   padding: 1px; }
 
-div.refA, div.refB, div.refK {
+div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
   margin: 2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -360,17 +360,21 @@ div.refA, div.refB, div.refK {
   display: inline;
   float: right; }
 
-div.refA {
+span.refA, span.refB, span.refK {
+  display: inline-block;
+  float: none; }
+
+div.refA, span.refA {
   background: #5078D0;
   border: 1px solid white;
   color: white; }
 
-div.refB {
+div.refB, span.refB {
   background: #F0E060;
   border: 1px solid black;
   color: black; }
 
-div.refK {
+div.refK, span.refK {
   background: white;
   border: 1px solid black;
   color: black; }
@@ -411,27 +415,27 @@ div.refcont div div.dest {
 .quadruple div.refcont div div.dest {
   width: 463px; }
 
-div.refcont div div.industrial span {
+div.refcont div div.industrial > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
-div.refcont div div.park_and_ride span {
+div.refcont div div.park_and_ride > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
-div.refcont div div.parking span {
+div.refcont div div.parking > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
-div.refcont div div.fuel span {
+div.refcont div div.fuel > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
-div.refcont div div.stadium span {
+div.refcont div div.stadium > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
-div.refcont div div.airport span {
+div.refcont div div.airport > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
-div.refcont div div.restaurant span {
+div.refcont div div.restaurant > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
-div.refcont div div.toilets span {
+div.refcont div div.toilets > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
-div.refcont div div.motorway span, div.refcont div div.highway span {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b4/Zeichen_330.svg"); }
-div.refcont div div.hospital span {
+div.refcont div div.motorway > span, div.refcont div div.highway > span {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg"); }
+div.refcont div div.hospital > span {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
-div.refcont div div.symbol span {
+div.refcont div div.symbol > span {
   padding-left: 15px;
   background-size: 15px;
   background-repeat: no-repeat; }
@@ -439,7 +443,7 @@ div.refcont div div.symbolonly {
   float: left;
   height: 24px;
   width: 24px; }
-div.refcont div div.symbolonly span {
+div.refcont div div.symbolonly > span {
   background-size: 24px;
   background-repeat: no-repeat;
   display: block;

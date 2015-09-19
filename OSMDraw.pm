@@ -114,6 +114,21 @@ sub makeSigns {
     }
   return $out;
   }
+
+#################################################
+## Print a road ref number
+#################################################   
+sub printRef {
+  my $r = shift @_;
+  my $cr = "";
+  my $o = "";
+  $cr = "A" if $r =~ /^\s*A/;
+  $cr = "B" if $r =~ /^\s*B/;
+  unless($r =~ '^\s*$') {
+    $o .='<span class="ref'.$cr.'">'.$r.'</span>';
+    }
+  return $o;  
+  }
   
 #################################################
 ## Make a full destination sign for one lane
@@ -125,18 +140,19 @@ sub makeDestination {
   my $dest    = $lanes->{destination}[$lane];
   my $roadref = $way->{'ref'};
   my $ref     = $lanes->{destinationref}[$lane];
+  my $refto   = $lanes->{destinationrefto}[$lane];
   my $destcol = $lanes->{destinationcolour}[$lane];
   my $destsym = $lanes->{destinationsymbol}[$lane];
   my $destcountry = $lanes->{destinationcountry}[$lane];
   my $titledest = $dest;
   my $signdest  = $dest;
 
-  $ref =~ s/;/ \/ /g;
+  $ref   =~ s/;/ \/ /g;
   $signdest =~ s/;/<br>/g;
   $titledest =~ s/;/\n/g;  
   $destsym =~ s/none//g;
   
-  if($ref || $dest || $destsym || $destcountry) {
+  if($ref || $dest || $destsym || $destcountry || $refto) {
     $o .= '<div class="refcont">';
     unless($option =~ /notooltip/) {
       $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
@@ -148,12 +164,13 @@ sub makeDestination {
 
     
     $o .='<div class="'.$cr.'" >';
-    my @dests = split(";",$dest,-1);
-    my @cols  = split(";",$destcol,-1);
-    my @syms  = split(";",$destsym,-1);
-    my @ctr   = split(';',$destcountry,-1);
+    my @dests  = split(";",$dest,-1);
+    my @reftos = split(";",$refto,-1);
+    my @cols   = split(";",$destcol,-1);
+    my @syms   = split(";",$destsym,-1);
+    my @ctr    = split(';',$destcountry,-1);
 
-    for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
+    for (my $i = 0; $i < max(scalar @dests,scalar @syms, scalar @reftos); $i++ ) {
       if($cols[$i]) {
         my $tc = '';
         if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
@@ -162,11 +179,14 @@ sub makeDestination {
         $cols[$i] .= $tc.'"';
         }
       if($syms[$i]) {
-        if(!$dests[$i]) {$syms[$i] .= " symbolonly";}
+        if(!$dests[$i] && !$reftos[$i]) {$syms[$i] .= " symbolonly";}
         else {$syms[$i] .= " symbol";}
         }
       $syms[$i] = "dest ".$syms[$i];
-      $o .= '<div class="'.$syms[$i].'"><span '.$cols[$i].'>'.($dests[$i]||"&nbsp;").'</span>';
+      $o .= '<div class="'.$syms[$i].'">';
+      $o .= '<span '.$cols[$i].'>';
+      $o .= printRef($reftos[$i]) if(scalar @reftos == scalar @dests  && $reftos[$i]); # 
+      $o .= ($dests[$i]||"&nbsp;").'</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
       $o .= '</div>';
       }
@@ -179,17 +199,20 @@ sub makeDestination {
         $o .= '<div class="destCountry">'.$c.'</div>';
         }
       }
-
+    if(scalar @reftos != scalar @dests) {
+      foreach my $c (@reftos) {
+        $o .= printRef($c) if ($c && !($c=~/^\s*$/ ));
+        }
+      $o .= '<div class="clear">&nbsp;</div>'; 
+      }
+      
     if($ref) {
       my @refs = split('/',$ref);
       foreach my $r (reverse @refs) {
-        $cr = "A" if $r =~ /^\s*A/;
-        $cr = "B" if $r =~ /^\s*B/;
-        unless($r =~ '^\s*$') {
-          $o .='<div class="ref'.$cr.'">'.$r.'</div>';
-          }
+        $o .= printRef($r);
         }
       }  
+     
     $o .= "</div></div>";  
     }
   return $o;  

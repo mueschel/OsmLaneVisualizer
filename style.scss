@@ -401,7 +401,7 @@ span.destCountry {
   padding:1px;
   }  
   
-div.refA, div.refB, div.refK {
+div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
   margin:2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -411,17 +411,22 @@ div.refA, div.refB, div.refK {
   float:right;
   }  
   
-div.refA {
+span.refA, span.refB, span.refK {
+  display:inline-block;
+  float:none;
+  }    
+  
+div.refA, span.refA {
   background:$colorAutobahn;
   border:1px solid white;
   color:white;
   }  
-div.refB {
+div.refB, span.refB {
   background:$colorBundesstrasse;
   border:1px solid black;
   color:black;
   }  
-div.refK {
+div.refK, span.refK {
   background:white;
   border:1px solid black;
   color:black;
@@ -471,7 +476,7 @@ div.refcont div div.dest {
 div.refcont div {
   @import 'destinationsigns';
 
-  div.symbol span {
+  div.symbol>span {
     padding-left:15px;
     background-size:15px;
     background-repeat:no-repeat;
@@ -481,7 +486,7 @@ div.refcont div {
     height:24px;
     width:24px;    
     }
-  div.symbolonly span{
+  div.symbolonly>span{
     background-size:24px;
     background-repeat:no-repeat;
     display:block;
