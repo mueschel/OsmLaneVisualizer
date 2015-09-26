@@ -304,6 +304,18 @@ div.noshoulder {
   background:#aaa;
   } 
 
+div.sidewalk {
+  border:none;
+  width:50px;
+  background:#bde;
+  }  
+  
+div.nosidewalk {
+  border:none;
+  width:4px;
+  background : #bde;
+  }  
+  
  
 div.turns.backward {
   position:relative;
@@ -541,3 +553,4 @@ div.connectdestination {
 div.connectdestination div.destination {
   float:left;
 }
+

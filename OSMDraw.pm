@@ -382,7 +382,7 @@ sub makeWaylayout {
 ## draws shoulders of ways
 #################################################  
 sub makeShoulder {
-  my $obj = shift @_;
+  my $obj = $waydata->{shift @_};
   my $side = shift @_;
   my $o = '';
   my $shoulder = $obj->{tags}{'shoulder'};
@@ -429,7 +429,42 @@ sub makeShoulder {
     }
   return $o;
   }
+
+#################################################
+## draws sidewalks
+#################################################    
+sub makeSidewalk {
+  my $obj = $waydata->{shift @_};
+  my $side = shift @_;
+  my $o = '';
+  my $sidewalk = $obj->{tags}{'sidewalk'};
+
+  my $l; my $r;
+  if($sidewalk eq "no" || $sidewalk eq "none") {$l = "nosidewalk";    $r = "nosidewalk"; }
+  elsif($sidewalk eq "left") {$l = "sidewalk";    $r = "nosidewalk"; }
+  elsif($sidewalk eq "right") {$l = "nosidewalk";    $r = "sidewalk"; }
+  elsif($sidewalk eq "both") {$l = "sidewalk";    $r = "sidewalk"; }
+  elsif(defined $sidewalk)  {$l = "nosidewalk";    $r = "nosidewalk"; }
   
+  if($r && ($side eq 'right' && !$obj->{reversed}) || ($side eq 'left' && $obj->{reversed})) {
+    $o .= "<div class=\"lane $r\" >&nbsp;</div>";
+    }
+  elsif($l) {
+    $o .= "<div class=\"lane $l\" >&nbsp;</div>";
+    }
+    
+  if($r && $obj->{reversed} && $side eq 'right') {  
+    $obj->{lanes}{offset} -= 50  unless($r =~ /^no/) ;
+    $obj->{lanes}{offset} -= 4   if($r =~ /^no/) ;
+    }
+  if($l && !$obj->{reversed} && $side eq 'left') {  
+    $obj->{lanes}{offset} -= 50  unless($l =~ /^no/) ;
+    $obj->{lanes}{offset} -= 4   if($l =~ /^no/) ;
+    }
+  
+  return $o;  
+  }
+   
 #################################################
 ## Produce html output to show a way
 #################################################  
@@ -517,14 +552,14 @@ sub drawWay {
     push(@outputlanes,$o);
     }
     
-  unshift(@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'left'));
-  push   (@outputlanes,OSMDraw::makeShoulder($waydata->{$id},'right'));
+  unshift(@outputlanes,OSMDraw::makeShoulder($id,'left'));
+  push   (@outputlanes,OSMDraw::makeShoulder($id,'right'));
 
+  unshift(@outputlanes,OSMDraw::makeSidewalk($id,'left'));
+  push   (@outputlanes,OSMDraw::makeSidewalk($id,'right'));
   
   $out .= '<div class="placeholder '.$bridge.'" style="transform:skewX('.($lanes->{tilt}||0).'deg);margin-left:'.($lanes->{offset}).'px">'."\n";
-  #$out .= OSMDraw::makeSidewalk($waydata->{$id},'left');
   $out .= join("\n",@outputlanes);
-  #$out .= OSMDraw::makeSidewalk($waydata->{$id},'right');
   $out .= "</div>";#placeholder
   
   my $beginnodetags = $nodedata->{$waydata->{$id}{begin}}{'tags'};  

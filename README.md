@@ -17,6 +17,7 @@ Interpreted Tags
 *  **destination:colour[:lanes][:forward|:backward|:both_ways]** Used as background color for individual destinations on a sign.
 *  **destination:country[:lanes][:forward|:backward|:both_ways]** If the number of entries matches the number of destination's, the country codes are listed next to the destination, otherwise they are grouped at the bottom of the sign.
 *  **destination:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
+*  **destination:ref:to[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **destination:symbol[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
@@ -34,6 +35,7 @@ Interpreted Tags
 *  **psv[:lanes][:forward|:backward|:both_ways]** The values designated and official are displayed
 *  **ref** Shown in left column, used to determine color of signs
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
+*  **sidewalk** Shown in light blue on left and right side of the road
 *  **tunnel:name** Name is shown if available
 *  **turn[:lanes][:forward|:backward|:both_ways]** Rendered by using Unicode characters. 
 *  **width[:lanes][:forward|:backward]** Used if enabled

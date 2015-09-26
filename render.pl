@@ -1,13 +1,12 @@
 #!/usr/bin/perl
-print "Content-Type: text/html; charset=utf-8\r\n\r\n";
 
 use Data::Dumper;
 use warnings;
 use strict;
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use utf8;
-binmode(STDIN, ":utf8");
-binmode(STDOUT, ":utf8");
+binmode(STDIN, ":encoding(UTF-8)");
+binmode(STDOUT, ":encoding(UTF-8)");
 use JSON;
 use LWP::Simple;
 use URI::Escape qw(uri_unescape uri_escape);
@@ -19,6 +18,7 @@ use OSMData;
 use OSMLanes;
 use OSMDraw;
 
+print "Content-Type: text/html; charset=utf-8\r\n\r\n";
 
 
 my $url = '<osm-script output="json" timeout="25"> <union> <query type="relation"> <has-kv k="TMC:cid_58:tabcd_1:LocationCode" v="8725"/> <has-kv k="TMC:cid_58:tabcd_1:Direction" v="negative" /> </query> </union> <print mode="body" order="id"/> <recurse type="down"/> <print order="quadtile"/> </osm-script>';
@@ -34,7 +34,7 @@ if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
   foreach my $a (@args) {
     my @v = split('=',$a,2);
-    $v[1] = uri_unescape($v[1]); from_to ($v[1],"utf-8","iso-8859-1"); $v[1] =~ s/\+/ /g;
+    $v[1] = uri_unescape($v[1]); from_to ($v[1],"utf-8","iso-8859-1"); $v[1] =~ s/\+/\ /g;
     $opts->{$v[0]} = $v[1] || 1;
     if($v[0] eq 'url')      {$url   = $v[1];}
     if($v[0] eq 'start')    {$start = $v[1];}
@@ -145,7 +145,7 @@ my $relid = $opts->{'relid'} || 11037;
 my $relname = $opts->{'relname'} || 'Bundesstraße 521';
 my $relref  = $opts->{'relref'} || 'A 661';
 
-print <<HDOC;
+print <<"HDOC";
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -226,6 +226,5 @@ unless($r) {
     
   print reverse @outarr;  
   }
- 
 print "</body></html>";
 1;
