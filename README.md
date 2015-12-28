@@ -19,9 +19,12 @@ Interpreted Tags
 *  **destination:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **destination:ref:to[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **destination:symbol[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
+*  **destination:symbol:to[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
+*  **destination:to:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
 *  **hgv[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
+*  **junction=roundabout** Roundabouts are marked
 *  **lanes[:forward|:backward|:both_ways]**  Used to determine the number of lanes. Might be overruled by other tags
 *  **maxspeed**  
  * **maxspeed[:lanes][:forward|:backward|:both_ways]**  Supported, shown on left-hand side. Displayed inside lane for lane dependent tags

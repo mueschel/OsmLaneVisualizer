@@ -112,6 +112,9 @@ sub makeSigns {
   if ($t->{'motorroad'} eq "yes") {
     $out .= "<div class=\"motorroad\">&nbsp;</div>";
     }
+  if ($t->{'junction'} eq "roundabout") {
+    $out .= "<div class=\"roundabout\">&nbsp;</div>";
+    }
   return $out;
   }
 
@@ -124,11 +127,36 @@ sub printRef {
   my $o = "";
   $cr = "A" if $r =~ /^\s*A/;
   $cr = "B" if $r =~ /^\s*B/;
+  $cr = "E" if $r =~ /^\s*E/;
+  $cr = "S" if $r =~ /^\s*S/;
   unless($r =~ '^\s*$') {
     $o .='<span class="ref'.$cr.'">'.$r.'</span>';
     }
   return $o;  
   }
+
+  
+#################################################
+## Format the "ref" of a way
+################################################# 
+sub makeRef {
+  my ($ref) = @_;
+  my $o ='';
+  if($ref) {
+    my $cr = 'K';
+    my @refs = split(';',$ref);
+    foreach my $r (reverse @refs) {
+      $cr = "A" if $r =~ /^\s*A/;
+      $cr = "B" if $r =~ /^\s*B/;
+      $cr = "E" if $r =~ /^\s*E/;
+      $cr = "S" if $r =~ /^\s*S/;
+      if($r ne '') {
+        $o .='<div class="ref'.$cr.'">'.$r.'</div>';
+        }
+      }
+    }
+  return $o;
+  }  
   
 #################################################
 ## Make a full destination sign for one lane
@@ -141,6 +169,8 @@ sub makeDestination {
   my $roadref = $way->{'ref'};
   my $ref     = $lanes->{destinationref}[$lane];
   my $refto   = $lanes->{destinationrefto}[$lane];
+  my $to      = $lanes->{destinationto}[$lane];
+  my $symbolto= $lanes->{destinationsymbolto}[$lane];
   my $destcol = $lanes->{destinationcolour}[$lane];
   my $destsym = $lanes->{destinationsymbol}[$lane];
   my $destcountry = $lanes->{destinationcountry}[$lane];
@@ -152,7 +182,7 @@ sub makeDestination {
   $titledest =~ s/;/\n/g;  
   $destsym =~ s/none//g;
   
-  if($ref || $dest || $destsym || $destcountry || $refto) {
+  if($ref || $dest || $destsym || $destcountry || $refto || $to) {
     $o .= '<div class="refcont">';
     unless($option =~ /notooltip/) {
       $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
@@ -165,27 +195,42 @@ sub makeDestination {
     
     $o .='<div class="'.$cr.'" >';
     my @dests  = split(";",$dest,-1);
-    my @reftos = split(";",$refto,-1);
+    my @reftos    = split(";",$refto,-1);
+    my @tos       = split(";",$to,-1);
+    my @symboltos = split(";",$symbolto,-1);
     my @cols   = split(";",$destcol,-1);
     my @syms   = split(";",$destsym,-1);
     my @ctr    = split(';',$destcountry,-1);
 
-    for (my $i = 0; $i < max(scalar @dests,scalar @syms, scalar @reftos); $i++ ) {
+    for (my $i = 0; $i < max(scalar @reftos, scalar @tos); $i++) {
+      if($symboltos[$i]) {
+        if(!$reftos[$i]) {$symboltos[$i] .= " symbolonly";}
+        else {$symboltos[$i] .= " symbol";}
+        }
+      $symboltos[$i] = "dest ".$symboltos[$i];
+      $o .= '<div class="'.$symboltos[$i].'">';
+      $o .= '<span>';
+      $o .= printRef($reftos[$i]);
+      $o .= ($tos[$i]||"&nbsp;").'</span>';
+      $o .= '</div>';
+      } 
+    
+    for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
       if($cols[$i]) {
         my $tc = '';
         if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
         if($cols[$i] eq 'blue') {$tc = 'color:white';}
+        if($cols[$i] eq 'blue') {$cols[$i] = '#5078D0';}
         $cols[$i] = 'style="background-color:'.$cols[$i].';';
         $cols[$i] .= $tc.'"';
         }
       if($syms[$i]) {
-        if(!$dests[$i] && !$reftos[$i]) {$syms[$i] .= " symbolonly";}
+        if(!$dests[$i]) {$syms[$i] .= " symbolonly";}
         else {$syms[$i] .= " symbol";}
         }
       $syms[$i] = "dest ".$syms[$i];
       $o .= '<div class="'.$syms[$i].'">';
       $o .= '<span '.$cols[$i].'>';
-      $o .= printRef($reftos[$i]) if(scalar @reftos == scalar @dests  && $reftos[$i]); # 
       $o .= ($dests[$i]||"&nbsp;").'</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
       $o .= '</div>';
@@ -199,13 +244,7 @@ sub makeDestination {
         $o .= '<div class="destCountry">'.$c.'</div>';
         }
       }
-    if(scalar @reftos != scalar @dests) {
-      foreach my $c (@reftos) {
-        $o .= printRef($c) if ($c && !($c=~/^\s*$/ ));
-        }
-      $o .= '<div class="clear">&nbsp;</div>'; 
-      }
-      
+     
     if($ref) {
       my @refs = split('/',$ref);
       foreach my $r (reverse @refs) {
@@ -257,26 +296,6 @@ sub makeAllDestinations {
   return \@destinations;
   }
   
-  
-#################################################
-## Format the "ref" of a way
-################################################# 
-sub makeRef {
-  my ($ref) = @_;
-  my $o ='';
-  if($ref) {
-    my $cr = 'K';
-    my @refs = split(';',$ref);
-    foreach my $r (reverse @refs) {
-      $cr = "A" if $r =~ /^\s*A/;
-      $cr = "B" if $r =~ /^\s*B/;
-      if($r ne '') {
-        $o .='<div class="ref'.$cr.'">'.$r.'</div>';
-        }
-      }
-    }
-  return $o;
-  }
   
 #################################################
 ## In case the way splits, the best choice is the one with the smallest turning angle
@@ -439,17 +458,17 @@ sub makeSidewalk {
   my $o = '';
   my $sidewalk = $obj->{tags}{'sidewalk'};
 
-  my $l; my $r;
+  my $l=""; my $r="";
   if($sidewalk eq "no" || $sidewalk eq "none") {$l = "nosidewalk";    $r = "nosidewalk"; }
   elsif($sidewalk eq "left") {$l = "sidewalk";    $r = "nosidewalk"; }
   elsif($sidewalk eq "right") {$l = "nosidewalk";    $r = "sidewalk"; }
   elsif($sidewalk eq "both") {$l = "sidewalk";    $r = "sidewalk"; }
   elsif(defined $sidewalk)  {$l = "nosidewalk";    $r = "nosidewalk"; }
   
-  if($r && ($side eq 'right' && !$obj->{reversed}) || ($side eq 'left' && $obj->{reversed})) {
+  if($r && (($side eq 'right' && !$obj->{reversed}) || ($side eq 'left' && $obj->{reversed}))) {
     $o .= "<div class=\"lane $r\" >&nbsp;</div>";
     }
-  elsif($l) {
+  elsif($l && (($side eq 'left' && !$obj->{reversed}) || ($side eq 'right' && $obj->{reversed}))) {
     $o .= "<div class=\"lane $l\" >&nbsp;</div>";
     }
     

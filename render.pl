@@ -212,19 +212,35 @@ HDOC
 unless($r) {
   my @outarr;
 
-
   while(1) {
-    last if defined $waydata->{$currid}{used};
-    $waydata->{$currid}{used} = 1;
-    
-    push(@outarr,OSMDraw::drawWay($currid));
+    while(1) { #first, show way from selected starting point
+      last if defined $waydata->{$currid}{used};
+      $waydata->{$currid}{used} = 1;
+      
+      push(@outarr,OSMDraw::drawWay($currid));
 
-    last unless defined $waydata->{$currid}{after};
-    $currid = OSMDraw::getBestNext($currid);
-    }
-
+      last unless defined $waydata->{$currid}{after};
+      $currid = OSMDraw::getBestNext($currid);
+      }
+    print reverse @outarr;  
     
-  print reverse @outarr;  
+    $currid = 0;
+    foreach my $w (sort keys %{$waydata}) { #select all other starting points
+      if (!defined $waydata->{$w}->{before} && !$waydata->{$w}{used}) {
+        $currid = $w;
+        }
+      }
+    if($currid == 0) {  #lastly, show all ways not used so far
+      foreach my $w (sort keys %{$waydata}) {
+        if (!$waydata->{$w}{used}) {
+          $currid = $w;
+          }
+        }
+      }
+    last if $currid == 0;
+    print "<hr>";
+    @outarr = ();
+    }  
   }
 print "</body></html>";
 1;

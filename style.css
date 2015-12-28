@@ -159,6 +159,8 @@ div.signs .bicycledesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
 div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
+div.signs .roundabout {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
 div.signs .condition.wet {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
   border: none;
@@ -355,13 +357,13 @@ span.destCountry {
   max-width: 100px;
   display: inline; }
 
-.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK {
+.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS {
   float: left;
   height: 14px;
   font-size: 11px;
   padding: 1px; }
 
-div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
+div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.refS, div.refE, span.refE, span.ref {
   margin: 2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -370,7 +372,7 @@ div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
   display: inline;
   float: right; }
 
-span.refA, span.refB, span.refK {
+span.refA, span.refB, span.refK, span.refS, span.refE, span.ref {
   display: inline-block;
   float: none; }
 
@@ -389,10 +391,28 @@ div.refK, span.refK {
   border: 1px solid black;
   color: black; }
 
+div.refS, span.refS {
+  background: white;
+  border: 1px solid black;
+  color: black; }
+
+span.refS {
+  background: #5078D0;
+  border: 1px solid white;
+  color: white; }
+
+span.refE {
+  background: green;
+  border: 1px solid white;
+  color: white; }
+
+span.ref {
+  border: 1px solid #aaa; }
+
 div.refcont {
   position: relative; }
 
-div.A, div.B, div.K {
+div.A, div.B, div.K, div.S {
   max-height: 115px;
   overflow: hidden; }
 
@@ -408,6 +428,11 @@ div.B {
 
 div.K {
   background: #F0E060;
+  color: black;
+  border: 1px solid black; }
+
+div.S {
+  background: #FFFFFF;
   color: black;
   border: 1px solid black; }
 
@@ -499,5 +524,8 @@ div.connectdestination {
 
 div.connectdestination div.destination {
   float: left; }
+
+hr {
+  margin-bottom: 20px; }
 
 /*# sourceMappingURL=style.css.map */

@@ -7,8 +7,8 @@ $signsWidth: 150px;
 
 $colorAutobahn: #5078D0;
 $colorBundesstrasse: #F0E060;
-
-
+$colorStaatsstrasse: #FFFFFF;
+$colorE: green;
 
 body {
   background:#f2f5f7;
@@ -406,14 +406,14 @@ span.destCountry {
   display:inline;
 }
 
-.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK {
+.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS {
   float:left;
   height:14px;
   font-size:11px;
   padding:1px;
   }  
   
-div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
+div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.refS, div.refE, span.refE, span.ref {
   margin:2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -423,7 +423,7 @@ div.refA, div.refB, div.refK, span.refA, span.refB, span.refK {
   float:right;
   }  
   
-span.refA, span.refB, span.refK {
+span.refA, span.refB, span.refK, span.refS, span.refE, span.ref {
   display:inline-block;
   float:none;
   }    
@@ -443,12 +443,34 @@ div.refK, span.refK {
   border:1px solid black;
   color:black;
   }  
+  
+div.refS, span.refS {
+  background:white;
+  border:1px solid black;
+  color:black;
+  }  
 
+span.refS {
+  background:$colorAutobahn;
+  border:1px solid white;
+  color:white;
+  }    
+
+span.refE {
+  background:$colorE;
+  border:1px solid white;
+  color:white;
+  }    
+  
+span.ref {
+  border:1px solid #aaa;
+}  
+  
 div.refcont {
   position:relative;
   }  
 
-div.A, div.B, div.K {  
+div.A, div.B, div.K, div.S {  
   max-height:($laneHeight - 20px);
   overflow:hidden;
   }
@@ -468,7 +490,12 @@ div.K {
   color:black;
   border:1px solid black;
   }  
-
+div.S {
+  background:$colorStaatsstrasse;
+  color:black;
+  border:1px solid black;
+  }  
+  
 div.refcont div div.dest {
   width:($laneWidth - 17px);
   margin:1px 0 1px 2px;
@@ -554,3 +581,6 @@ div.connectdestination div.destination {
   float:left;
 }
 
+hr {
+  margin-bottom:20px;
+}

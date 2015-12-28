@@ -392,6 +392,8 @@ sub InspectLanes {
   $obj->{lanes}{destinationsymbol}  = getLaneTags($obj,'destination:symbol');
   $obj->{lanes}{destinationcountry} = getLaneTags($obj,'destination:country');
   $obj->{lanes}{destinationrefto}   = getLaneTags($obj,'destination:ref:to');
+  $obj->{lanes}{destinationto}      = getLaneTags($obj,'destination:to');
+  $obj->{lanes}{destinationsymbolto}= getLaneTags($obj,'destination:symbol:to');
   
   $obj->{lanes}{access}             = getLaneTags($obj,'access','nonolanes');
   $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
