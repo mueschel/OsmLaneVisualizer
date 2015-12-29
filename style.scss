@@ -238,7 +238,6 @@ div.lane .signs {
   
 div.lane {
   position: relative;
-  background:#cdc;
   height:$laneHeight;
   border-left:3px dashed white;
   border-right:3px dashed white;
@@ -247,22 +246,25 @@ div.lane {
   display:inline-block;
   cursor:default;
   }
+
+div.lane.forward   {
+  background:#cdc;
+  }
+  
+div.lane.backward {
+  background:#dcc;
+  }
   
 div.nolane {
-  background:#aaa;
-  border-left:1px solid white !important;
-  border-right:1px solid white !important;
+  background:#aaa !important;
+  border-left:3px solid white !important;
+  border-right:3px solid white !important;
   height:$laneHeight;
   width:($laneWidth) - $laneSub;
   display:inline-block;
   float:left;
   }
   
-  
-div.lane.backward {
-  background:#dcc;
-  }
-
 div.lane.no {
   border-left:3px solid white;
   border-right:3px solid white;
