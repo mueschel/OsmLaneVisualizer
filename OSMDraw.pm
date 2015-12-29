@@ -298,22 +298,28 @@ sub makeAllDestinations {
   
   
 #################################################
-## In case the way splits, the best choice is the one with the smallest turning angle
+## In case the way splits, the best choice is the one with the smallest turning angle. Despite on roundabouts...
 #################################################
 sub getBestNext {  
   my $id = shift @_;
   my $angle = 0;
+  my $ra = 0;
   my $minangle = 180;
   my $realnext;
   my $fromdirection = OSMData::calcDirection($nodedata->{$waydata->{$id}{nodes}[-1]},$nodedata->{$waydata->{$id}{nodes}[-2]});
   
+  if($waydata->{$id}{tags}{'junction'} eq 'roundabout') {
+    $ra = 1;
+    $minangle = 0;
+    }
+    
   return unless defined $waydata->{$id}{after};
   foreach my $nx (@{$waydata->{$id}{after}}) {
     $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[1]},$nodedata->{$waydata->{$nx}{nodes}[0]});
     $angle = $fromdirection-$angle;
     $angle = OSMData::NormalizeAngle($angle);
     $angle = abs($angle);
-    if($angle < $minangle) {
+    if(($ra == 0 && $angle < $minangle) || ($ra == 1 && $angle > $minangle)) {
       $minangle = $angle;
       $realnext = $nx;
       }
