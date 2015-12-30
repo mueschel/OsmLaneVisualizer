@@ -93,42 +93,12 @@ unless($r) {
       }
     }
     
-  my $id = $currid;
-  #Reverse ways where needed
-  while(1) {
-    last if $waydata->{$id}{checked};
-    $waydata->{$id}{checked} = 1;
-    
-    if($waydata->{$id}->{reversed}) {
-      my $tmp = $waydata->{$id}{end};
-      $waydata->{$id}{end} = $waydata->{$id}{begin};
-      $waydata->{$id}{begin} = $tmp;
-      
-      $tmp = $waydata->{$id}{after};
-      $waydata->{$id}{after} = $waydata->{$id}{before};
-      $waydata->{$id}{before} = $tmp;
-      
-      my @tmp = reverse @{$waydata->{$id}{nodes}};
-      $waydata->{$id}{nodes} = \@tmp;
-      }
-      
-    last unless defined $waydata->{$id}{after};
-  #   my $nextid = $waydata->{$id}{after}[0];
-    my $nextid = OSMDraw::getBestNext($id);
-    if($waydata->{$id}{end} == $waydata->{$nextid}{end}) {
-      $waydata->{$nextid}->{reversed} = 1;
-      }
-    else {
-      $waydata->{$nextid}->{reversed} = 0;
-      }
-    $id = $nextid;  
-    }
 
   if($adjacent) {
     #Get adjacent ways
     my $str = '<osm-script output="json" timeout="25"><union>';
     foreach my $w (keys %{$waydata}) {
-      next unless $waydata->{$w}{checked};
+#       next unless $waydata->{$w}{checked};
       $str .= '<id-query ref="'.$waydata->{$w}{end}.'" type="node"/>'
       }
     $str .= '</union>  <print />  <recurse type="node-way"/>  <print />  <recurse type="down"/>    <print /> </osm-script>';  
@@ -213,14 +183,39 @@ unless($r) {
   my @outarr;
 
   while(1) {
+ 
     while(1) { #first, show way from selected starting point
       last if defined $waydata->{$currid}{used};
       $waydata->{$currid}{used} = 1;
+
+      #Reverse ways where needed
+#       $waydata->{$currid}{checked} = 1;
+      
+      if($waydata->{$currid}->{reversed}) {
+        my $tmp = $waydata->{$currid}{end};
+        $waydata->{$currid}{end} = $waydata->{$currid}{begin};
+        $waydata->{$currid}{begin} = $tmp;
+        
+        $tmp = $waydata->{$currid}{after};
+        $waydata->{$currid}{after} = $waydata->{$currid}{before};
+        $waydata->{$currid}{before} = $tmp;
+        
+        my @tmp = reverse @{$waydata->{$currid}{nodes}};
+        $waydata->{$currid}{nodes} = \@tmp;
+        }
+        
+      my $nextid = OSMDraw::getBestNext($currid);
+      if($waydata->{$currid}{end} == $waydata->{$nextid}{end}) {
+        $waydata->{$nextid}->{reversed} = 1;
+        }
+      else {
+        $waydata->{$nextid}->{reversed} = 0;
+        }
       
       push(@outarr,OSMDraw::drawWay($currid));
 
       last unless defined $waydata->{$currid}{after};
-      $currid = OSMDraw::getBestNext($currid);
+      $currid = $nextid; #OSMDraw::getBestNext($currid);
       }
     print reverse @outarr;  
     
