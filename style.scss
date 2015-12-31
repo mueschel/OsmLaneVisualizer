@@ -96,12 +96,17 @@ div.connects {
   opacity: 0.9;
   }  
 
-div.connects.main {
+div.connects.next {
   border-right-color:#888;
   z-index: 2;
   opacity: 1;
   }  
 
+div.connects.main {
+  border-right-color:#ccc;
+  }  
+  
+  
 div.connects.main.from {
   border-right-color:black;
   z-index:2;
@@ -568,7 +573,7 @@ div.turns {
   height:30px;
   }  
   
-  
+ 
 div.connectdestination .K, div.connectdestination .A, div.connectdestination .B{
   box-shadow:5px 5px 5px #aaa;  
   }  

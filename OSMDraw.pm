@@ -207,7 +207,7 @@ sub makeDestination {
         if(!$reftos[$i]) {$symboltos[$i] .= " symbolonly";}
         else {$symboltos[$i] .= " symbol";}
         }
-      $symboltos[$i] = "dest ".$symboltos[$i];
+      $symboltos[$i] = "dest refto ".$symboltos[$i];
       $o .= '<div class="'.$symboltos[$i].'">';
       $o .= '<span>';
       $o .= printRef($reftos[$i]);
@@ -315,10 +315,17 @@ sub getBestNext {
     
   return unless defined $waydata->{$id}{after};
   foreach my $nx (@{$waydata->{$id}{after}}) {
-    $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[1]},$nodedata->{$waydata->{$nx}{nodes}[0]});
-    $angle = $fromdirection-$angle;
+    if($nodedata->{$waydata->{$nx}{nodes}[0]} == $nodedata->{$waydata->{$id}{nodes}[-1]}) {
+      $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[1]},$nodedata->{$waydata->{$nx}{nodes}[0]});
+      }
+    else {
+      $angle = OSMData::calcDirection($nodedata->{$waydata->{$nx}{nodes}[-2]},$nodedata->{$waydata->{$nx}{nodes}[-1]});
+      }
+    
+    $angle = ($fromdirection-$angle);
     $angle = OSMData::NormalizeAngle($angle);
     $angle = abs($angle);
+    #print "$id $nx $angle<br>";
     if(($ra == 0 && $angle < $minangle) || ($ra == 1 && $angle > $minangle)) {
       $minangle = $angle;
       $realnext = $nx;
@@ -354,6 +361,7 @@ sub makeTurns {
 #################################################    
 sub makeWaylayout {
   my $id = shift @_;
+  my $next = shift @_;
   my $out = "";
   my $cntways = 0;
   my $connectsangle = -400;
@@ -362,12 +370,14 @@ sub makeWaylayout {
   my $stangle = OSMData::calcDirection($store->{node}[0]{$waydata->{$id}{nodes}[-1]},
                                         $store->{node}[0]{$waydata->{$id}{nodes}[-2]})
                                         -90;
+  $stangle = 0;                                        
   foreach my $i (@{$endnodes->[1]{$waydata->{$id}{end}}}) {
     my $nd = 0;
     $nd = $store->{way}[1]{$i}{nodes}[1]     if ($store->{way}[1]{$i}{nodes}[0] == $waydata->{$id}{end});
     $nd = $store->{way}[1]{$i}{nodes}[-2]    if ($store->{way}[1]{$i}{nodes}[-1] == $waydata->{$id}{end});
     my $angle = sprintf("%.1f",OSMData::NormalizeAngle(OSMData::calcDirection($store->{node}[1]{$waydata->{$id}{end}},$store->{node}[1]{$nd})-$stangle));
     my $main =  (defined $waydata->{$i})?'main':'';
+    $main =  'next' if $i == $next;
     my $direction = "toward";
     if ($store->{way}[1]{$i}{nodes}[0] == $waydata->{$id}{end} && (!(exists $store->{way}[1]{$i}{tags}{"oneway"}) || $store->{way}[1]{$i}{tags}{"oneway"} ne "-1")) {
       $direction = "away";
@@ -598,7 +608,7 @@ sub drawWay {
   
   if($adjacent) {
     if(defined $endnodes->[1]{$waydata->{$id}{end}} ) { 
-      $out .= OSMDraw::makeWaylayout($id);
+      $out .= OSMDraw::makeWaylayout($id, getBestNext($id));
       }
     }  
   

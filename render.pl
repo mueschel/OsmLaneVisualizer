@@ -204,6 +204,9 @@ unless($r) {
         $waydata->{$currid}{nodes} = \@tmp;
         }
         
+      push(@outarr,OSMDraw::drawWay($currid));
+
+      last unless defined $waydata->{$currid}{after};
       my $nextid = OSMDraw::getBestNext($currid);
       if($waydata->{$currid}{end} == $waydata->{$nextid}{end}) {
         $waydata->{$nextid}->{reversed} = 1;
@@ -211,10 +214,6 @@ unless($r) {
       else {
         $waydata->{$nextid}->{reversed} = 0;
         }
-      
-      push(@outarr,OSMDraw::drawWay($currid));
-
-      last unless defined $waydata->{$currid}{after};
       $currid = $nextid; #OSMDraw::getBestNext($currid);
       }
     print reverse @outarr;  
