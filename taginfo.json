@@ -121,6 +121,7 @@
     { "key" : "hgv:lanes:backward",  "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "hgv:lanes:forward",   "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "hgv:lanes:both_ways", "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
+    { "key" : "int_ref",                "object_types": ["way"], "description": "Int_Refs of ways are shown"},
     { "key" : "junction", "value" : "roundabout", "object_types": ["way"], "description": "Ways belonging to a round-about are marked"},
     { "key" : "lanes",                 "object_types": ["way"], "description": "Lane numbers are used as first estimate of actual number of lanes"},
     { "key" : "lanes:backward",        "object_types": ["way"], "description": "Lane numbers are used as first estimate of actual number of lanes"},

@@ -40,7 +40,7 @@ sub readData {
     return -1;
     }
   foreach my $w (@{$data->{elements}}) {
-    if ($w->{'type'} eq 'way') {  
+    if ($w->{'type'} eq 'way'  && defined $w->{'tags'}{'highway'} && $w->{'tags'}{'highway'} ne 'platform') {  
       $store->{way}[$st]{$w->{'id'}}{tags} = $w->{'tags'};
       $store->{way}[$st]{$w->{'id'}}{nodes} = $w->{'nodes'};
       $store->{way}[$st]{$w->{'id'}}{id} = $w->{'id'};

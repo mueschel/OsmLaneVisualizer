@@ -36,12 +36,14 @@ sub makeMaxspeed {
     $out  = '<div class="max bck '.$bckclass.'">'.$maxbackward.'</div>';
     $out .= '<div class="max fwd '.$fwdclass.'">'.$maxforward.'</div>';
     }
-  if ($t->{'maxspeed:hgv'})  {
-    $out .= '<div class="maxcont">';
-    $out .= '<div class="max ">'.($t->{'maxspeed:hgv'}).'</div>';
-    $out .= '<div class="condition hgv">&nbsp;</div>';
-    $out .= '</div>';
-    }
+  foreach my $mc (qw(maxspeed:hgv maxspeed:hgv:forward maxspeed:hgv:backward)) {  
+    if ($t->{$mc})  {
+      $out .= '<div class="maxcont">';
+      $out .= '<div class="max ">'.($t->{$mc}).'</div>';
+      $out .= '<div class="condition hgv">&nbsp;</div>';
+      $out .= '</div>';
+      }
+    }  
   foreach my $mc (qw(maxspeed:conditional maxspeed:forward:conditional maxspeed:backward:conditional)) {   
     if ($t->{$mc})  {
       my $str = $t->{$mc};
@@ -145,7 +147,7 @@ sub makeRef {
   if($ref) {
     my $cr = 'K';
     my @refs = split(';',$ref);
-    foreach my $r (reverse @refs) {
+    foreach my $r (@refs) {
       $cr = "A" if $r =~ /^\s*A/;
       $cr = "B" if $r =~ /^\s*B/;
       $cr = "E" if $r =~ /^\s*E/;
@@ -499,7 +501,40 @@ sub makeSidewalk {
   
   return $o;  
   }
-   
+
+sub generateMapJS  {
+  my $id = shift @_;
+  my $lat = $nodedata->{$waydata->{$id}{begin}}{lat};
+  my $lon = $nodedata->{$waydata->{$id}{begin}}{lon};  
+  my $str = "";
+#   $str .= 'map.setView(['.$lat.', '.$lon.'], 17)';
+  $str .= 'map.removeLayer(marker);'; 
+  $str .= 'marker = L.marker(['.$lat.', '.$lon.']).addTo(map);';
+  my $list = "";
+  foreach my $n (@{$waydata->{$id}{nodes}}) {
+    $list .= "[".$nodedata->{$n}{lat}.", ".$nodedata->{$n}{lon}."],"
+    }
+  chop $list;
+  $str .= 'map.removeLayer(polyline);';
+  $str .= 'polyline = L.polyline(['.$list.'], {color: \'#44f\'}).addTo(map);';
+  $str .= 'map.fitBounds(polyline.getBounds());';
+  return $str;
+  
+}
+
+sub linkWay {
+  my $id = shift @_;
+  my $arrow = shift @_;
+  my $style = shift @_ || "navigation";
+  $arrow = "&#9650;" if $arrow eq "up";
+  $arrow = "&#9660;" if $arrow eq "down";
+  my $str = "";
+  $str .= '<span class="'.$style.'" href="" onClick="changeURL(\'wayid\',\''.$id.'\')">'.$arrow.'</span>';
+  return $str;
+  
+  }
+
+  
 #################################################
 ## Produce html output to show a way
 #################################################  
@@ -513,34 +548,35 @@ sub drawWay {
   OSMLanes::InspectLanes($waydata->{$id});
   my $lanes = $waydata->{$id}{lanes};
   
-  my $lat = $nodedata->{$waydata->{$id}{end}}{lat};
-  my $lon = $nodedata->{$waydata->{$id}{end}}{lon};  
+  my $lat = $nodedata->{$waydata->{$id}{begin}}{lat};
+  my $lon = $nodedata->{$waydata->{$id}{begin}}{lon};  
   my $name = $t->{'name'};
      $name .= "<br>][".$t->{'bridge:name'} if $t->{'bridge:name'};
      $name .= "<br>)(".$t->{'tunnel:name'} if $t->{'tunnel:name'};
      $name .= "&nbsp;" unless $name;
-  $out .= '<div class="way">';
+  $out .= '<div class="way" >';
   
   $out .= '<div class="middle">&nbsp;</div>' if $USEplacement;
   
-  $out .= '<div class="label">';
+  $out .= '<div class="label" onMouseOver="'.generateMapJS($id).'">';
   $out .= sprintf("km %.1f",$totallength/1000);
-  $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'">Way '.$id.'</a>';
+  $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'" >Way '.$id.'</a>';
   $out .= sprintf("<br>%im",$length);
   $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/map/im/bbox/%.5f/%.5f/%.5f/%.5f\">(M)</a>",$lat-0.005,$lat+0.005,$lon-0.005,$lon+0.005);
-  $out .= sprintf("<a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
-  $out .= "<a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
+  $out .= sprintf(" <a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
+  $out .= " <a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
+  $out .= linkWay($id,"(V)",'normal');
   $out .= "</div>\n";
   
   $out .= '<div class="info">';
-  $out .= OSMDraw::makeRef(($t->{'ref'}||''),'');
+  $out .= OSMDraw::makeRef(($t->{'ref'}||'').';'.($t->{'int_ref'}||''),'');
   $out .= "<div style=\"clear:both;width:100%\">$name</div>";
   $out .= "<div class=\"signs\">";
   $out .= OSMDraw::makeMaxspeed($id);
   $out .= OSMDraw::makeSigns($waydata->{$id},undef);
   $out .= "</div></div>\n";
 
-  my $bridge = (defined $t->{'bridge'})?'bridge':'';
+  my $bridge = ((defined $t->{'bridge'})?'bridge':'').((defined $t->{'tunnel'})?' tunnel':'');
  
 
 

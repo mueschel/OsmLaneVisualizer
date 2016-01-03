@@ -324,8 +324,20 @@ div.destination.triple {
 div.destination.quadruple {
   width: 470px; }
 
-div.bridge {
-  box-shadow: 5px 0px 5px #888; }
+div.bridge::after {
+  box-shadow: 5px 0px 5px 0 #444;
+  width: 2px;
+  height: 100%;
+  content: " ";
+  display: inline-block; }
+
+div.tunnel::after {
+  background: #000;
+  width: 10px;
+  height: 100%;
+  content: " ";
+  display: inline-block;
+  box-shadow: 5px 0px 5px #000; }
 
 .label a {
   font-size: 12px;
@@ -362,7 +374,7 @@ span.destCountry {
   max-width: 100px;
   display: inline; }
 
-.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS {
+.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS, .info .E, .info .refE {
   float: left;
   height: 14px;
   font-size: 11px;
@@ -396,6 +408,11 @@ div.refK, span.refK {
   border: 1px solid black;
   color: black; }
 
+div.refE, span.refE {
+  background: green;
+  border: 1px solid white;
+  color: white; }
+
 div.refS, span.refS {
   background: white;
   border: 1px solid black;
@@ -403,11 +420,6 @@ div.refS, span.refS {
 
 span.refS {
   background: #5078D0;
-  border: 1px solid white;
-  color: white; }
-
-span.refE {
-  background: green;
   border: 1px solid white;
   color: white; }
 
@@ -537,5 +549,31 @@ div.connectdestination div.destination {
 
 hr {
   margin-bottom: 20px; }
+
+#header {
+  margin-right: 320px; }
+
+#map {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid white;
+  z-index: 10;
+  box-shadow: 3px 3px 3px #aaa;
+  /*   visibility:hidden; */ }
+
+span.navigation {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer; }
+
+span.normal {
+  color: blue;
+  cursor: pointer; }
 
 /*# sourceMappingURL=style.css.map */

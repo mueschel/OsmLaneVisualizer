@@ -24,6 +24,7 @@ Interpreted Tags
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
 *  **hgv[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
+*  **int_ref** Shown in left column and on signs
 *  **junction=roundabout** Roundabouts are marked
 *  **lanes[:forward|:backward|:both_ways]**  Used to determine the number of lanes. Might be overruled by other tags
 *  **maxspeed**  

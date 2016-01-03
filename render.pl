@@ -124,9 +124,12 @@ print <<"HDOC";
  <meta  charset="UTF-8"/>
 
 <script type="text/javascript">
-  function changeURL(x) {
+  function changeURL(x,str) {
     var url = "?";
-    url += x+'='+encodeURI(document.getElementsByName(x)[0].value);
+    if (str)
+      url += x+'='+str;
+    else  
+      url += x+'='+encodeURI(document.getElementsByName(x)[0].value);
     url += "&start="+document.getElementsByName('start')[0].value;
     url += document.getElementsByName('placement')[0].checked?"&placement":"";
     url += document.getElementsByName('adjacent')[0].checked?"&adjacent":"";
@@ -136,13 +139,17 @@ print <<"HDOC";
     window.location.href=url;
     }
 </script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
 </head>
 <body class="$extrasizeactive">
 <h1>OSM Lane Visualizer</h1>
+<div id="header">
 <p>Enter a valid overpass query that delivers a list of continuous ways, e.g. as shown here: <a href="http://overpass-turbo.eu/s/6vr">Overpass Turbo</a>. Just put the Overpass query to the text box.
 <br>As there are several "last ways" (at least two...) in each data set, select one by putting a number in the box below. All tags of a way are shown as mouse-over on the text "way" on the left side.
 <br><a href="https://github.com/mueschel/OsmLaneVisualizer#interpreted-tags">Currently supported keys.</a> All code is available on <a href="https://github.com/mueschel/OSMLaneVisualizer">GitHub</a>. Pictures are linked from wikimedia-commons.
-
+<br>Hover over the way ID to update the map!
 <div class="config">
 <h3>Configuration</h3>
 <label title="Evaluate the placement tag to get a more natural arrangement of lanes">
@@ -175,7 +182,8 @@ print <<"HDOC";
 <a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a>
 <br><a href="http://osm.mueschelsoft.de/lanes/render.pl?$querystring">Link to this page</a>
 </div>
-
+</div>
+<div id="map"></div>
 <hr style="margin-bottom:50px;margin-top:10px;clear:both;">
 HDOC
 
@@ -183,7 +191,7 @@ unless($r) {
   my @outarr;
 
   while(1) {
- 
+    push(@outarr,OSMDraw::linkWay($currid,"down"));
     while(1) { #first, show way from selected starting point
       last if defined $waydata->{$currid}{used};
       $waydata->{$currid}{used} = 1;
@@ -216,6 +224,7 @@ unless($r) {
         }
       $currid = $nextid; #OSMDraw::getBestNext($currid);
       }
+    push(@outarr,OSMDraw::linkWay($currid,"up"));
     print reverse @outarr;  
     
     $currid = 0;
@@ -236,5 +245,15 @@ unless($r) {
     @outarr = ();
     }  
   }
-print "</body></html>";
+print <<HDOC;
+</body>
+<script type="text/javascript">
+var map = L.map('map').setView([0, 0], 1);
+L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
+	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>' }).addTo(map);
+var marker = L.marker(map.getCenter(), { draggable: false }).addTo(map);
+var polyline = L.polyline([[0,0]]).addTo(map);
+</script>
+</html>
+HDOC
 1;

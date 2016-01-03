@@ -363,7 +363,8 @@ sub makeAccess {
        || $obj->{lanes}{foot}[$i] eq 'designated'
        || $obj->{lanes}{foot}[$i] eq 'official'
        || $obj->{lanes}{psv}[$i] eq 'designated'
-       || $obj->{lanes}{bus}[$i] eq 'designated') {
+       || $obj->{lanes}{bus}[$i] eq 'designated'
+       || ($obj->{lanes}{psv}[$i] eq 'yes'  && ($obj->{lanes}{access}[$i] eq 'no' || $obj->{lanes}{vehicle}[$i] eq 'no')) ) {
       $obj->{lanes}{access}[$i] .= " nolane"; 
       }
     }
@@ -385,8 +386,8 @@ sub InspectLanes {
   $obj->{lanes}{destination}        = getLaneTags($obj,'destination');
   $obj->{lanes}{maxspeed}           = getLaneTags($obj,'maxspeed','nonolanes');
   $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
-  $obj->{lanes}{bus}                = getLaneTags($obj,'bus','nonolanes');
-  $obj->{lanes}{psv}                = getLaneTags($obj,'psv','nonolanes');
+  $obj->{lanes}{bus}                = getLaneTags($obj,'bus'); #,'nonolanes'
+  $obj->{lanes}{psv}                = getLaneTags($obj,'psv'); #,'nonolanes'
   $obj->{lanes}{foot}               = getLaneTags($obj,'foot','nonolanes');
   $obj->{lanes}{destinationcolour}  = getLaneTags($obj,'destination:colour');
   $obj->{lanes}{destinationsymbol}  = getLaneTags($obj,'destination:symbol');
@@ -395,7 +396,7 @@ sub InspectLanes {
   $obj->{lanes}{destinationto}      = getLaneTags($obj,'destination:to');
   $obj->{lanes}{destinationsymbolto}= getLaneTags($obj,'destination:symbol:to');
   
-  $obj->{lanes}{access}             = getLaneTags($obj,'access','nonolanes');
+  $obj->{lanes}{access}             = getLaneTags($obj,'access');#,'nonolanes'
   $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
   makeAccess($obj);
   }
