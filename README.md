@@ -23,6 +23,7 @@ Interpreted Tags
 *  **destination:to:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
+*  **highway=(traffic_signals|give_way|stop|crossing|mini_roundabout) Some highway tags on nodes are shown using the corresponding traffic sign
 *  **hgv[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **int_ref** Shown in left column and on signs
 *  **junction=roundabout** Roundabouts are marked
@@ -49,4 +50,4 @@ Number of Lanes
 ---------------
 The number of lanes is determined by reading all tags of way containing a :lanes part and the lanes tag itself.
 For both forward and backward direction, the maximal number is used - this might not be the intended number of lanes
-but helps to find tagging errors (e.g. stray pipes)
+but helps to find tagging errors (e.g. stray pipes).

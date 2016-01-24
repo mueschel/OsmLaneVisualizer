@@ -112,7 +112,12 @@
     { "key" : "foot:lanes:backward",  "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "foot:lanes:forward",   "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "foot:lanes:both_ways", "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
+    { "key" : "highway", "value" : "crossing", "object_types": ["node"], "description": "Shown as traffic sign"},
+    { "key" : "highway", "value" : "give_way", "object_types": ["node"], "description": "Shown as traffic sign"},
+    { "key" : "highway", "value" : "mini_roundabout", "object_types": ["node"], "description": "Shown as traffic sign"},
     { "key" : "highway", "value" : "motorway_junction", "object_types": ["node"], "description": "Names of motorway junctions are shown"},
+    { "key" : "highway", "value" : "stop", "object_types": ["node"], "description": "Shown as traffic sign"},
+    { "key" : "highway", "value" : "traffic_signals", "object_types": ["node"], "description": "Shown as traffic sign"},
     { "key" : "hgv",                 "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "hgv:backward",        "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
     { "key" : "hgv:forward",         "object_types": ["way"], "description": "no, designated and official are shown using the corresponding german roadsigns"},
@@ -153,6 +158,7 @@
     { "key" : "placement:backward:end",    "object_types": ["way"], "description": "Placement is evaluated for correct position of lanes"},
     { "key" : "placement:forward:end",     "object_types": ["way"], "description": "Placement is evaluated for correct position of lanes"},
     { "key" : "psv",                 "object_types": ["way"], "description": "designated and official are shown using the corresponding german roadsigns"},
+    { "key" : "psv",                 "object_types": ["way"], "description": "designated and official are shown using the corresponding german roadsigns"},
     { "key" : "psv:backward",        "object_types": ["way"], "description": "designated and official are shown using the corresponding german roadsigns"},
     { "key" : "psv:forward",         "object_types": ["way"], "description": "designated and official are shown using the corresponding german roadsigns"},
     { "key" : "psv:both_ways",       "object_types": ["way"], "description": "designated and official are shown using the corresponding german roadsigns"},    
@@ -185,3 +191,4 @@
             
   ]
 }
+

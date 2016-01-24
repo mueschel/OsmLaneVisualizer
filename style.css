@@ -164,6 +164,18 @@ div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
 div.signs .roundabout {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
+div.signs .traffic_signals {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/93/Zeichen_131.svg"); }
+div.signs .give_way {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/96/Zeichen_205.svg"); }
+div.signs .stop {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5c/Zeichen_206.svg"); }
+div.signs .priority {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/91/Zeichen_208.svg"); }
+div.signs .crossing {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b0/Zeichen_350-10.svg"); }
+div.signs .priority_road {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/ff/Zeichen_306_-_Vorfahrtstra%C3%9Fe%2C_StVO_1970.svg"); }
 div.signs .condition.wet {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
   border: none;

@@ -120,6 +120,31 @@ sub makeSigns {
   return $out;
   }
 
+  
+#################################################
+## Signs from node tags
+#################################################   
+sub makeNodeSigns  {
+  my $id = shift(@_);
+  my $st;my $out = '';
+  foreach my $n (@{$waydata->{$id}{nodes}}) {
+    next if $n == $waydata->{$id}{begin};
+    foreach my $k (keys %{$nodedata->{$n}{tags}}) {
+      if($k eq 'highway' && $nodedata->{$n}{tags}{$k} eq 'traffic_signals') {$st->{'traffic_signals'} = 1;}
+      if($k eq 'highway' && $nodedata->{$n}{tags}{$k} eq 'give_way') {$st->{'give_way'} = 1;}
+      if($k eq 'highway' && $nodedata->{$n}{tags}{$k} eq 'crossing') {$st->{'crossing'} = 1;}
+      if($k eq 'highway' && $nodedata->{$n}{tags}{$k} eq 'stop') {$st->{'stop'} = 1;}
+      if($k eq 'highway' && $nodedata->{$n}{tags}{$k} eq 'mini_roundabout') {$st->{'roundabout'} = 1;}
+      }
+    }
+  print Dumper $st;  
+  foreach my $s (keys %{$st}) {
+    $out .= "<div class=\"$s\">&nbsp;</div>"; 
+    }
+  return $out;  
+  }  
+  
+  
 #################################################
 ## Print a road ref number
 #################################################   
@@ -502,6 +527,10 @@ sub makeSidewalk {
   return $o;  
   }
 
+  
+#################################################
+## JS code for map update
+#################################################   
 sub generateMapJS  {
   my $id = shift @_;
   my $lat = $nodedata->{$waydata->{$id}{begin}}{lat};
@@ -522,6 +551,10 @@ sub generateMapJS  {
   
 }
 
+
+#################################################
+## Continuation links top/bottom of page
+################################################# 
 sub linkWay {
   my $id = shift @_;
   my $arrow = shift @_;
@@ -574,6 +607,9 @@ sub drawWay {
   $out .= "<div class=\"signs\">";
   $out .= OSMDraw::makeMaxspeed($id);
   $out .= OSMDraw::makeSigns($waydata->{$id},undef);
+  if($usenodes) {
+    $out .= OSMDraw::makeNodeSigns($id);
+    }
   $out .= "</div></div>\n";
 
   my $bridge = ((defined $t->{'bridge'})?'bridge':'').((defined $t->{'tunnel'})?' tunnel':'');
@@ -647,6 +683,7 @@ sub drawWay {
       $out .= OSMDraw::makeWaylayout($id, getBestNext($id));
       }
     }  
+
   
   $out .= '</div>';
   $out .= "</div>\n\n";

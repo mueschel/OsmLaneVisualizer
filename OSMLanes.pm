@@ -10,7 +10,7 @@ use Math::Trig;
  
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $LANEWIDTH);
+our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH);
 
 our $LANEWIDTH = 120;
 our $lanes;
@@ -18,6 +18,7 @@ our $USEplacement = 0;
 our $maxlanes = 4;
 our $adjacent = 0;
 our $lanewidth = 0;
+our $usenodes = 0;
 our $extrasize = 0;
 
 #################################################
