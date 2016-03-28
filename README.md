@@ -23,7 +23,7 @@ Interpreted Tags
 *  **destination:to:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
-*  **highway=(traffic_signals|give_way|stop|crossing|mini_roundabout) Some highway tags on nodes are shown using the corresponding traffic sign
+*  **highway=(traffic_signals|give_way|stop|crossing|mini_roundabout)** Some highway tags on nodes are shown using the corresponding traffic sign
 *  **hgv[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **int_ref** Shown in left column and on signs
 *  **junction=roundabout** Roundabouts are marked
@@ -41,6 +41,9 @@ Interpreted Tags
 *  **ref** Shown in left column, used to determine color of signs
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
 *  **sidewalk** Shown in light blue on left and right side of the road
+*  **sidewalk:width** Used if enabled
+*  **traffic_calming=island** Shown on ways between lanes as dark area
+*  **traffic_calming:width** Used if enabled
 *  **tunnel:name** Name is shown if available
 *  **turn[:lanes][:forward|:backward|:both_ways]** Rendered by using Unicode characters. 
 *  **width[:lanes][:forward|:backward]** Used if enabled

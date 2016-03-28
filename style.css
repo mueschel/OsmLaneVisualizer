@@ -288,7 +288,7 @@ div.noshoulder {
 
 div.sidewalk {
   border: none;
-  width: 50px;
+  width: 60px;
   background: #bde; }
 
 div.nosidewalk {
@@ -302,8 +302,8 @@ div.turns.backward {
   transform: rotate(180deg); }
 
 div.nolane.island {
-  background: #666;
-  width: 60px; }
+  background: #666 !important;
+  width: 54px; }
 
 div.middle {
   z-index: 10;

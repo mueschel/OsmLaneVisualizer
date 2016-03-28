@@ -465,7 +465,7 @@ sub makeShoulder {
         }
       if($shoulder eq 'left' || $shoulder eq 'both' || $obj->{tags}{'shoulder:left'} eq 'yes') {
         $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
-        $obj->{lanes}{offset} -= 36;
+        $obj->{lanes}{offset} -= $LANEWIDTH*0.6;
         }
       }
     }
@@ -481,7 +481,7 @@ sub makeShoulder {
     else {
       if($shoulder eq 'right' || $shoulder eq 'both' || $obj->{tags}{'shoulder:right'} eq 'yes') {
         $o .= "<div class=\"lane shoulder\" >&nbsp;</div>";
-        $obj->{lanes}{offset} -= 36;
+        $obj->{lanes}{offset} -= $LANEWIDTH*0.6;
         }
       if((((defined $shoulder && $shoulder ne 'right' && $shoulder ne 'both') || $shoulder eq 'no') && $obj->{tags}{'shoulder:right'} ne 'yes') || $obj->{tags}{'shoulder:right'} eq 'no') {
         $o .= "<div class=\"lane noshoulder\">&nbsp;</div>";
@@ -507,21 +507,26 @@ sub makeSidewalk {
   elsif($sidewalk eq "right") {$l = "nosidewalk";    $r = "sidewalk"; }
   elsif($sidewalk eq "both") {$l = "sidewalk";    $r = "sidewalk"; }
   elsif(defined $sidewalk)  {$l = "nosidewalk";    $r = "nosidewalk"; }
+
+  my $swlwidth = 4; my $swrwidth = 4;
+  $swlwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} || $LANEWIDTH/2 unless $l =~ /^no/;
+  $swrwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} || $LANEWIDTH/2 unless $r =~ /^no/;
+  
   
   if($r && (($side eq 'right' && !$obj->{reversed}) || ($side eq 'left' && $obj->{reversed}))) {
-    $o .= "<div class=\"lane $r\" >&nbsp;</div>";
+    $o .= "<div class=\"lane $r\" style='width:$swrwidth px;' >&nbsp;</div>";
     }
   elsif($l && (($side eq 'left' && !$obj->{reversed}) || ($side eq 'right' && $obj->{reversed}))) {
-    $o .= "<div class=\"lane $l\" >&nbsp;</div>";
+    $o .= "<div class=\"lane $l\" style='width:$swlwidth px;'>&nbsp;</div>";
     }
     
   if($r && $obj->{reversed} && $side eq 'right') {  
-    $obj->{lanes}{offset} -= 50  unless($r =~ /^no/) ;
-    $obj->{lanes}{offset} -= 4   if($r =~ /^no/) ;
+    $obj->{lanes}{offset} -= $swrwidth;#  unless($r =~ /^no/) ;
+#     $obj->{lanes}{offset} -= 4   if($r =~ /^no/) ;
     }
   if($l && !$obj->{reversed} && $side eq 'left') {  
-    $obj->{lanes}{offset} -= 50  unless($l =~ /^no/) ;
-    $obj->{lanes}{offset} -= 4   if($l =~ /^no/) ;
+    $obj->{lanes}{offset} -= $swlwidth;#  unless($l =~ /^no/) ;
+#     $obj->{lanes}{offset} -= 4   if($l =~ /^no/) ;
     }
   
   return $o;  
@@ -631,14 +636,20 @@ sub drawWay {
     
     if($i>0 && $dir eq "forward" && $lanes->{list}[$i-1] eq 'backward') { #between forward and backward, without both_ways
       if(defined $t->{'traffic_calming'} && $t->{'traffic_calming'} eq 'island') {
-        $o .= '<div class="nolane island" style="width:'.($LANEWIDTH/2).'px;" ';
+        my $lw = $LANEWIDTH/2;
+        my $islwidth = $t->{'traffic_calming:width'};
+        if ($lanewidth && $islwidth) {
+          $lw = ($islwidth*$LANEWIDTH/4-$STROKEWIDTH*2 ).'px"' ;
+          }
+        
+        $o .= '<div class="nolane island" style="width:'.$lw.'px;" ';
         $o .= '></div>';
-        $waydata->{$id}{lanes}{offset} -= $LANEWIDTH/4;
+        $waydata->{$id}{lanes}{offset} -= ($lw+$STROKEWIDTH*2)/2;
         }
       }
     
     $o .= '<div class="lane '.$dir." ".$change.$access.'" ';
-    $o .= 'style="width:'.($width*$LANEWIDTH/4-10).'px"' if $lanewidth && $width;
+    $o .= 'style="width:'.($width*$LANEWIDTH/4-$STROKEWIDTH*2).'px"' if $lanewidth && $width;
     $o .= '>';
     if($dir ne "nolane") {
       $o .= OSMDraw::makeTurns($turns,$dir);

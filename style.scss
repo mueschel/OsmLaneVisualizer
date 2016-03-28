@@ -313,7 +313,7 @@ div.noshoulder {
 
 div.sidewalk {
   border:none;
-  width:50px;
+  width:($laneWidth*0.5);
   background:#bde;
   }  
   
@@ -331,8 +331,8 @@ div.turns.backward {
   }  
   
 div.nolane.island {
-  background:#666;
-  width: ($laneWidth*0.5);
+  background:#666 !important;
+  width: ($laneWidth*0.5) - $laneSub;
   }  
   
 div.middle {

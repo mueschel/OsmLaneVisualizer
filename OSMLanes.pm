@@ -10,9 +10,10 @@ use Math::Trig;
  
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH);
+our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH $STROKEWIDTH);
 
 our $LANEWIDTH = 120;
+our $STROKEWIDTH = 3;
 our $lanes;
 our $USEplacement = 0;
 our $maxlanes = 4;
