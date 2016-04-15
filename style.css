@@ -243,8 +243,26 @@ div.lane.forward {
 div.lane.backward {
   background: #dcc; }
 
-div.nolane {
+div.lane.bothlane {
   background: #aaa !important;
+  border-left: 3px solid white !important;
+  border-right: 3px solid white !important;
+  height: 135px;
+  width: 114px;
+  display: inline-block;
+  float: left; }
+
+div.lane.restrictlane {
+  background: #aaa !important;
+  border-left: 3px solid white !important;
+  border-right: 3px solid white !important;
+  height: 135px;
+  width: 114px;
+  display: inline-block;
+  float: left; }
+
+div.lane.nolane {
+  background: #666 !important;
   border-left: 3px solid white !important;
   border-right: 3px solid white !important;
   height: 135px;

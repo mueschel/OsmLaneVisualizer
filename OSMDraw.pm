@@ -509,15 +509,19 @@ sub makeSidewalk {
   elsif(defined $sidewalk)  {$l = "nosidewalk";    $r = "nosidewalk"; }
 
   my $swlwidth = 4; my $swrwidth = 4;
-  $swlwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} || $LANEWIDTH/2 unless $l =~ /^no/;
-  $swrwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} || $LANEWIDTH/2 unless $r =~ /^no/;
+  $swlwidth = $LANEWIDTH/2 unless $l =~ /^no/;
+  $swrwidth = $LANEWIDTH/2 unless $r =~ /^no/;
+  if (defined $obj->{tags}{'sidewalk:width'}) {
+    $swlwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} unless  $l =~ /^no/;
+    $swrwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} unless  $r =~ /^no/;
+    }
   
   
   if($r && (($side eq 'right' && !$obj->{reversed}) || ($side eq 'left' && $obj->{reversed}))) {
-    $o .= "<div class=\"lane $r\" style='width:$swrwidth px;' >&nbsp;</div>";
+    $o .= "<div class=\"lane $r\" style='width:".$swrwidth."px;' >&nbsp;</div>";
     }
   elsif($l && (($side eq 'left' && !$obj->{reversed}) || ($side eq 'right' && $obj->{reversed}))) {
-    $o .= "<div class=\"lane $l\" style='width:$swlwidth px;'>&nbsp;</div>";
+    $o .= "<div class=\"lane $l\" style='width:".$swlwidth."px;'>&nbsp;</div>";
     }
     
   if($r && $obj->{reversed} && $side eq 'right') {  
@@ -633,20 +637,7 @@ sub drawWay {
     my $access = $lanes->{access}[$i];
     my $change = ($lanes->{change}[$i]||"")." ";
     my $o;
-    
-    if($i>0 && $dir eq "forward" && $lanes->{list}[$i-1] eq 'backward') { #between forward and backward, without both_ways
-      if(defined $t->{'traffic_calming'} && $t->{'traffic_calming'} eq 'island') {
-        my $lw = $LANEWIDTH/2;
-        my $islwidth = $t->{'traffic_calming:width'};
-        if ($lanewidth && $islwidth) {
-          $lw = ($islwidth*$LANEWIDTH/4-$STROKEWIDTH*2 ).'px"' ;
-          }
-        
-        $o .= '<div class="nolane island" style="width:'.$lw.'px;" ';
-        $o .= '></div>';
-        $waydata->{$id}{lanes}{offset} -= ($lw+$STROKEWIDTH*2)/2;
-        }
-      }
+
     
     $o .= '<div class="lane '.$dir." ".$change.$access.'" ';
     $o .= 'style="width:'.($width*$LANEWIDTH/4-$STROKEWIDTH*2).'px"' if $lanewidth && $width;

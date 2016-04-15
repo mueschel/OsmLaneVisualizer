@@ -87,21 +87,27 @@ sub getLanes {
   $bcklane  = max(@{$st->{b}}) || 0;
   $bothlane = max(@{$st->{m}}) || 0;
   $totlane  = max(@{$st->{l}}) || 0;   
-    
+
+  if(defined $t->{'traffic_calming'} && $t->{'traffic_calming'} eq 'island') {
+    $nolane = 1;
+    }
+  
   if(defined $t->{'lanes'} && $t->{'lanes'} > $fwdlane + $bcklane) {
-    $bothlane = $t->{'lanes'} - $fwdlane - $bcklane;
+    $nolane = $t->{'lanes'} - $fwdlane - $bcklane;
     }
 #   print Dumper $st;   
 #   print $fwdlane." ".$bcklane." ".$bothlane."\n";
 
   if(!$obj->{reversed}) {
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'backward');}
-    for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'nolane');}
+    for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'bothlane');}
+    for(my $i=0; $i<$nolane;$i++)   {push(@lanedir,'nolane');}
     for(my $i=0; $i<$fwdlane;$i++)  {push(@lanedir,'forward');}
     }
   else {
     for(my $i=0; $i<$fwdlane;$i++)  {push(@lanedir,'backward');}
-    for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'nolane');}
+    for(my $i=0; $i<$bothlane;$i++) {push(@lanedir,'bothlane');}
+    for(my $i=0; $i<$nolane;$i++)   {push(@lanedir,'nolane');}
     for(my $i=0; $i<$bcklane;$i++)  {push(@lanedir,'forward');}
     }
 
@@ -146,7 +152,7 @@ sub getLaneTags {
 
   if(defined $t->{$tag.':forward'}) {  
     for(my $i=0; $i<$lanes->{fwd}; $i++) {
-      $out[$i+$lanes->{bck}+$lanes->{both}] = $t->{$tag.':forward'};
+      $out[$i+$lanes->{bck}+$lanes->{both}+$lanes->{none}] = $t->{$tag.':forward'};
       }
     }
     
@@ -181,7 +187,7 @@ sub getLaneTags {
     my @tmp = split('\|',$t->{$tag.':lanes:forward'},-1);
     for(my $i=0; $i<scalar @tmp;$i++) {
       if(defined $tmp[$i] && $tmp[$i] ne "" && !($tmp[$i] =~ /^\s*$/)) {
-        $out[$lanes->{bck}+$lanes->{both}+$i] = $tmp[$i];
+        $out[$lanes->{bck}+$lanes->{both}+$lanes->{none}+$i] = $tmp[$i];
         }
       }
     }        
@@ -198,6 +204,16 @@ sub getLaneTags {
 sub getWidth {
   my $obj = $_[0];
   $obj->{lanes}{width} = getLaneTags($obj,'width','nonolanes');
+  
+  if($obj->{lanes}{none}) {
+    my $pos = $obj->{lanes}{bck}+$obj->{lanes}{both};
+       $pos = $obj->{lanes}{fwd}+$obj->{lanes}{both} if $obj->{reversed};
+    $obj->{lanes}{width}[$pos] = 4*0.6;
+    if (defined $obj->{tags}{'traffic_calming:width'}) {
+      $obj->{lanes}{width}[$pos] = $obj->{tags}{'traffic_calming:width'} ;
+      }
+    }
+  
   if(defined $obj->{tags}{'width'}) {
     $obj->{lanes}{haswidth} = 1;
     my $lw = $obj->{tags}{'width'}/($obj->{lanes}{numlanes});
@@ -210,6 +226,9 @@ sub getWidth {
     if ($obj->{lanes}{width}[$i]) {
       $obj->{lanes}{haswidth} = 1;
       $obj->{lanes}{totalwidth} += $obj->{lanes}{width}[$i];
+      }
+    else {
+      $obj->{lanes}{totalwidth} += 4;
       }
     }
   }    
@@ -367,7 +386,7 @@ sub makeAccess {
        || $obj->{lanes}{psv}[$i] eq 'designated'
        || $obj->{lanes}{bus}[$i] eq 'designated'
        || ($obj->{lanes}{psv}[$i] eq 'yes'  && ($obj->{lanes}{access}[$i] eq 'no' || $obj->{lanes}{vehicle}[$i] eq 'no')) ) {
-      $obj->{lanes}{access}[$i] .= " nolane"; 
+      $obj->{lanes}{access}[$i] .= " restrictlane"; 
       }
     }
   }
