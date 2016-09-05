@@ -10,7 +10,8 @@ use Math::Trig;
 use LWP::UserAgent;
 use Data::Dumper;
 use Exporter;
-use Encode qw(encode);
+use Encode qw(encode from_to);
+use URI::Escape qw(uri_unescape uri_escape);
 our @ISA = 'Exporter';
 our @EXPORT = qw($waydata $nodedata $reladata $store $endnodes);
 
@@ -30,10 +31,18 @@ sub readData {
   my $query = shift @_;
   my $url = 'http://overpass-api.de/api/interpreter';
   my $st = shift @_ || 0;
-
-  my $ua      = LWP::UserAgent->new();
-  my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
-  my $json = $request->content();
+  my $json;
+  
+  if($query =~ /elements/) {
+    from_to ($query,"iso-8859-1","utf-8");
+    $json = uri_unescape($query);
+    }
+  else {
+    my $ua      = LWP::UserAgent->new();
+    my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
+      $json = $request->content();
+    }
+  
   my $data = decode_json($json);
 
   if(!defined $data->{elements} || scalar @{$data->{elements}} == 0) {
