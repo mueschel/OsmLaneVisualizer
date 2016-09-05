@@ -5,6 +5,7 @@ use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use lib '/www/htdocs/w00fe1e3/lanes/';
 use OSMData;
 use OSMLanes;
+# use Data::Dumper;
 use List::Util qw(min max);
 
 my $totallength = 0;
@@ -294,7 +295,6 @@ sub makeAllDestinations {
   
   $t = $store->{way}[$st]{$id}{tags};
   $lanes = $store->{way}[$st]{$id}{lanes};
-
   my $tilt = -($store->{way}[$st]{$correspondingid || $id}{lanes}->{tilt}||0);
   
   my @destinations;
@@ -507,13 +507,20 @@ sub makeSidewalk {
   elsif($sidewalk eq "right") {$l = "nosidewalk";    $r = "sidewalk"; }
   elsif($sidewalk eq "both") {$l = "sidewalk";    $r = "sidewalk"; }
   elsif(defined $sidewalk)  {$l = "nosidewalk";    $r = "nosidewalk"; }
-
+  
+  if(($obj->{tags}{'sidewalk:left'}// '') eq 'yes') {$l = "sidewalk";}
+  if(($obj->{tags}{'sidewalk:right'}// '') eq 'yes') {$r = "sidewalk";}
+  if(($obj->{tags}{'sidewalk:both'}// '') eq 'yes') {$r = "sidewalk";$l = "sidewalk";}
+  
+  
   my $swlwidth = 4; my $swrwidth = 4;
   $swlwidth = $LANEWIDTH/2 unless $l =~ /^no/;
   $swrwidth = $LANEWIDTH/2 unless $r =~ /^no/;
-  if (defined $obj->{tags}{'sidewalk:width'}) {
-    $swlwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} unless  $l =~ /^no/;
-    $swrwidth = $LANEWIDTH/4*$obj->{tags}{'sidewalk:width'} unless  $r =~ /^no/;
+  if (defined $obj->{tags}{'sidewalk:width'} || defined $obj->{tags}{'sidewalk:left:width'} || defined $obj->{tags}{'sidewalk:both:width'}) {
+    $swlwidth = $LANEWIDTH/4*($obj->{tags}{'sidewalk:left:width'} || $obj->{tags}{'sidewalk:both:width'} || $obj->{tags}{'sidewalk:width'}) unless  $l =~ /^no/;
+    }
+  if (defined $obj->{tags}{'sidewalk:width'} || defined $obj->{tags}{'sidewalk:right:width'} || defined $obj->{tags}{'sidewalk:both:width'}) {
+    $swrwidth = $LANEWIDTH/4*($obj->{tags}{'sidewalk:right:width'} || $obj->{tags}{'sidewalk:both:width'} || $obj->{tags}{'sidewalk:width'}) unless  $r =~ /^no/;
     }
   
   
