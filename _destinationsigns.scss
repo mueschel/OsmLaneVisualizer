@@ -28,7 +28,10 @@
   div.hospital>span {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg") ;
     } 
-
+  div.train_station>span {  
+    background-color:white;
+    background-image:url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg") ;
+    } 
   div.motorway.refto {
     background-color:$colorAutobahn;
     border:1px white solid;
