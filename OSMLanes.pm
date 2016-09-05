@@ -385,7 +385,7 @@ sub makeAccess {
        || $obj->{lanes}{foot}[$i] eq 'official'
        || $obj->{lanes}{psv}[$i] eq 'designated'
        || $obj->{lanes}{bus}[$i] eq 'designated'
-       || ($obj->{lanes}{psv}[$i] eq 'yes'  && ($obj->{lanes}{access}[$i] eq 'no' || $obj->{lanes}{vehicle}[$i] eq 'no')) ) {
+       || (($obj->{lanes}{access}[$i] eq 'no' || $obj->{lanes}{vehicle}[$i] eq 'no')) ) {  #$obj->{lanes}{psv}[$i] eq 'yes'  &&
       $obj->{lanes}{access}[$i] .= " restrictlane"; 
       }
     }

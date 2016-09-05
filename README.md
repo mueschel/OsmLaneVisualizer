@@ -6,6 +6,14 @@ A simple tool to show lane attributes of way data in OSM. Data can be fetched fr
 
 The code is free to use under conditions of cc-by-nc-sa (http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
+How to get data
+--------------
+Option 1: Enter a way or relation id, or the ref or name of a relation into the appropriate box and click the "GO" button next to it.
+
+Option 2: Enter your own query or a valid json object (as output by Overpass) into the box "The Query" and click the "GO" button.
+
+If you change configuration (read the mouse-over text for explanations), click the same "GO" button again.
+
 
 Interpreted Tags
 --------------
@@ -40,8 +48,8 @@ Interpreted Tags
 *  **psv[:lanes][:forward|:backward|:both_ways]** The values designated and official are displayed
 *  **ref** Shown in left column, used to determine color of signs
 *  **shoulder[:left|:right]** Shoulders are drawn as gray area left and right of the road
-*  **sidewalk** Shown in light blue on left and right side of the road
-*  **sidewalk:width** Used if enabled
+*  **sidewalk[:left|:right|:both]** Shown in light blue on left and right side of the road
+*  **sidewalk[:left|:right|:both]:width** Used if enabled
 *  **traffic_calming=island** Shown on ways between lanes as dark area
 *  **traffic_calming:width** Used if enabled
 *  **tunnel:name** Name is shown if available
