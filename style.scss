@@ -51,7 +51,22 @@ div.selectquery input[type=text]{
 div.way {
   position:relative;
   }
+  
+div.way:hover {
+  z-index:5;
+  
+  .middle {
+    opacity:0;
+  }
+  
+  div.refcont>div {
+    z-index:5;
+    max-height:1000px;
+    overflow:visible;
+  }
+}  
 
+  
 div.wayname {
   z-index:10;
   }  
@@ -62,6 +77,8 @@ div.sep {
   width:100%;
   background:#ddd;
   font-size:12px;
+  opacity:30%;
+  z-index:-10;
   position:relative;
   }  
   
@@ -357,7 +374,7 @@ div.nolane.island {
   }  
   
 div.middle {
-  z-index:10;
+  z-index:4;
   position:relative;
   height:$laneHeight;
   left:(4*$laneWidth + $labelWidth + $signsWidth );
@@ -374,7 +391,7 @@ div.destination {
   text-align:center;
   top:10px;
   margin-left:2px;
-  z-index:1;
+  z-index:5;
   }  
 
 .backward div.destination {
@@ -510,11 +527,15 @@ span.ref {
   
 div.refcont {
   position:relative;
+  display:inline-block;
+  width:($laneWidth - 10px);
+  z-index:5;
   }  
 
 div.A, div.B, div.K, div.S {  
   max-height:($laneHeight - 20px);
   overflow:hidden;
+  position:relative;
   }
   
 div.A {
@@ -543,39 +564,91 @@ div.refcont div div.dest {
   margin:1px 0 1px 2px;
   min-height:12px;
   }
+
+.double {
+  div.refcont{
+    width:(2*$laneWidth - 10px);
+  }  
+  div.refcont div div.dest {
+    width:(2*$laneWidth - 17px);
+  }
+  div.refcont div div>span {
+    width:(2*$laneWidth - 21px);
+  }
   
-.double div.refcont div div.dest {
-  width:(2*$laneWidth - 17px);
+}
+.triple {
+  div.refcont{
+    width:(3*$laneWidth - 10px);
+  }  
+  div.refcont div div.dest {
+    width:(3*$laneWidth - 17px);
   }
-.triple div.refcont div div.dest {
-  width:(3*$laneWidth - 17px);
+  div.refcont div div>span {
+    width:(3*$laneWidth - 21px);
   }
-.quadruple div.refcont div div.dest {
-  width:(4*$laneWidth - 17px);
+}
+.quadruple {
+  div.refcont{
+    width:(4*$laneWidth - 10px);
+  }  
+  div.refcont div div.dest {
+    width:(4*$laneWidth - 17px);
   }
+  div.refcont div div>span {
+    width:(4*$laneWidth - 21px);
+  }
+}
+
   
 div.refcont div {
   @import 'destinationsigns';
 
+  div>span {
+    display:inline-block;
+    width:($laneWidth - 21px);
+    padding:1px 2px;
+    min-height:11px;
+  }
+  
   div.symbol>span {
-    padding-left:15px;
-    background-size:15px;
-    background-repeat:no-repeat;
+    min-height:15px;
+  }
+  
+  div.symbol>span:before {
+    background-size: 12px;
+    display: inline-block;
+    width: 12px; 
+    height: 12px;
+    margin:0;
+    padding:0;
+    position:relative;
+    top:3px;
+    content:"";   
     }
   div.symbolonly {
     float:left;
     height:24px;
     width:24px;    
     }
-  div.symbolonly>span{
-    background-size:24px;
-    background-repeat:no-repeat;
-    display:block;
-    height:24px;
+  div.symbolonly>span {
     width:24px;
     }
+  div.symbolonly>span:before {
+    background-size: 18px;
+    display: inline-block;
+    width: 18px; 
+    height: 18px;
+    margin:0;
+    padding:0;
+    position:relative;
+    top:0px;
+    content:"";  
+    }
   } 
-  
+
+
+
 div.refcont:hover .tooltip {
   opacity:1;
   margin:0px;

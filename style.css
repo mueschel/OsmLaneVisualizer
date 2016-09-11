@@ -33,6 +33,15 @@ div.selectquery input[type=text] {
 div.way {
   position: relative; }
 
+div.way:hover {
+  z-index: 5; }
+  div.way:hover .middle {
+    opacity: 0; }
+  div.way:hover div.refcont > div {
+    z-index: 5;
+    max-height: 1000px;
+    overflow: visible; }
+
 div.wayname {
   z-index: 10; }
 
@@ -42,6 +51,8 @@ div.sep {
   width: 100%;
   background: #ddd;
   font-size: 12px;
+  opacity: 30%;
+  z-index: -10;
   position: relative; }
 
 div.sep .name {
@@ -324,7 +335,7 @@ div.nolane.island {
   width: 54px; }
 
 div.middle {
-  z-index: 10;
+  z-index: 4;
   position: relative;
   height: 135px;
   left: 730px;
@@ -340,7 +351,7 @@ div.destination {
   text-align: center;
   top: 10px;
   margin-left: 2px;
-  z-index: 1; }
+  z-index: 5; }
 
 .backward div.destination {
   top: -15px; }
@@ -457,11 +468,15 @@ span.ref {
   border: 1px solid #aaa; }
 
 div.refcont {
-  position: relative; }
+  position: relative;
+  display: inline-block;
+  width: 110px;
+  z-index: 5; }
 
 div.A, div.B, div.K, div.S {
   max-height: 115px;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
 
 div.A {
   background: #5078D0;
@@ -488,36 +503,48 @@ div.refcont div div.dest {
   margin: 1px 0 1px 2px;
   min-height: 12px; }
 
+.double div.refcont {
+  width: 230px; }
 .double div.refcont div div.dest {
   width: 223px; }
+.double div.refcont div div > span {
+  width: 219px; }
 
+.triple div.refcont {
+  width: 350px; }
 .triple div.refcont div div.dest {
   width: 343px; }
+.triple div.refcont div div > span {
+  width: 339px; }
 
+.quadruple div.refcont {
+  width: 470px; }
 .quadruple div.refcont div div.dest {
   width: 463px; }
+.quadruple div.refcont div div > span {
+  width: 459px; }
 
-div.refcont div div.industrial > span {
+div.refcont div div.industrial > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
-div.refcont div div.park_and_ride > span {
+div.refcont div div.park_and_ride > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
-div.refcont div div.parking > span {
+div.refcont div div.parking > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
-div.refcont div div.fuel > span {
+div.refcont div div.fuel > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
-div.refcont div div.stadium > span {
+div.refcont div div.stadium > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
-div.refcont div div.airport > span {
+div.refcont div div.airport > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
-div.refcont div div.restaurant > span {
+div.refcont div div.restaurant > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
-div.refcont div div.toilets > span {
+div.refcont div div.toilets > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
-div.refcont div div.motorway > span, div.refcont div div.highway > span {
+div.refcont div div.motorway > span:before, div.refcont div div.highway > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg"); }
-div.refcont div div.hospital > span {
+div.refcont div div.hospital > span:before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
-div.refcont div div.train_station > span {
+div.refcont div div.train_station > span:before {
   background-color: white;
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg"); }
 div.refcont div div.motorway.refto {
@@ -525,20 +552,39 @@ div.refcont div div.motorway.refto {
   border: 1px white solid;
   margin: 2px;
   color: white; }
+div.refcont div div > span {
+  display: inline-block;
+  width: 99px;
+  padding: 1px 2px;
+  min-height: 11px; }
 div.refcont div div.symbol > span {
-  padding-left: 15px;
-  background-size: 15px;
-  background-repeat: no-repeat; }
+  min-height: 15px; }
+div.refcont div div.symbol > span:before {
+  background-size: 12px;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 3px;
+  content: ""; }
 div.refcont div div.symbolonly {
   float: left;
   height: 24px;
   width: 24px; }
 div.refcont div div.symbolonly > span {
-  background-size: 24px;
-  background-repeat: no-repeat;
-  display: block;
-  height: 24px;
   width: 24px; }
+div.refcont div div.symbolonly > span:before {
+  background-size: 18px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 0px;
+  content: ""; }
 
 div.refcont:hover .tooltip {
   opacity: 1;

@@ -25,7 +25,7 @@ my $url = '<osm-script output="json" timeout="25"> <union> <query type="relation
 
 my $start = 1;
 my $totalstartpoints = 0;
-my $extendway = 0;
+# my $extendway = 0;
 my $extrasizeactive = "";
 my $currid;
 my $opts;

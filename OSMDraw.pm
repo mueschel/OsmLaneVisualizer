@@ -202,6 +202,8 @@ sub makeDestination {
   my $destcol = $lanes->{destinationcolour}[$lane];
   my $destsym = $lanes->{destinationsymbol}[$lane];
   my $destcountry = $lanes->{destinationcountry}[$lane];
+  my $arrow   = $lanes->{destinationarrow}[$lane];
+  my $arrowto = $lanes->{destinationarrowto}[$lane];
   my $titledest = $dest;
   my $signdest  = $dest;
 
@@ -209,12 +211,13 @@ sub makeDestination {
   $signdest =~ s/;/<br>/g;
   $titledest =~ s/;/\n/g;  
   $destsym =~ s/none//g;
+  $arrow =~ s/none//g;
   
   if($ref || $dest || $destsym || $destcountry || $refto || $to) {
     $o .= '<div class="refcont">';
-    unless($option =~ /notooltip/) {
-      $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
-      }
+#     unless($option =~ /notooltip/) {
+#       $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
+#       }
     
     $cr = 'K';
     $cr = "B" if $roadref =~ /^\s*B/;
@@ -229,15 +232,25 @@ sub makeDestination {
     my @cols   = split(";",$destcol,-1);
     my @syms   = split(";",$destsym,-1);
     my @ctr    = split(';',$destcountry,-1);
+    my @arro   = split(';',$arrow,-1);
+    my @arroto = split(';',$arrowto,-1);
 
     for (my $i = 0; $i < max(scalar @reftos, scalar @tos); $i++) {
       if($symboltos[$i]) {
         if(!$reftos[$i]) {$symboltos[$i] .= " symbolonly";}
         else {$symboltos[$i] .= " symbol";}
         }
+ 
       $symboltos[$i] = "dest refto ".$symboltos[$i];
       $o .= '<div class="'.$symboltos[$i].'">';
       $o .= '<span>';
+      if($arroto[$i] && $arroto[$i] ne $lanes->{turn}[$lane]) {
+        if ($arroto[$i] eq 'left')          {$o .= "&#x1f870; ";}
+        if ($arroto[$i] eq 'slight_left')   {$o .= "&#x1f874; ";}
+        if ($arroto[$i] eq 'through')       {$o .= "&#x1f871; ";}
+        if ($arroto[$i] eq 'slight_right')  {$tos[$i] = $tos[$i]." &#x1f875;";}
+        if ($arroto[$i] eq 'right')         {$tos[$i] = $tos[$i]." &#x1f872;";}
+        } 
       $o .= printRef($reftos[$i]);
       $o .= ($tos[$i]||"&nbsp;").'</span>';
       $o .= '</div>';
@@ -259,6 +272,13 @@ sub makeDestination {
       $syms[$i] = "dest ".$syms[$i];
       $o .= '<div class="'.$syms[$i].'">';
       $o .= '<span '.$cols[$i].'>';
+      if($arro[$i] && $arro[$i] ne $lanes->{turn}[$lane]) {
+        if ($arro[$i] eq 'left')          {$o .= "&#x1f870; ";}
+        if ($arro[$i] eq 'slight_left')   {$o .= "&#x1f874; ";}
+        if ($arro[$i] eq 'through')       {$o .= "&#x1f871; ";}
+        if ($arro[$i] eq 'slight_right')  {$dests[$i] = $dests[$i]." &#x1f875;";}
+        if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." &#x1f872;";}
+        }       
       $o .= ($dests[$i]||"&nbsp;").'</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
       $o .= '</div>';
@@ -575,6 +595,7 @@ sub linkWay {
   my $id = shift @_;
   my $arrow = shift @_;
   my $style = shift @_ || "navigation";
+  return unless $extendway;
   $arrow = "&#9650;" if $arrow eq "up";
   $arrow = "&#9660;" if $arrow eq "down";
   my $str = "";

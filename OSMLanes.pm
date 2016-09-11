@@ -10,9 +10,10 @@ use Math::Trig;
  
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH $STROKEWIDTH);
+our @EXPORT = qw($LANEHEIGHT $extendway $lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH $STROKEWIDTH);
 
 our $LANEWIDTH = 120;
+our $LANEHEIGHT = 135;
 our $STROKEWIDTH = 3;
 our $lanes;
 our $USEplacement = 0;
@@ -21,6 +22,7 @@ our $adjacent = 0;
 our $lanewidth = 0;
 our $usenodes = 0;
 our $extrasize = 0;
+our $extendway = 0;
 
 #################################################
 ## Read and interpret number of lanes
@@ -316,7 +318,7 @@ sub PlacementStartEnd {
   $obj->{lanes}{offset} = ($offset + $offend) /2;
   
   my $tilt = $offset - $offend;
-     $tilt = rad2deg(atan2($tilt*$LANEWIDTH,135));
+     $tilt = rad2deg(atan2($tilt*$LANEWIDTH,$LANEHEIGHT));
   $obj->{lanes}{tilt} = -$tilt;  
 
   return $obj->{lanes}{offset};
@@ -416,6 +418,9 @@ sub InspectLanes {
   $obj->{lanes}{destinationrefto}   = getLaneTags($obj,'destination:ref:to');
   $obj->{lanes}{destinationto}      = getLaneTags($obj,'destination:to');
   $obj->{lanes}{destinationsymbolto}= getLaneTags($obj,'destination:symbol:to');
+  
+  $obj->{lanes}{destinationarrow}   = getLaneTags($obj,'destination:arrow');
+  $obj->{lanes}{destinationarrowto} = getLaneTags($obj,'destination:arrow:to');
   
   $obj->{lanes}{access}             = getLaneTags($obj,'access');#,'nonolanes'
   $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
