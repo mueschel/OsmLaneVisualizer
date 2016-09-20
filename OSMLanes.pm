@@ -10,7 +10,7 @@ use Math::Trig;
  
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = qw($LANEHEIGHT $extendway $lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH $STROKEWIDTH);
+our @EXPORT = qw($country $LANEHEIGHT $extendway $lanes $maxlanes $USEplacement $adjacent $lanewidth $extrasize $usenodes $LANEWIDTH $STROKEWIDTH);
 
 our $LANEWIDTH = 120;
 our $LANEHEIGHT = 135;
@@ -23,6 +23,7 @@ our $lanewidth = 0;
 our $usenodes = 0;
 our $extrasize = 0;
 our $extendway = 0;
+our $country = 'de';
 
 #################################################
 ## Read and interpret number of lanes
@@ -405,26 +406,23 @@ sub InspectLanes {
   OSMLanes::getChange($obj);
   
   $obj->{lanes}{turn} = getLaneTags($obj,'turn');
-  $obj->{lanes}{destinationref}     = getLaneTags($obj,'destination:ref');
-  $obj->{lanes}{destination}        = getLaneTags($obj,'destination');
   $obj->{lanes}{maxspeed}           = getLaneTags($obj,'maxspeed','nonolanes');
   $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
   $obj->{lanes}{bus}                = getLaneTags($obj,'bus'); #,'nonolanes'
   $obj->{lanes}{psv}                = getLaneTags($obj,'psv'); #,'nonolanes'
   $obj->{lanes}{foot}               = getLaneTags($obj,'foot','nonolanes');
-  $obj->{lanes}{destinationcolour}  = getLaneTags($obj,'destination:colour');
-  $obj->{lanes}{destinationsymbol}  = getLaneTags($obj,'destination:symbol');
-  $obj->{lanes}{destinationcountry} = getLaneTags($obj,'destination:country');
-  $obj->{lanes}{destinationrefto}   = getLaneTags($obj,'destination:ref:to');
-  $obj->{lanes}{destinationto}      = getLaneTags($obj,'destination:to');
-  $obj->{lanes}{destinationsymbolto}= getLaneTags($obj,'destination:symbol:to');
-  
-  $obj->{lanes}{destinationarrow}   = getLaneTags($obj,'destination:arrow');
-  $obj->{lanes}{destinationarrowto} = getLaneTags($obj,'destination:arrow:to');
-  
   $obj->{lanes}{access}             = getLaneTags($obj,'access');#,'nonolanes'
   $obj->{lanes}{hgv}                = getLaneTags($obj,'hgv','nonolanes');
   makeAccess($obj);
+
+  my @keys = qw(destination destination:ref destination:colour destination:symbol destination:country destination:arrow destination:int_ref
+                destination:to destination:ref:to destination:colour:to destination:symbol:to destination:arrow:to destination:int_ref:to); 
+  foreach my $k (@keys) {
+    my $sk = $k;
+    $sk =~ s/[:_]//g;
+    $obj->{lanes}{$sk} = getLaneTags($obj,$k);
+    }
+    
   }
  
 1;

@@ -153,10 +153,17 @@ sub printRef {
   my $r = shift @_;
   my $cr = "";
   my $o = "";
-  $cr = "A" if $r =~ /^\s*A/;
-  $cr = "B" if $r =~ /^\s*B/;
-  $cr = "E" if $r =~ /^\s*E/;
-  $cr = "S" if $r =~ /^\s*S/;
+  if($country eq 'de'){
+    $cr = "A" if $r =~ /^\s*A/;
+    $cr = "B" if $r =~ /^\s*B/;
+    $cr = "E" if $r =~ /^\s*E/;
+    $cr = "S" if $r =~ /^\s*S/;
+    }
+  elsif($country eq 'be') {
+    $cr = "N" if $r =~ /^\s*N/;
+    $cr = "E" if $r =~ /^\s*E/;
+    $cr = "R" if $r =~ /^\s*R/;
+    }
   unless($r =~ '^\s*$') {
     $o .='<span class="ref'.$cr.'">'.$r.'</span>';
     }
@@ -171,12 +178,16 @@ sub makeRef {
   my ($ref) = @_;
   my $o ='';
   if($ref) {
-    my $cr = 'K';
+    my $cr;
+    $cr = 'K' if $country eq 'de';
+    $cr = 'N' if $country eq 'be';
     my @refs = split(';',$ref);
     foreach my $r (@refs) {
       $cr = "A" if $r =~ /^\s*A/;
       $cr = "B" if $r =~ /^\s*B/;
+      $cr = "N" if $r =~ /^\s*N/;
       $cr = "E" if $r =~ /^\s*E/;
+      $cr = "R" if $r =~ /^\s*R/;
       $cr = "S" if $r =~ /^\s*S/;
       if($r ne '') {
         $o .='<div class="ref'.$cr.'">'.$r.'</div>';
@@ -197,9 +208,11 @@ sub makeDestination {
   my $roadref = $way->{'ref'};
   my $ref     = $lanes->{destinationref}[$lane];
   my $refto   = $lanes->{destinationrefto}[$lane];
+  my $irefto  = $lanes->{destinationintrefto}[$lane];
   my $to      = $lanes->{destinationto}[$lane];
   my $symbolto= $lanes->{destinationsymbolto}[$lane];
   my $destcol = $lanes->{destinationcolour}[$lane];
+  my $destcolto = $lanes->{destinationcolourto}[$lane];
   my $destsym = $lanes->{destinationsymbol}[$lane];
   my $destcountry = $lanes->{destinationcountry}[$lane];
   my $arrow   = $lanes->{destinationarrow}[$lane];
@@ -219,7 +232,8 @@ sub makeDestination {
 #       $o .= '<div class="tooltip">'.$ref.'<br>'.$signdest.'</div>';
 #       }
     
-    $cr = 'K';
+    $cr = 'K' if $country eq 'de';
+    $cr = 'N' if $country eq 'be';
     $cr = "B" if $roadref =~ /^\s*B/;
     $cr = "A" if $roadref =~ /^\s*A/ || $ref =~ /^\s*A/;
 
@@ -227,31 +241,41 @@ sub makeDestination {
     $o .='<div class="'.$cr.'" >';
     my @dests  = split(";",$dest,-1);
     my @reftos    = split(";",$refto,-1);
+    my @ireftos   = split(";",$irefto,-1);
     my @tos       = split(";",$to,-1);
     my @symboltos = split(";",$symbolto,-1);
     my @cols   = split(";",$destcol,-1);
+    my @coltos = split(";",$destcolto,-1);
     my @syms   = split(";",$destsym,-1);
     my @ctr    = split(';',$destcountry,-1);
     my @arro   = split(';',$arrow,-1);
     my @arroto = split(';',$arrowto,-1);
 
-    for (my $i = 0; $i < max(scalar @reftos, scalar @tos); $i++) {
+    for (my $i = 0; $i < max(scalar @ireftos, scalar @reftos, scalar @tos); $i++) {
+      if($coltos[$i]) {
+        my $tc = '';
+        if($coltos[$i] eq 'white' || $coltos[$i] =~ /ffffff/) { $tc = 'color:black;';}
+        if($coltos[$i] eq 'blue') {$tc = 'color:white';}
+        if($coltos[$i] eq 'blue') {$coltos[$i] = '#5078D0';}
+        $coltos[$i] = 'style="background-color:'.$coltos[$i].';';
+        $coltos[$i] .= $tc.'"';
+        }    
       if($symboltos[$i]) {
-        if(!$reftos[$i]) {$symboltos[$i] .= " symbolonly";}
+        if(!$reftos[$i] && !$ireftos[$i] && !$tos[$i]) {$symboltos[$i] .= " symbolonly";}
         else {$symboltos[$i] .= " symbol";}
         }
  
       $symboltos[$i] = "dest refto ".$symboltos[$i];
       $o .= '<div class="'.$symboltos[$i].'">';
-      $o .= '<span>';
+      $o .= '<span '.$coltos[$i].'>';
       if($arroto[$i] && $arroto[$i] ne $lanes->{turn}[$lane]) {
-        if ($arroto[$i] eq 'left')          {$o .= "&#x1f870; ";}
-        if ($arroto[$i] eq 'slight_left')   {$o .= "&#x1f874; ";}
-        if ($arroto[$i] eq 'through')       {$o .= "&#x1f871; ";}
-        if ($arroto[$i] eq 'slight_right')  {$tos[$i] = $tos[$i]." &#x1f875;";}
-        if ($arroto[$i] eq 'right')         {$tos[$i] = $tos[$i]." &#x1f872;";}
+        if ($arroto[$i] eq 'left')          {$o .= "<span class='l'>&#x2794;</span> ";}
+        if ($arroto[$i] eq 'slight_left')   {$o .= "<span class='sl'>&#x2794;</span> ";}
+        if ($arroto[$i] eq 'through')       {$o .= "<span class='t'>&#x2794;</span> ";}
+        if ($arroto[$i] eq 'slight_right')  {$tos[$i] = $tos[$i]." <span class='sr'>&#x2794;</span>";}
+        if ($arroto[$i] eq 'right')         {$tos[$i] = $tos[$i]." <span class='r'>&#x2794;</span>";}
         } 
-      $o .= printRef($reftos[$i]);
+      $o .= printRef($reftos[$i].$ireftos[$i]);
       $o .= ($tos[$i]||"&nbsp;").'</span>';
       $o .= '</div>';
       } 
@@ -273,11 +297,11 @@ sub makeDestination {
       $o .= '<div class="'.$syms[$i].'">';
       $o .= '<span '.$cols[$i].'>';
       if($arro[$i] && $arro[$i] ne $lanes->{turn}[$lane]) {
-        if ($arro[$i] eq 'left')          {$o .= "&#x1f870; ";}
-        if ($arro[$i] eq 'slight_left')   {$o .= "&#x1f874; ";}
-        if ($arro[$i] eq 'through')       {$o .= "&#x1f871; ";}
-        if ($arro[$i] eq 'slight_right')  {$dests[$i] = $dests[$i]." &#x1f875;";}
-        if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." &#x1f872;";}
+        if ($arro[$i] eq 'left')          {$o .= "<span class='l'>&#x2794;</span> ";}
+        if ($arro[$i] eq 'slight_left')   {$o .= "<span class='sl'>&#x2794;</span> ";}
+        if ($arro[$i] eq 'through')       {$o .= "<span class='t'>&#x2794;</span> ";}
+        if ($arro[$i] eq 'slight_right')  {$dests[$i] = $dests[$i]." <span class='sr'>&#x2794;</span>";}
+        if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." <span class='r'>&#x2794;</span>";}
         }       
       $o .= ($dests[$i]||"&nbsp;").'</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);

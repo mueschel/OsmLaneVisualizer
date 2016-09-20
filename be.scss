@@ -1,0 +1,43 @@
+
+$colorMain: #5078D0;
+$colorRegional: white;
+$colorAutobahn: green;
+$colorInternational: green;
+
+
+div.signs {
+  @import 'signs_DE'; 
+} 
+div.refcont div {
+  @import 'destinationsigns';
+}
+  
+div.refN, span.refN {
+  background:$colorMain;
+  border:1px solid white;
+  color:white;
+  }  
+
+div.refR, span.refR {
+  background:white;
+  border:1px solid black;
+  color:black;
+  } 
+  
+div.refE, span.refE {
+  background:$colorInternational;
+  border:1px solid white;
+  color:white;
+  }    
+  
+  
+div.N {
+  background:$colorMain;
+  border:1px solid white;
+  color:white;
+  }  
+div.R {
+  background:$colorRegional;
+  color:black;
+  border:1px solid black;
+  }  

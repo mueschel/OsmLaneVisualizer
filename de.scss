@@ -1,0 +1,68 @@
+$colorAutobahn: #5078D0;
+$colorBundesstrasse: #F0E060;
+$colorStaatsstrasse: #FFFFFF;
+$colorInternational: green;
+
+
+div.signs {
+  @import 'signs_DE'; 
+} 
+div.refcont div {
+  @import 'destinationsigns';
+}
+  
+div.refA, span.refA {
+  background:$colorAutobahn;
+  border:1px solid white;
+  color:white;
+  }  
+div.refB, span.refB {
+  background:$colorBundesstrasse;
+  border:1px solid black;
+  color:black;
+  }  
+div.refK, span.refK {
+  background:white;
+  border:1px solid black;
+  color:black;
+  }  
+div.refE, span.refE {
+  background:$colorInternational;
+  border:1px solid white;
+  color:white;
+  }    
+  
+div.refS, span.refS {
+  background:white;
+  border:1px solid black;
+  color:black;
+  }  
+
+span.refS {
+  background:$colorAutobahn;
+  border:1px solid white;
+  color:white;
+  }    
+
+  
+div.A {
+  background:$colorAutobahn;
+  border:1px solid white;
+  color:white;
+  }  
+div.B {
+  background:$colorBundesstrasse;
+  color:black;
+  border:1px solid black;
+  }    
+div.K {
+  background:$colorBundesstrasse;
+  color:black;
+  border:1px solid black;
+  }  
+div.S {
+  background:$colorStaatsstrasse;
+  color:black;
+  border:1px solid black;
+  }  
+    

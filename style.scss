@@ -5,11 +5,6 @@ $laneSub: 6px; /*Width of  borders*/
 $labelWidth: 100px;
 $signsWidth: 150px;
 
-$colorAutobahn: #5078D0;
-$colorBundesstrasse: #F0E060;
-$colorStaatsstrasse: #FFFFFF;
-$colorE: green;
-
 body {
   background:#f2f5f7;
   font-size:12px;
@@ -54,6 +49,7 @@ div.way {
   
 div.way:hover {
   z-index:5;
+  
   
   .middle {
     opacity:0;
@@ -109,7 +105,7 @@ div.connects {
   height:10px;
   border-right:50px solid #40ff30;
   border-left:50px solid transparent;
-  z-index:5;
+  z-index:24;
   opacity: 0.9;
   }  
 
@@ -206,7 +202,6 @@ div.signs {
     height:25px;    
     }
   
-  @import 'signs_DE'; 
   } 
 
 .lane div.signs div {
@@ -395,7 +390,7 @@ div.destination {
   }  
 
 .backward div.destination {
-  top:-15px;
+  top:-10px;
   }    
 
 div.destination.double {
@@ -465,14 +460,16 @@ span.destCountry {
   display:inline;
 }
 
-.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS, .info .E, .info .refE {
+.info .A, .info .B, .info .S, .info .E, .info .N, .info .R,
+.info .refA, .info .refB, .info .refK, .info .refS, .info .refE, .info .refN, .info .refR {
   float:left;
   height:14px;
   font-size:11px;
   padding:1px;
   }  
   
-div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.refS, div.refE, span.refE, span.ref {
+div.refA, div.refB, div.refK, div.refS, div.refE, div.refN, div.refR,
+span.refA, span.refB, span.refK, span.refS, span.refE, span.ref, span.refN, span.refR {
   margin:2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -482,42 +479,9 @@ div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.re
   float:right;
   }  
   
-span.refA, span.refB, span.refK, span.refS, span.refE, span.ref {
+span.refA, span.refB, span.refK, span.refS, span.refE, span.refN, span.refR, span.ref {
   display:inline-block;
   float:none;
-  }    
-  
-div.refA, span.refA {
-  background:$colorAutobahn;
-  border:1px solid white;
-  color:white;
-  }  
-div.refB, span.refB {
-  background:$colorBundesstrasse;
-  border:1px solid black;
-  color:black;
-  }  
-div.refK, span.refK {
-  background:white;
-  border:1px solid black;
-  color:black;
-  }  
-div.refE, span.refE {
-  background:$colorE;
-  border:1px solid white;
-  color:white;
-  }    
-  
-div.refS, span.refS {
-  background:white;
-  border:1px solid black;
-  color:black;
-  }  
-
-span.refS {
-  background:$colorAutobahn;
-  border:1px solid white;
-  color:white;
   }    
 
   
@@ -532,33 +496,13 @@ div.refcont {
   z-index:5;
   }  
 
-div.A, div.B, div.K, div.S {  
+div.A, div.B, div.K, div.S, div.N {  
   max-height:($laneHeight - 20px);
   overflow:hidden;
   position:relative;
   }
   
-div.A {
-  background:$colorAutobahn;
-  border:1px solid white;
-  color:white;
-  }  
-div.B {
-  background:$colorBundesstrasse;
-  color:black;
-  border:1px solid black;
-  }    
-div.K {
-  background:$colorBundesstrasse;
-  color:black;
-  border:1px solid black;
-  }  
-div.S {
-  background:$colorStaatsstrasse;
-  color:black;
-  border:1px solid black;
-  }  
-  
+
 div.refcont div div.dest {
   width:($laneWidth - 17px);
   margin:1px 0 1px 2px;
@@ -570,10 +514,14 @@ div.refcont div div.dest {
     width:(2*$laneWidth - 10px);
   }  
   div.refcont div div.dest {
-    width:(2*$laneWidth - 17px);
+    max-width:(2*$laneWidth - 17px);
+    min-width:(1*$laneWidth - 17px);
+    width:auto;
   }
   div.refcont div div>span {
-    width:(2*$laneWidth - 21px);
+    max-width:(2*$laneWidth - 21px);
+    min-width:(1*$laneWidth - 21px);
+    width:auto;
   }
   
 }
@@ -582,10 +530,14 @@ div.refcont div div.dest {
     width:(3*$laneWidth - 10px);
   }  
   div.refcont div div.dest {
-    width:(3*$laneWidth - 17px);
+    max-width:(3*$laneWidth - 17px);
+    min-width:(1*$laneWidth - 17px);
+    width:auto;
   }
   div.refcont div div>span {
-    width:(3*$laneWidth - 21px);
+    max-width:(3*$laneWidth - 21px);
+    min-width:(1*$laneWidth - 21px);
+    width:auto;
   }
 }
 .quadruple {
@@ -593,17 +545,24 @@ div.refcont div div.dest {
     width:(4*$laneWidth - 10px);
   }  
   div.refcont div div.dest {
-    width:(4*$laneWidth - 17px);
+    max-width:(4*$laneWidth - 17px);
+    min-width:(1*$laneWidth - 17px);
+    width:auto;
   }
   div.refcont div div>span {
-    width:(4*$laneWidth - 21px);
+    max-width:(4*$laneWidth - 21px);
+    min-width:(1*$laneWidth - 21px);
+    width:auto;
   }
 }
 
   
 div.refcont div {
-  @import 'destinationsigns';
 
+  div.dest {
+    margin:auto;
+  }
+  
   div>span {
     display:inline-block;
     width:($laneWidth - 21px);
@@ -615,8 +574,10 @@ div.refcont div {
     min-height:15px;
   }
   
-  div.symbol>span:before {
+  div.symbol>span::before {
     background-size: 12px;
+    background-repeat: no-repeat;
+    background-position:center center;
     display: inline-block;
     width: 12px; 
     height: 12px;
@@ -634,8 +595,10 @@ div.refcont div {
   div.symbolonly>span {
     width:24px;
     }
-  div.symbolonly>span:before {
+  div.symbolonly>span::before {
     background-size: 18px;
+    background-repeat: no-repeat;
+    background-position:center center;
     display: inline-block;
     width: 18px; 
     height: 18px;
@@ -647,7 +610,12 @@ div.refcont div {
     }
   } 
 
-
+div.dest>span span{display:inline-block;}  
+div.dest>span span.l  { transform: rotate(-180deg);}
+div.dest>span span.sl { transform: rotate(-135deg);}
+div.dest>span span.t  { transform: rotate(-90deg);}
+div.dest>span span.sr { transform: rotate(-45deg);}
+div.dest>span span.r  { transform: rotate(0deg);}
 
 div.refcont:hover .tooltip {
   opacity:1;

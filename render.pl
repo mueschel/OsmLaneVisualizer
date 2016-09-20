@@ -29,6 +29,7 @@ my $totalstartpoints = 0;
 my $extrasizeactive = "";
 my $currid;
 my $opts;
+my @countries = qw(be de);
 
 if(defined $ENV{'QUERY_STRING'}) {
   my @args = split("&",$ENV{'QUERY_STRING'});
@@ -43,6 +44,7 @@ if(defined $ENV{'QUERY_STRING'}) {
     if($v[0] eq 'lanewidth') {$lanewidth = "checked";}
     if($v[0] eq 'extendway') {$extendway = "checked";}
     if($v[0] eq 'usenodes') {$usenodes = "checked";}
+    if($v[0] eq 'country') {$country = $v[1];}
     if($v[0] eq 'extrasize') {$extrasize = "checked"; $extrasizeactive = "&extrasize"; $LANEWIDTH *= 1.53 if $extrasize;}
     if($v[0] eq 'wayid') {$url = '<osm-script output="json" timeout="25"><union><query type="way"><id-query ref="'.($v[1]).'" type="way"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
     if($v[0] eq 'relid') {$url = '<osm-script output="json" timeout="25"><union><query type="relation"><id-query ref="'.($v[1]).'" type="relation"/></query></union><print mode="body" order="quadtile"/><recurse type="down"/><print  order="quadtile"/></osm-script>';}
@@ -115,13 +117,20 @@ my $wayid = $opts->{'wayid'} || 324294469;
 my $relid = $opts->{'relid'} || 11037;
 my $relname = $opts->{'relname'} || 'Bundesstraße 521';
 my $relref  = $opts->{'relref'} || 'A 661';
+   $country = 'de' unless $country =~ m%\w\w%;
 
+my $countrylist = "";
+foreach my $c (@countries) {
+  $countrylist .= "<option ".(($c eq $country)?'selected':'').">$c";
+  }
+   
 print <<"HDOC";
 <!DOCTYPE html>
 <html lang="en">
 <head>
  <title>OSM Lane Visualizer</title>
  <link rel="stylesheet" type="text/css" href="../lanes/style.css">
+ <link rel="stylesheet" type="text/css" href="../lanes/$country.css">
  <meta  charset="UTF-8"/>
 
 <script type="text/javascript">
@@ -132,6 +141,7 @@ print <<"HDOC";
     else  
       url += x+'='+encodeURI(document.getElementsByName(x)[0].value);
     url += "&start="+document.getElementsByName('start')[0].value;
+    url += "&country="+document.getElementsByName('country')[0].value;
     url += document.getElementsByName('placement')[0].checked?"&placement":"";
     url += document.getElementsByName('adjacent')[0].checked?"&adjacent":"";
     url += document.getElementsByName('lanewidth')[0].checked?"&lanewidth":"";
@@ -165,6 +175,7 @@ print <<"HDOC";
   <input style="margin_left:30px;" type="checkbox" name="extrasize" $extrasize >Larger lanes</label>-->
 <br><label title="If the API call returns a single way, look for up to two ways in front and after the found one with the same ref-tag">
   <input style="margin_left:30px;" type="checkbox" name="extendway" $extendway >Include ways before &amp; after</label>
+<br><label title="Select country to style signs">Country <select style="margin_left:30px;" name="country" >$countrylist</select></label>
 <br><label>Start at end number <input type="text" name="start" value="$start" style="width:30px;">(Found a total of $totalstartpoints end nodes)</label>
 </div>
 

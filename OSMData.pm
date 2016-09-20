@@ -23,6 +23,7 @@ our $nodedata = $store->{node}[0];
 our $reladata = $store->{rel}[0];
 our $endnodes;
 
+
 #################################################
 ## Read and organize data
 ## reads data from JSON input and stores nodes ways and relations in hashes

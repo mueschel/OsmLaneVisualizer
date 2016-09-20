@@ -1,40 +1,45 @@
-  div.industrial>span:before {  
+$laneWidth:  120px;
+  div.industrial>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg") ;
     }
-  div.park_and_ride>span:before {  
+  div.park_and_ride>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg") ;
     }  
-  div.parking>span:before {  
+  div.parking>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg") ;
     }  
-  div.fuel>span:before {  
+  div.fuel>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg") ;
     }  
-  div.stadium>span:before {  
+  div.stadium>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg") ;
     } 
-  div.airport>span:before {  
+  div.airport>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg") ;
     }   
-  div.restaurant>span:before {  
+  div.restaurant>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg") ;
     }   
-  div.toilets>span:before {  
+  div.toilets>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg") ;
     } 
-  div.motorway>span:before, div.highway>span:before {  
+  div.motorway>span::before, div.highway>span::before {  
     background-image: url('http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg');
   } 
-  div.hospital>span:before {  
+  div.hospital>span::before {  
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg") ;
     } 
-  div.train_station>span:before {  
+  div.train_station>span::before {  
     background-color:white;
     background-image:url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg") ;
     } 
-  div.motorway.refto {
+  div.ferry>span::before {
+    background-image:url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png") ;
+  }
+  div.motorway.refto>span {
     background-color:$colorAutobahn;
     border:1px white solid;
-    margin:2px;
+    margin:1px;
+    width:($laneWidth - 23px);
     color:white;
   }

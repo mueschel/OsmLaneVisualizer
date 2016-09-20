@@ -80,7 +80,7 @@ div.connects {
   height: 10px;
   border-right: 50px solid #40ff30;
   border-left: 50px solid transparent;
-  z-index: 5;
+  z-index: 24;
   opacity: 0.9; }
 
 div.connects.next {
@@ -157,46 +157,6 @@ div.signs div {
 div.signs .max {
   width: 25px;
   height: 25px; }
-div.signs .bicycleno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/48/Zeichen_254.svg"); }
-div.signs .footno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/cc/Zeichen_259.svg"); }
-div.signs .hgvno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_253.svg"); }
-div.signs .motorroad {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg"); }
-div.signs .overtaking {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/8/87/Zeichen_276.svg"); }
-div.signs .overtakinghgv {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/ca/Zeichen_277.svg"); }
-div.signs .bicycledesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
-div.signs .busdesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
-div.signs .roundabout {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
-div.signs .traffic_signals {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/93/Zeichen_131.svg"); }
-div.signs .give_way {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/96/Zeichen_205.svg"); }
-div.signs .stop {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5c/Zeichen_206.svg"); }
-div.signs .priority {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/91/Zeichen_208.svg"); }
-div.signs .crossing {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b0/Zeichen_350-10.svg"); }
-div.signs .priority_road {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/ff/Zeichen_306_-_Vorfahrtstra%C3%9Fe%2C_StVO_1970.svg"); }
-div.signs .condition.wet {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
-  border: none;
-  background-color: transparent;
-  height: 35px; }
-div.signs .condition.hgv {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
-  border: none;
-  background-color: transparent;
-  height: 20px; }
 
 .lane div.signs div {
   height: 26px;
@@ -354,7 +314,7 @@ div.destination {
   z-index: 5; }
 
 .backward div.destination {
-  top: -15px; }
+  top: -10px; }
 
 div.destination.double {
   width: 230px; }
@@ -415,13 +375,15 @@ span.destCountry {
   max-width: 100px;
   display: inline; }
 
-.info .A, .info .B, .info .refA, .info .refB, .info .refK, .info .refK, .info .S, .info .refS, .info .E, .info .refE {
+.info .A, .info .B, .info .S, .info .E, .info .N, .info .R,
+.info .refA, .info .refB, .info .refK, .info .refS, .info .refE, .info .refN, .info .refR {
   float: left;
   height: 14px;
   font-size: 11px;
   padding: 1px; }
 
-div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.refS, div.refE, span.refE, span.ref {
+div.refA, div.refB, div.refK, div.refS, div.refE, div.refN, div.refR,
+span.refA, span.refB, span.refK, span.refS, span.refE, span.ref, span.refN, span.refR {
   margin: 2px 2px 2px 2px;
   padding: 0px 2px 0 2px;
   border-radius: 4px;
@@ -430,39 +392,9 @@ div.refA, div.refB, div.refK, span.refA, span.refB, span.refK, div.refS, span.re
   display: inline;
   float: right; }
 
-span.refA, span.refB, span.refK, span.refS, span.refE, span.ref {
+span.refA, span.refB, span.refK, span.refS, span.refE, span.refN, span.refR, span.ref {
   display: inline-block;
   float: none; }
-
-div.refA, span.refA {
-  background: #5078D0;
-  border: 1px solid white;
-  color: white; }
-
-div.refB, span.refB {
-  background: #F0E060;
-  border: 1px solid black;
-  color: black; }
-
-div.refK, span.refK {
-  background: white;
-  border: 1px solid black;
-  color: black; }
-
-div.refE, span.refE {
-  background: green;
-  border: 1px solid white;
-  color: white; }
-
-div.refS, span.refS {
-  background: white;
-  border: 1px solid black;
-  color: black; }
-
-span.refS {
-  background: #5078D0;
-  border: 1px solid white;
-  color: white; }
 
 span.ref {
   border: 1px solid #aaa; }
@@ -473,30 +405,10 @@ div.refcont {
   width: 110px;
   z-index: 5; }
 
-div.A, div.B, div.K, div.S {
+div.A, div.B, div.K, div.S, div.N {
   max-height: 115px;
   overflow: hidden;
   position: relative; }
-
-div.A {
-  background: #5078D0;
-  border: 1px solid white;
-  color: white; }
-
-div.B {
-  background: #F0E060;
-  color: black;
-  border: 1px solid black; }
-
-div.K {
-  background: #F0E060;
-  color: black;
-  border: 1px solid black; }
-
-div.S {
-  background: #FFFFFF;
-  color: black;
-  border: 1px solid black; }
 
 div.refcont div div.dest {
   width: 103px;
@@ -506,52 +418,38 @@ div.refcont div div.dest {
 .double div.refcont {
   width: 230px; }
 .double div.refcont div div.dest {
-  width: 223px; }
+  max-width: 223px;
+  min-width: 103px;
+  width: auto; }
 .double div.refcont div div > span {
-  width: 219px; }
+  max-width: 219px;
+  min-width: 99px;
+  width: auto; }
 
 .triple div.refcont {
   width: 350px; }
 .triple div.refcont div div.dest {
-  width: 343px; }
+  max-width: 343px;
+  min-width: 103px;
+  width: auto; }
 .triple div.refcont div div > span {
-  width: 339px; }
+  max-width: 339px;
+  min-width: 99px;
+  width: auto; }
 
 .quadruple div.refcont {
   width: 470px; }
 .quadruple div.refcont div div.dest {
-  width: 463px; }
+  max-width: 463px;
+  min-width: 103px;
+  width: auto; }
 .quadruple div.refcont div div > span {
-  width: 459px; }
+  max-width: 459px;
+  min-width: 99px;
+  width: auto; }
 
-div.refcont div div.industrial > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
-div.refcont div div.park_and_ride > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
-div.refcont div div.parking > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
-div.refcont div div.fuel > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
-div.refcont div div.stadium > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
-div.refcont div div.airport > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
-div.refcont div div.restaurant > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
-div.refcont div div.toilets > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
-div.refcont div div.motorway > span:before, div.refcont div div.highway > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg"); }
-div.refcont div div.hospital > span:before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
-div.refcont div div.train_station > span:before {
-  background-color: white;
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg"); }
-div.refcont div div.motorway.refto {
-  background-color: #5078D0;
-  border: 1px white solid;
-  margin: 2px;
-  color: white; }
+div.refcont div div.dest {
+  margin: auto; }
 div.refcont div div > span {
   display: inline-block;
   width: 99px;
@@ -559,8 +457,10 @@ div.refcont div div > span {
   min-height: 11px; }
 div.refcont div div.symbol > span {
   min-height: 15px; }
-div.refcont div div.symbol > span:before {
+div.refcont div div.symbol > span::before {
   background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -575,8 +475,10 @@ div.refcont div div.symbolonly {
   width: 24px; }
 div.refcont div div.symbolonly > span {
   width: 24px; }
-div.refcont div div.symbolonly > span:before {
+div.refcont div div.symbolonly > span::before {
   background-size: 18px;
+  background-repeat: no-repeat;
+  background-position: center center;
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -585,6 +487,24 @@ div.refcont div div.symbolonly > span:before {
   position: relative;
   top: 0px;
   content: ""; }
+
+div.dest > span span {
+  display: inline-block; }
+
+div.dest > span span.l {
+  transform: rotate(-180deg); }
+
+div.dest > span span.sl {
+  transform: rotate(-135deg); }
+
+div.dest > span span.t {
+  transform: rotate(-90deg); }
+
+div.dest > span span.sr {
+  transform: rotate(-45deg); }
+
+div.dest > span span.r {
+  transform: rotate(0deg); }
 
 div.refcont:hover .tooltip {
   opacity: 1;
