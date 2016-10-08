@@ -40,30 +40,54 @@ div.signs .condition.hgv {
   height: 20px; }
 
 div.refcont div div.industrial > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/d5/Belgian_road_sign_S5.svg"); }
 div.refcont div div.park_and_ride > span::before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
 div.refcont div div.parking > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/41/Belgian_road_sign_E9a.svg"); }
 div.refcont div div.fuel > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/0/0c/Belgian_road_sign_F63.svg"); }
 div.refcont div div.stadium > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/d6/Belgian_road_sign_S30.svg"); }
 div.refcont div div.airport > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/ed/Belgian_road_sign_S1.svg"); }
 div.refcont div div.restaurant > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/f/f8/Belgian_road_sign_F67.svg"); }
 div.refcont div div.toilets > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/50/Belgian_road_sign_F53.svg"); }
 div.refcont div div.motorway > span::before, div.refcont div div.highway > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/b/b8/Italian_traffic_signs_-_autostrada.svg"); }
 div.refcont div div.hospital > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/de/Belgian_road_sign_F55.svg"); }
 div.refcont div div.train_station > span::before {
   background-color: white;
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/b/b3/Belgian_road_sign_S15.svg"); }
 div.refcont div div.ferry > span::before {
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/3/3c/Belgian_road_sign_S4.svg"); }
+div.refcont div div.police > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/22/Belgian_road_sign_S10.svg"); }
+div.refcont div div.harbour > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/c7/Belgian_road_sign_S3.svg"); }
+div.refcont div div.cemetery > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/e4/Belgian_road_sign_S13.svg"); }
+div.refcont div div.bus_station > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/d0/Belgian_road_sign_S14.svg"); }
+div.refcont div div.church > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/9a/Belgian_road_sign_S18.svg"); }
+div.refcont div div.court > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/9f/Belgian_road_sign_S19.svg"); }
+div.refcont div div.post > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/Belgian_road_sign_S21.svg"); }
+div.refcont div div.ruins > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/42/Belgian_road_sign_S32.svg"); }
+div.refcont div div.castle > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/3/36/Belgian_road_sign_S31.svg"); }
+div.refcont div div.park > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/92/Belgian_road_sign_S36.svg"); }
+div.refcont div div.monument > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/3/3a/Belgian_road_sign_S35.svg"); }
+div.refcont div div.centre > span::before {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg"); }
 div.refcont div div.motorway.refto > span {
   background-color: green;
   border: 1px white solid;

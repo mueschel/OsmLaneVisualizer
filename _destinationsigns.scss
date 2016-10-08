@@ -36,6 +36,9 @@ $laneWidth:  120px;
   div.ferry>span::before {
     background-image:url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png") ;
   }
+  div.centre>span::before {
+    background-image:url("https://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg") ;
+  }  
   div.motorway.refto>span {
     background-color:$colorAutobahn;
     border:1px white solid;
