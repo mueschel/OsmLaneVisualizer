@@ -16,6 +16,10 @@ div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
 div.signs .roundabout {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
+div.signs .taxiyes {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/bb/Zusatzzeichen_1026-30.svg"); }
+div.signs .bicycleyes {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5a/Zusatzzeichen_1022-10.svg"); }
 div.signs .traffic_signals {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/93/Zeichen_131.svg"); }
 div.signs .give_way {

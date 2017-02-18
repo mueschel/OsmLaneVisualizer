@@ -95,8 +95,8 @@ sub getLanes {
     $nolane = 1;
     }
   
-  if(defined $t->{'lanes'} && $t->{'lanes'} > $fwdlane + $bcklane) {
-    $nolane = $t->{'lanes'} - $fwdlane - $bcklane;
+  if(defined $t->{'lanes'} && $t->{'lanes'} > $fwdlane + $bcklane + $bothlane) {
+    $nolane = $t->{'lanes'} - $fwdlane - $bcklane - $bothlane;
     }
 #   print Dumper $st;   
 #   print $fwdlane." ".$bcklane." ".$bothlane."\n";

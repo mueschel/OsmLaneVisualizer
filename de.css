@@ -16,6 +16,10 @@ div.signs .busdesig {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
 div.signs .roundabout {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
+div.signs .taxiyes {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/bb/Zusatzzeichen_1026-30.svg"); }
+div.signs .bicycleyes {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5a/Zusatzzeichen_1022-10.svg"); }
 div.signs .traffic_signals {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/93/Zeichen_131.svg"); }
 div.signs .give_way {
@@ -65,7 +69,9 @@ div.refcont div div.train_station > span::before {
 div.refcont div div.ferry > span::before {
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png"); }
 div.refcont div div.centre > span::before {
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg"); }
+div.refcont div div.information > span::before {
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/7e/Italian_traffic_signs_-_icona_informazioni.svg"); }
 div.refcont div div.motorway.refto > span {
   background-color: #5078D0;
   border: 1px white solid;

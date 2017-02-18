@@ -102,8 +102,11 @@ sub makeSigns {
   if ($t->{'foot'} eq 'designated' || $t->{'foot'} eq 'official') {
     $out .= "<div class=\"footdesig\">&nbsp;</div>";
     }
-  if ($t->{'bus'} eq 'designated' || $t->{'bus'} eq 'official'
-   || $t->{'psv'} eq 'designated' || $t->{'psv'} eq 'official') {
+  if ($t->{'psv'} eq 'designated' || $t->{'psv'} eq 'official') {
+    $out .= "<div class=\"busdesig\">&nbsp;</div>";
+    $out .= "<div class=\"taxiyes\">&nbsp;</div>";
+    }
+  if ($t->{'bus'} eq 'designated' || $t->{'bus'} eq 'official') {
     $out .= "<div class=\"busdesig\">&nbsp;</div>";
     }
   if ($t->{'hgv'} eq 'no') {
@@ -656,7 +659,7 @@ sub drawWay {
   $out .= sprintf("km %.1f",$totallength/1000);
   $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'" >Way '.$id.'</a>';
   $out .= sprintf("<br>%im",$length);
-  $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/map/im/bbox/%.5f/%.5f/%.5f/%.5f\">(M)</a>",$lat-0.005,$lat+0.005,$lon-0.005,$lon+0.005);
+  $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/app/?lat=%.5f&lng=%.5f&z=16\">(M)</a>",$lat,$lon);
   $out .= sprintf(" <a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
   $out .= " <a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
   $out .= linkWay($id,"(V)",'normal');
