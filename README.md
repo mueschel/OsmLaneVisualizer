@@ -21,14 +21,16 @@ Interpreted Tags
 *  **bridge[:name]** Bridges are displayed using a shadow behind the lanes, the name is shown
 *  **bus[:lanes][:forward|:backward|:both_ways]** The values designated and official are displayed
 *  **change[:lanes][:forward|:backward|:both_ways]** Shown as solid or dashed lines between lanes
-*  **destination[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs.
+*  **destination[:lanes][:forward|:backward|:both_ways]** Shown on destination signs.
+*  **destination:arrow[:lanes][:forward|:backward|:both_ways]** Shown on destination signs.
 *  **destination:colour[:lanes][:forward|:backward|:both_ways]** Used as background color for individual destinations on a sign.
 *  **destination:country[:lanes][:forward|:backward|:both_ways]** If the number of entries matches the number of destination's, the country codes are listed next to the destination, otherwise they are grouped at the bottom of the sign.
-*  **destination:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
-*  **destination:ref:to[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
+*  **destination:distance[:lanes][:forward|:backward|:both_ways]** Shown on destination signs.
+*  **destination:ref[:lanes][:forward|:backward|:both_ways]** Shown on destination signs. The ref's are listed at the bottom of each sign
+*  **destination:ref:to[:lanes][:forward|:backward|:both_ways]** Shown on destination signs. The ref's are listed at the bottom of each sign
 *  **destination:symbol[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
 *  **destination:symbol:to[:lanes][:forward|:backward|:both_ways]** Some common symbols are displayed. They are listed next to destination names
-*  **destination:to:ref[:lanes][:forward|:backward|:both_ways]** Shown using german-style destination signs. The ref's are listed at the bottom of each sign
+*  **destination:to:ref[:lanes][:forward|:backward|:both_ways]** Shown on destination signs. The ref's are listed at the bottom of each sign
 *  **foot[:lanes][:forward|:backward|:both_ways]** The values no, designated and official are displayed
 *  **highway=motorway_junction** Junction name and ref are displayed, if they are located at the end of a way
 *  **highway=(traffic_signals|give_way|stop|crossing|mini_roundabout)** Some highway tags on nodes are shown using the corresponding traffic sign

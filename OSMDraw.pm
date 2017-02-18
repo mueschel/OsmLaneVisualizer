@@ -220,6 +220,7 @@ sub makeDestination {
   my $destcountry = $lanes->{destinationcountry}[$lane];
   my $arrow   = $lanes->{destinationarrow}[$lane];
   my $arrowto = $lanes->{destinationarrowto}[$lane];
+  my $distance = $lanes->{destinationdistance}[$lane];
   my $titledest = $dest;
   my $signdest  = $dest;
 
@@ -253,7 +254,8 @@ sub makeDestination {
     my @ctr    = split(';',$destcountry,-1);
     my @arro   = split(';',$arrow,-1);
     my @arroto = split(';',$arrowto,-1);
-
+    my @distances = split(';',$distance,-1);
+    
     for (my $i = 0; $i < max(scalar @ireftos, scalar @reftos, scalar @tos); $i++) {
       if($coltos[$i]) {
         my $tc = '';
@@ -299,6 +301,11 @@ sub makeDestination {
       $syms[$i] = "dest ".$syms[$i];
       $o .= '<div class="'.$syms[$i].'">';
       $o .= '<span '.$cols[$i].'>';
+      if($distances[$i]) {
+        $dests[$i] .= "  ".$distances[$i];
+        $dests[$i] .= " km" if !($distances[$i] =~ /(mi|nmi|km|m|\")/);
+        }
+
       if($arro[$i] && $arro[$i] ne $lanes->{turn}[$lane]) {
         if ($arro[$i] eq 'left')          {$o .= "<span class='l'>&#x2794;</span> ";}
         if ($arro[$i] eq 'slight_left')   {$o .= "<span class='sl'>&#x2794;</span> ";}
@@ -306,7 +313,8 @@ sub makeDestination {
         if ($arro[$i] eq 'slight_right')  {$dests[$i] = $dests[$i]." <span class='sr'>&#x2794;</span>";}
         if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." <span class='r'>&#x2794;</span>";}
         }       
-      $o .= ($dests[$i]||"&nbsp;").'</span>';
+      $o .= ($dests[$i]||"&nbsp;");
+      $o .= '</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
       $o .= '</div>';
       }

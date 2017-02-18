@@ -416,7 +416,7 @@ sub InspectLanes {
   makeAccess($obj);
 
   my @keys = qw(destination destination:ref destination:colour destination:symbol destination:country destination:arrow destination:int_ref
-                destination:to destination:ref:to destination:colour:to destination:symbol:to destination:arrow:to destination:int_ref:to); 
+                destination:to destination:ref:to destination:colour:to destination:symbol:to destination:arrow:to destination:int_ref:to destination:distance); 
   foreach my $k (@keys) {
     my $sk = $k;
     $sk =~ s/[:_]//g;
