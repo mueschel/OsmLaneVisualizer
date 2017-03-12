@@ -251,7 +251,17 @@ sub makeDestination {
     my @arro   = split(';',$arrow,-1);
     my @arroto = split(';',$arrowto,-1);
 
-    for (my $i = 0; $i < max(scalar @ireftos, scalar @reftos, scalar @tos); $i++) {
+    my $entries = max(scalar @ireftos, scalar @reftos, scalar @tos);
+    if($entries > 1) {
+      @ireftos = ($ireftos[0]) x $entries if(scalar @ireftos == 1);
+      @reftos = ($reftos[0]) x $entries if(scalar @reftos == 1);
+      @tos = ($tos[0]) x $entries if(scalar @tos == 1);
+      @coltos = ($coltos[0]) x $entries if(scalar @coltos == 1);
+      @symboltos = ($symboltos[0]) x $entries if(scalar @symboltos == 1);
+      @arroto = ($arroto[0]) x $entries if(scalar @arroto == 1);
+      }
+    
+    for (my $i = 0; $i < $entries; $i++) {
       if($coltos[$i]) {
         my $tc = '';
         if($coltos[$i] eq 'white' || $coltos[$i] =~ /ffffff/) { $tc = 'color:black;';}
@@ -279,8 +289,15 @@ sub makeDestination {
       $o .= ($tos[$i]||"&nbsp;").'</span>';
       $o .= '</div>';
       } 
-    
-    for (my $i = 0; $i < max(scalar @dests,scalar @syms); $i++ ) {
+
+    $entries = max(scalar @dests,scalar @syms);
+    if($entries > 1) {
+      @cols = ($cols[0]) x $entries if(scalar @cols == 1);
+      @syms = ($syms[0]) x $entries if(scalar @syms == 1);
+      @arro = ($arro[0]) x $entries if(scalar @arro == 1);
+      }
+      
+    for (my $i = 0; $i < $entries; $i++ ) {
       if($cols[$i]) {
         my $tc = '';
         if($cols[$i] eq 'white' || $cols[$i] =~ /ffffff/) { $tc = 'color:black;';}
