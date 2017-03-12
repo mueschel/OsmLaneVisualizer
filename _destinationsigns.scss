@@ -37,8 +37,11 @@ $laneWidth:  120px;
     background-image:url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png") ;
   }
   div.centre>span::before {
-    background-image:url("https://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg") ;
+    background-image:url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg") ;
   }  
+  div.information>span::before {
+    background-image:url("http://upload.wikimedia.org/wikipedia/commons/7/7e/Italian_traffic_signs_-_icona_informazioni.svg") ;
+  }
   div.motorway.refto>span {
     background-color:$colorAutobahn;
     border:1px white solid;

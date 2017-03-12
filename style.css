@@ -215,7 +215,7 @@ div.lane.backward {
   background: #dcc; }
 
 div.lane.bothlane {
-  background: #aaa !important;
+  background: #ccccc5 !important;
   border-left: 3px solid white !important;
   border-right: 3px solid white !important;
   height: 135px;
@@ -233,13 +233,14 @@ div.lane.restrictlane {
   float: left; }
 
 div.lane.nolane {
-  background: #666 !important;
+  /*   background:#666 !important; */
   border-left: 3px solid white !important;
   border-right: 3px solid white !important;
   height: 135px;
   width: 114px;
   display: inline-block;
-  float: left; }
+  float: left;
+  background: repeating-linear-gradient(-45deg, #666, #666 6px, white 6px, white 14px, #666 14px, #666 20px); }
 
 div.lane.no {
   border-left: 3px solid white;
@@ -291,7 +292,8 @@ div.turns.backward {
   transform: rotate(180deg); }
 
 div.nolane.island {
-  background: #666 !important;
+  /*   background:#666 !important; */
+  background: repeating-linear-gradient(-45deg, #666, #666 6px, white 6px, white 14px, #666 14px, #666 20px);
   width: 54px; }
 
 div.middle {
@@ -533,7 +535,8 @@ div.turns {
   font-weight: bold;
   margin-top: -5px;
   margin-bottom: -15px;
-  height: 30px; }
+  height: 30px;
+  letter-spacing: -10px; }
 
 div.connectdestination .K, div.connectdestination .A, div.connectdestination .B {
   box-shadow: 5px 5px 5px #aaa; }

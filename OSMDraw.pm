@@ -102,8 +102,11 @@ sub makeSigns {
   if ($t->{'foot'} eq 'designated' || $t->{'foot'} eq 'official') {
     $out .= "<div class=\"footdesig\">&nbsp;</div>";
     }
-  if ($t->{'bus'} eq 'designated' || $t->{'bus'} eq 'official'
-   || $t->{'psv'} eq 'designated' || $t->{'psv'} eq 'official') {
+  if ($t->{'psv'} eq 'designated' || $t->{'psv'} eq 'official') {
+    $out .= "<div class=\"busdesig\">&nbsp;</div>";
+    $out .= "<div class=\"taxiyes\">&nbsp;</div>";
+    }
+  if ($t->{'bus'} eq 'designated' || $t->{'bus'} eq 'official') {
     $out .= "<div class=\"busdesig\">&nbsp;</div>";
     }
   if ($t->{'hgv'} eq 'no') {
@@ -217,6 +220,7 @@ sub makeDestination {
   my $destcountry = $lanes->{destinationcountry}[$lane];
   my $arrow   = $lanes->{destinationarrow}[$lane];
   my $arrowto = $lanes->{destinationarrowto}[$lane];
+  my $distance = $lanes->{destinationdistance}[$lane];
   my $titledest = $dest;
   my $signdest  = $dest;
 
@@ -250,6 +254,7 @@ sub makeDestination {
     my @ctr    = split(';',$destcountry,-1);
     my @arro   = split(';',$arrow,-1);
     my @arroto = split(';',$arrowto,-1);
+    my @distances = split(';',$distance,-1);
 
     my $entries = max(scalar @ireftos, scalar @reftos, scalar @tos);
     if($entries > 1) {
@@ -295,6 +300,7 @@ sub makeDestination {
       @cols = ($cols[0]) x $entries if(scalar @cols == 1);
       @syms = ($syms[0]) x $entries if(scalar @syms == 1);
       @arro = ($arro[0]) x $entries if(scalar @arro == 1);
+      @distances = ($distances[0]) x $entries if(scalar @distances == 1);
       }
       
     for (my $i = 0; $i < $entries; $i++ ) {
@@ -313,6 +319,11 @@ sub makeDestination {
       $syms[$i] = "dest ".$syms[$i];
       $o .= '<div class="'.$syms[$i].'">';
       $o .= '<span '.$cols[$i].'>';
+      if($distances[$i]) {
+        $dests[$i] .= "  ".$distances[$i];
+        $dests[$i] .= " km" if !($distances[$i] =~ /(mi|nmi|km|m|\")/);
+        }
+
       if($arro[$i] && $arro[$i] ne $lanes->{turn}[$lane]) {
         if ($arro[$i] eq 'left')          {$o .= "<span class='l'>&#x2794;</span> ";}
         if ($arro[$i] eq 'slight_left')   {$o .= "<span class='sl'>&#x2794;</span> ";}
@@ -320,7 +331,8 @@ sub makeDestination {
         if ($arro[$i] eq 'slight_right')  {$dests[$i] = $dests[$i]." <span class='sr'>&#x2794;</span>";}
         if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." <span class='r'>&#x2794;</span>";}
         }       
-      $o .= ($dests[$i]||"&nbsp;").'</span>';
+      $o .= ($dests[$i]||"&nbsp;");
+      $o .= '</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
       $o .= '</div>';
       }
@@ -673,7 +685,7 @@ sub drawWay {
   $out .= sprintf("km %.1f",$totallength/1000);
   $out .= '<br><a name="'.$id.'" href="https://www.openstreetmap.org/way/'.$id.'" title="'.OSMData::listtags($waydata->{$id}).'" >Way '.$id.'</a>';
   $out .= sprintf("<br>%im",$length);
-  $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/map/im/bbox/%.5f/%.5f/%.5f/%.5f\">(M)</a>",$lat-0.005,$lat+0.005,$lon-0.005,$lon+0.005);
+  $out .= sprintf("<br><a target=\"_blank\" href=\"http://www.mapillary.com/app/?lat=%.5f&lng=%.5f&z=16\">(M)</a>",$lat,$lon);
   $out .= sprintf(" <a target=\"_blank\" href=\"http://127.0.0.1:8111/load_and_zoom?left=%.5f&right=%.5f&top=%.5f&bottom=%.5f&select=way$id\">(J)</a>",$lon-0.01,$lon+0.01,$lat+0.005,$lat-0.005);
   $out .= " <a target=\"_blank\" href=\"http://level0.osmz.ru/?url=way/$id!\">(L)</a>\n";
   $out .= linkWay($id,"(V)",'normal');

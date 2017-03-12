@@ -273,7 +273,7 @@ div.lane.backward {
   }
   
 div.lane.bothlane {
-  background:#aaa !important;
+  background:#ccccc5 !important;
   border-left:3px solid white !important;
   border-right:3px solid white !important;
   height:$laneHeight;
@@ -293,14 +293,15 @@ div.lane.restrictlane {
   }
 
 div.lane.nolane {
-  background:#666 !important;
+/*   background:#666 !important; */
   border-left:3px solid white !important;
   border-right:3px solid white !important;
   height:$laneHeight;
   width:($laneWidth) - $laneSub;
   display:inline-block;
   float:left;
-  }
+  background: repeating-linear-gradient(-45deg,#666,#666 6px, white 6px,white 14px,#666 14px, #666 20px);   
+}
   
   
 div.lane.no {
@@ -364,7 +365,8 @@ div.turns.backward {
   }  
   
 div.nolane.island {
-  background:#666 !important;
+/*   background:#666 !important; */
+  background: repeating-linear-gradient(-45deg,#666,#666 6px, white 6px,white 14px,#666 14px, #666 20px);   
   width: ($laneWidth*0.5) - $laneSub;
   }  
   
@@ -647,6 +649,7 @@ div.turns {
   margin-top:-5px;
   margin-bottom:-15px;
   height:30px;
+  letter-spacing:-10px;
   }  
   
  
