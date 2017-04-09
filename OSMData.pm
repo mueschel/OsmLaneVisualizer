@@ -11,6 +11,7 @@ use LWP::UserAgent;
 use Data::Dumper;
 use Exporter;
 use Encode qw(encode from_to);
+use HTML::Entities;
 use URI::Escape qw(uri_unescape uri_escape);
 our @ISA = 'Exporter';
 our @EXPORT = qw($waydata $nodedata $reladata $store $endnodes);
@@ -124,7 +125,7 @@ sub listtags {
   foreach my $k (sort keys $t) {
     $ret .= $k." = ".$t->{$k}."\n";
     }
-  return $ret;  
+  return encode_entities($ret);  
   }
   
 #################################################

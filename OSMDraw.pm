@@ -7,7 +7,7 @@ use OSMData;
 use OSMLanes;
 # use Data::Dumper;
 use List::Util qw(min max);
-
+use HTML::Entities;
 my $totallength = 0;
 
 
@@ -676,8 +676,8 @@ sub drawWay {
   my $lat = $nodedata->{$waydata->{$id}{begin}}{lat};
   my $lon = $nodedata->{$waydata->{$id}{begin}}{lon};  
   my $name = $t->{'name'};
-     $name .= "<br>][".$t->{'bridge:name'} if $t->{'bridge:name'};
-     $name .= "<br>)(".$t->{'tunnel:name'} if $t->{'tunnel:name'};
+     $name .= "<br>][ ".$t->{'bridge:name'} if $t->{'bridge:name'};
+     $name .= "<br>)( ".$t->{'tunnel:name'} if $t->{'tunnel:name'};
      $name .= "&nbsp;" unless $name;
   $out .= '<div class="way" >';
   
