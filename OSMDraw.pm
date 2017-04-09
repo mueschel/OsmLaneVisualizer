@@ -17,37 +17,39 @@ my $totallength = 0;
 #################################################
 sub makeMaxspeed {
   my $id = shift @_;
+  my $item = shift @_;
+  my $name = substr($item,0,3);
   my $t = $waydata->{$id}{tags};
   my $out = '';
   
-  my $maxforward  = $t->{'maxspeed:forward'}  || $t->{'maxspeed'} || 'unkwn';
-  my $maxbackward = $t->{'maxspeed:backward'} || $t->{'maxspeed'} || 'unkwn';
+  my $maxforward  = $t->{$item.':forward'}  || $t->{$item} || 'unkwn';
+  my $maxbackward = $t->{$item.':backward'} || $t->{$item} || 'unkwn';
   my $fwdclass = $maxforward; my $bckclass = $maxbackward;
   $maxforward =~ s/none//;
   $maxbackward =~ s/none//;
   
   if($maxforward eq $maxbackward) {
-    $out = '<div class="max '.$fwdclass.'">'.$maxforward.'</div>';
+    $out = '<div class="'.$name.' '.$fwdclass.'">'.$maxforward.'</div>';
     }
   elsif ($waydata->{$id}{reversed}) {  
-    $out  = '<div class="max fwd '.$fwdclass.'">'.$maxforward.'</div>';
-    $out .= '<div class="max bck '.$bckclass.'">'.$maxbackward.'</div>';
+    $out  = '<div class="'.$name.' fwd '.$fwdclass.'">'.$maxforward.'</div>';
+    $out .= '<div class="'.$name.' bck '.$bckclass.'">'.$maxbackward.'</div>';
     }
   else {
-    $out  = '<div class="max bck '.$bckclass.'">'.$maxbackward.'</div>';
-    $out .= '<div class="max fwd '.$fwdclass.'">'.$maxforward.'</div>';
+    $out  = '<div class="'.$name.' bck '.$bckclass.'">'.$maxbackward.'</div>';
+    $out .= '<div class="'.$name.' fwd '.$fwdclass.'">'.$maxforward.'</div>';
     }
-  foreach my $mc (qw(maxspeed:hgv maxspeed:hgv:forward maxspeed:hgv:backward)) {  
-    if ($t->{$mc})  {
+  foreach my $mc (qw(:hgv :hgv:forward :hgv:backward)) {  
+    if ($t->{$item.$mc})  {
       $out .= '<div class="maxcont">';
-      $out .= '<div class="max ">'.($t->{$mc}).'</div>';
+      $out .= '<div class="'.$name.' ">'.($t->{$item.$mc}).'</div>';
       $out .= '<div class="condition hgv">&nbsp;</div>';
       $out .= '</div>';
       }
     }  
-  foreach my $mc (qw(maxspeed:conditional maxspeed:forward:conditional maxspeed:backward:conditional)) {   
-    if ($t->{$mc})  {
-      my $str = $t->{$mc};
+  foreach my $mc (qw(:conditional :forward:conditional :backward:conditional)) {   
+    if ($t->{$item.$mc})  {
+      my $str = $t->{$item.$mc};
       while ($str =~ /([^\(;]+)\s*@\s*(\(([^\)]+)\)|([^;]+))/g) {
         my $what = $1;
         my $when = $3.$4;
@@ -56,7 +58,7 @@ sub makeMaxspeed {
         $when =~ s/:00//g;
         if($when eq 'wet') {$when = ''; $class="wet";}
         $out .= '<div class="maxcont" title="'.$title.'">';
-        $out .= '<div class="max ">'.$what.'</div>';
+        $out .= '<div class="'.$name.' ">'.$what.'</div>';
         $out .= '<div class="condition '.$class.'">'.$when.'</div>';
         $out .= '</div>';
         }
@@ -695,7 +697,8 @@ sub drawWay {
   $out .= OSMDraw::makeRef(($t->{'ref'}||'').';'.($t->{'int_ref'}||''),'');
   $out .= "<div style=\"clear:both;width:100%\">$name</div>";
   $out .= "<div class=\"signs\">";
-  $out .= OSMDraw::makeMaxspeed($id);
+  $out .= OSMDraw::makeMaxspeed($id,'maxspeed');
+  $out .= OSMDraw::makeMaxspeed($id,'minspeed');
   $out .= OSMDraw::makeSigns($waydata->{$id},undef);
   if($usenodes) {
     $out .= OSMDraw::makeNodeSigns($id);
@@ -714,6 +717,7 @@ sub drawWay {
     my $dir    = $lanes->{list}[$i];
     my $turns  = $lanes->{turn}[$i];
     my $max    = $lanes->{maxspeed}[$i];
+    my $min    = $lanes->{minspeed}[$i];
     my $width  = $lanes->{width}[$i];
     my $access = $lanes->{access}[$i];
     my $change = ($lanes->{change}[$i]||"")." ";
@@ -731,6 +735,9 @@ sub drawWay {
       $o .= "<div class=\"signs\" style=\"transform:skewX(-".($lanes->{tilt}||0)."deg)\">";
       if($max) {
         $o .= "<div class=\"max ".(($max eq 'none')?'none':'').'">'.(($max eq 'none')?'':$max)."</div>";
+        }
+      if($min && $min ne 'none') {
+        $o .= "<div class=\"min\">$min</div>";
         }
       $o .= OSMDraw::makeSigns($waydata->{$id},$i);
       $o .= "</div>";

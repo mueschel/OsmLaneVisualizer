@@ -38,10 +38,10 @@ Interpreted Tags
 *  **int_ref** Shown in left column and on signs
 *  **junction=roundabout** Roundabouts are marked
 *  **lanes[:forward|:backward|:both_ways]**  Used to determine the number of lanes. Might be overruled by other tags
-*  **maxspeed**  
- * **maxspeed[:lanes][:forward|:backward|:both_ways]**  Supported, shown on left-hand side. Displayed inside lane for lane dependent tags
- * **maxspeed:conditional**   Supported, shown on left-hand side, no lane or direction dependence.
- * **maxspeed:hgv**   Supported, shown on left-hand side, no lane or direction dependence
+*  **[maxspeed|minspeed]**  
+ * **[maxspeed|minspeed][:lanes][:forward|:backward|:both_ways]**  Supported, shown on left-hand side. Displayed inside lane for lane dependent tags
+ * **[maxspeed|minspeed]:conditional**   Supported, shown on left-hand side, no lane or direction dependence.
+ * **[maxspeed|minspeed]:hgv**   Supported, shown on left-hand side, no lane or direction dependence
 *  **motorroad** If yes, the corresponding sign is shown
 *  **name** Shown in left column
 *  **oneway**  Mostly supported, oneway=-1 might fail in some cases

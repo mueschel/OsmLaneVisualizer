@@ -407,6 +407,7 @@ sub InspectLanes {
   
   $obj->{lanes}{turn} = getLaneTags($obj,'turn');
   $obj->{lanes}{maxspeed}           = getLaneTags($obj,'maxspeed','nonolanes');
+  $obj->{lanes}{minspeed}           = getLaneTags($obj,'minspeed','nonolanes');
   $obj->{lanes}{bicycle}            = getLaneTags($obj,'bicycle','nonolanes');
   $obj->{lanes}{bus}                = getLaneTags($obj,'bus'); #,'nonolanes'
   $obj->{lanes}{psv}                = getLaneTags($obj,'psv'); #,'nonolanes'
