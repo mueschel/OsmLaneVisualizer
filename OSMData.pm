@@ -70,7 +70,7 @@ sub readData {
   if(scalar $store->{way}[$st] < 2) {
     return -2;
     }
-  foreach my $w (keys $store->{way}[$st]) {
+  foreach my $w (keys %{$store->{way}[$st]}) {
     next unless defined $store->{way}[$st]{$w}{tags}{'highway'};
     push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[0]}},$w);
     push(@{$endnodes->[$st]{$store->{way}[$st]{$w}{nodes}[-1]}},$w);
@@ -122,7 +122,7 @@ sub listtags {
   my $rev = shift @_;
   my $t = $id->{tags};
   my $ret = "";
-  foreach my $k (sort keys $t) {
+  foreach my $k (sort keys %$t) {
     $ret .= $k." = ".$t->{$k}."\n";
     }
   return encode_entities($ret);  

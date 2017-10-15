@@ -334,8 +334,8 @@ sub makeDestination {
         if ($arro[$i] eq 'right')         {$dests[$i] = $dests[$i]." <span class='r'>&#x2794;</span>";}
         }       
       $o .= ($dests[$i]||"&nbsp;");
-      $o .= '</span>';
       $o .= '<span class="destCountry">'.$ctr[$i].'</span>' if(scalar @ctr == scalar @dests && $ctr[$i] ne 'none' && $ctr[$i]);
+      $o .= '</span>';
       $o .= '</div>';
       }
 

@@ -387,6 +387,7 @@ div.destCountry {
   border-radius: 30px;
   font-size: 9px;
   height: 9px;
+  width: 10px;
   max-width: 100px;
   display: inline;
   float: left; }
@@ -398,6 +399,8 @@ span.destCountry {
   background: white;
   color: black;
   border: 1px solid black;
+  min-width: 20px;
+  width: auto !important;
   border-radius: 30px;
   font-size: 9px;
   height: 8px;
