@@ -4,7 +4,7 @@
   "project":{
     "name":"OSM Lane Visualizer",
     "description":"Shows various properties of roads related to lane tagging",
-    "project_url":"http://osm.mueschelsoft.de/lanes",
+    "project_url":"http://osm.mueschelsoft.de/cgi-bin/render.pl",
     "doc_url":"https://github.com/mueschel/OsmLaneVisualizer/blob/master/README.md",
     "icon_url":"",
         "contact_name": "mueschel",
