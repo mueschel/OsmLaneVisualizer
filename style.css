@@ -590,12 +590,23 @@ hr {
   top: 10px;
   right: 10px;
   width: 300px;
+  max-width:20vw;
+  max-height:25vh;
   height: 300px;
   border: 1px solid white;
   z-index: 10;
   box-shadow: 3px 3px 3px #aaa;
   /*   visibility:hidden; */ }
 
+@media only screen and (max-width: 600px) {
+#map {
+  position:absolute;
+  max-width:20vw;
+  max-height:25vh;
+}
+}
+  
+  
 span.navigation {
   display: inline-block;
   text-align: center;
