@@ -6,9 +6,8 @@
     "description":"Shows various properties of roads related to lane tagging",
     "project_url":"http://osm.mueschelsoft.de/lanes",
     "doc_url":"https://github.com/mueschel/OsmLaneVisualizer/blob/master/README.md",
-    "icon_url":"",
-        "contact_name": "mueschel",
-        "contact_email": "mail@osm.mueschelsoft.de",   
+    "contact_name": "mueschel",
+    "contact_email": "mail@osm.mueschelsoft.de",   
     "keywords":[
       "lanes", "highway"
     ]
