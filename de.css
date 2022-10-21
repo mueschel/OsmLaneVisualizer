@@ -44,7 +44,7 @@ div.signs .condition.hgv {
   height: 20px; }
 
 div.refcont div div.industrial > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4e/RWB_Industriegebiet.svg"); }
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/0/0f/RWB-RWBA-Symbol_Industriegebiet%2C_Gewerbegebiet.svg"); }
 div.refcont div div.park_and_ride > span::before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
 div.refcont div div.parking > span::before {
