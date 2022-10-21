@@ -150,8 +150,8 @@ print <<"HDOC";
     window.location.href=url;
     }
 </script>
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<link rel="stylesheet" href="leaflet.css" />
+<script src="leaflet.js"></script>
 
 </head>
 <body class="$extrasizeactive">
@@ -194,7 +194,7 @@ print <<"HDOC";
 <br><input type="button" value=" Go " onClick="changeURL('url');">
 <hr>
 <a target="_blank" href="http://overpass-turbo.eu/?Q=$urlescaped">Show in Overpass Turbo</a>
-<br><a href="http://osm.mueschelsoft.de/lanes/render.pl?$querystring">Link to this page</a>
+<br><a href="https://osm.janmichel.eu/lanes/render.pl?$querystring">Link to this page</a>
 </div>
 </div>
 <div id="map"></div>

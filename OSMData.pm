@@ -44,7 +44,7 @@ sub readData {
     my $request = $ua->post( $url, ['data' => encode('utf-8',$query)] ); 
       $json = $request->content();
     }
-  
+#   print Dumper $json;
   my $data = decode_json($json);
 
   if(!defined $data->{elements} || scalar @{$data->{elements}} == 0) {
@@ -122,7 +122,7 @@ sub listtags {
   my $rev = shift @_;
   my $t = $id->{tags};
   my $ret = "";
-  foreach my $k (sort keys %$t) {
+  foreach my $k (sort keys %{$t}) {
     $ret .= $k." = ".$t->{$k}."\n";
     }
   return encode_entities($ret);  
