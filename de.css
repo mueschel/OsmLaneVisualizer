@@ -1,44 +1,44 @@
 div.signs .bicycleno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/48/Zeichen_254.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b0/Zeichen_254_-_Verbot_für_Radfahrer%2C_StVO_1992.svg"); }
 div.signs .footno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/cc/Zeichen_259.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/f6/Zeichen_259_-_Verbot_für_Fußgänger%2C_StVO_1992.svg"); }
 div.signs .hgvno {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_253.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/9a/Zeichen_253_-_Verbot_für_Kraftfahrzeuge_mit_einem_zulässigen_Gesamtgewicht%2C_StVO_1992.svg"); }
 div.signs .motorroad {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/c6/Zeichen_331.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/77/Zeichen_331.1_-_Kraftfahrstraße%2C_StVO_2013.svg"); }
 div.signs .overtaking {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/8/87/Zeichen_276.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5e/Zeichen_276_-_Überholverbot_für_Kraftfahrzeuge_aller_Art%2C_StVO_1992.svg"); }
 div.signs .overtakinghgv {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/c/ca/Zeichen_277.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/a/ad/Zeichen_277_-_Überholverbot_für_Kraftfahrzeuge_mit_einem_zulässigen_Gesamtgewicht_über_2%2C8_t%2C_einschließlich_ihrer_Anhänger%2C_StVO_1992.svg"); }
 div.signs .bicycledesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2d/Zeichen_237.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/91/Zeichen_237_-_Sonderweg_Radfahrer%2C_StVO_1992.svg"); }
 div.signs .busdesig {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_245.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/05/Zeichen_245_-_Bussonderfahrstreifen%2C_StVO_2013.svg"); }
 div.signs .roundabout {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/72/Zeichen_215_-_Kreisverkehr%2C_StVO_2000.svg"); }
 div.signs .taxiyes {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/bb/Zusatzzeichen_1026-30.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/43/Zusatzzeichen_1026-30_-_Taxi_frei%2C_StVO_1992.svg"); }
 div.signs .bicycleyes {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5a/Zusatzzeichen_1022-10.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/04/Zusatzzeichen_1022-10_-_Radfahrer_frei%2C_StVO_1992.svg"); }
 div.signs .traffic_signals {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/93/Zeichen_131.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/45/Zeichen_131_-_Lichtzeichenanlage%2C_StVO_1970.svg"); }
 div.signs .give_way {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/96/Zeichen_205.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/6/6f/Zeichen_205_-_Vorfahrt_gewähren!_StVO_1970.svg"); }
 div.signs .stop {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/5c/Zeichen_206.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2f/Zeichen_206_-_Halt!_Vorfahrt_gewähren!_StVO_1970.svg"); }
 div.signs .priority {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/91/Zeichen_208.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_301_-_Vorfahrt%2C_StVO_1970.svg"); }
 div.signs .crossing {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b0/Zeichen_350-10.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/6/60/Zeichen_350-10_-_Fußgängerüberweg_(rechts)%2C_StVO_1992.svg"); }
 div.signs .priority_road {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/ff/Zeichen_306_-_Vorfahrtstra%C3%9Fe%2C_StVO_1970.svg"); }
 div.signs .condition.wet {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/03/Zusatzzeichen_1052-36.svg");
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/be/Zusatzzeichen_1053-35_-_Bei_Nässe_(600x600)%2C_StVO_2017.svg");
   border: none;
   background-color: transparent;
   height: 35px; }
 div.signs .condition.hgv {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/50/Zusatzzeichen_1048-12.svg");
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/09/Zusatzzeichen_1010-51_-_Kraftfahrzeuge_mit_einer_zulässigen_Gesamtmasse_über_3%2C5_t_einschließlich_ihrer_Anhänger_und_Zugmaschinen%2C_ausgenommen_Personenkraftwagen_und_Kraftomnibusse%2C_StVO_2017.svg");
   border: none;
   background-color: transparent;
   height: 20px; }
@@ -46,32 +46,31 @@ div.signs .condition.hgv {
 div.refcont div div.industrial > span::before {
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/0/0f/RWB-RWBA-Symbol_Industriegebiet%2C_Gewerbegebiet.svg"); }
 div.refcont div div.park_and_ride > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/Sinnbild_P-R.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/bd/RWB-RWBA-Symbol_Parken_und_Reisen.svg"); }
 div.refcont div div.parking > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/0f/UK_traffic_sign_801.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/6/6e/RWB-RWBA_Parkplatz.svg"); }
 div.refcont div div.fuel > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d3/Zeichen_361-50.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/9c/RWBA_Tankstelle.svg"); }
 div.refcont div div.stadium > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/fb/Stadium_icon.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/8/8b/RWB-RWBA-Symbol_Großsportanlage%2C_Stadion.svg"); }
 div.refcont div div.airport > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/5/51/Italian_traffic_signs_-_icona_aeroporto.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/70/RWBA_Flughafen(R).svg"); }
 div.refcont div div.restaurant > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/4/4d/Zeichen_376.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/b/b7/RWB-RWBA_Gasthaus.svg"); }
 div.refcont div div.toilets > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/d/d7/Zeichen_378.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/f/f1/RWBA_WC.svg"); }
 div.refcont div div.motorway > span::before, div.refcont div div.highway > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Zeichen_330_-_Autobahn%2C_StVO_1992.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/a/ac/RWB-RWBA_Autobahn.svg"); }
 div.refcont div div.hospital > span::before {
   background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/94/RWB_Krankenhaus.svg"); }
 div.refcont div div.train_station > span::before {
-  background-color: white;
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/3/33/Fernbahn_Signet_HVV.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/e/e4/RWB_Bahnhof.svg"); }
 div.refcont div div.ferry > span::before {
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/92/Ferry.png"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/0/02/RWB_Fähre(L).svg"); }
 div.refcont div div.centre > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/2/2a/Italian_traffic_signs_-_icona_centro.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/9/92/Sinnbild_Stadt-Ortszentrum%2C_RWB_2000.svg"); }
 div.refcont div div.information > span::before {
-  background-image: url("http://upload.wikimedia.org/wikipedia/commons/7/7e/Italian_traffic_signs_-_icona_informazioni.svg"); }
+  background-image: url("http://upload.wikimedia.org/wikipedia/commons/8/8a/RWB-RWBA_Information.svg"); }
 div.refcont div div.motorway.refto > span {
   background-color: #5078D0;
   border: 1px white solid;
